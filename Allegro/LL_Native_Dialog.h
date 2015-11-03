@@ -29,7 +29,6 @@ class FileChooser
         void set_title(string title){_title=title;_no_exist=1;}
         string get_title(){return _title;}
         void set_mode(int mode){_mode=mode;_no_exist=1;}
-        int get_mode(){return _mode;}
         unsigned int get_count_selected_files(){return _selected_files;}
         void set_format(string format){_format=format;_no_exist=1;}
         void operator () ()
@@ -62,7 +61,6 @@ class TextLog
         void set_title(string title){_title=title;}
         string get_title(){return _title;}
         void set_mode(int mode){_mode=mode;}
-        int get_mode(){return _mode;}
         operator ALLEGRO_TEXTLOG*& (){return _tex;}
         bool is_open(){return _tex;}
         bool open(){if(!_tex){_tex=al_open_native_text_log(_title.c_str(),_mode);return _tex;}return 0;}

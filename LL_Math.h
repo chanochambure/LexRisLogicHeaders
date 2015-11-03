@@ -41,31 +41,20 @@ bool intersection_1D(float a1,float b1,float a2,float b2)
 
 //class
 template<int N>
-struct dot
+struct Dot
 {
-    vector<int> dots;
-    dot(){for(int i=0;i<N;++i)dots.push_back(0);}
-    int& operator [](unsigned int p){return dots[p];}
-    ~dot(){dots.clear();}
-    dot<N>& operator = (dot<N> ot)
-    {
-        for(int i=0;i<N;++i)
-            (*this)[i]=ot[i];
-        return (*this);
-    }
-    bool operator == (dot<N> ot)
-    {
-        for(int i=0;i<N;++i)
-        {
-            if((*this)[i]!=ot[i])
-                return 0;
-        }
-        return 1;
-    }
+    private:
+        vector<int> dots;
+    public:
+        Dot(){for(int i=0;i<N;++i)dots.push_back(0);}
+        int& operator [](unsigned int p){return dots[p];}
+        ~Dot(){dots.clear();}
+        Dot<N>& operator = (Dot<N> ot){for(int i=0;i<N;++i)(*this)[i]=ot[i];return (*this);}
+        bool operator == (Dot<N> ot){for(int i=0;i<N;++i){if((*this)[i]!=ot[i])return 0;}return 1;}
 };
 
 template<int N>
-double euclidean_distance(dot<N> one,dot<N> two)
+double euclidean_distance(Dot<N> one,Dot<N> two)
 {
     double acum=0;;
     for(int i=0;i<N;++i)

@@ -2,6 +2,7 @@
 #define LL_ALLEGRO_H_INCLUDED
 
 typedef float pos_t;
+typedef unsigned int display_size_t;
 
 //Allegro
 #include <allegro5/allegro5.h>
@@ -19,10 +20,10 @@ float scale_y=1;
 float text_scale=1;
 float primitives_scale=1;
 
-bool ExitProgram=0;
+bool exit_program=0;
 
-unsigned int desktop_size_x;
-unsigned int desktop_size_y;
+display_size_t desktop_size_x;
+display_size_t desktop_size_y;
 
 //Functions
 void init_allegro(){al_init();ALLEGRO_MONITOR_INFO info;al_get_monitor_info(0, &info);desktop_size_x=info.x2 -info.x1;desktop_size_y=info.y2-info.y1;}
@@ -31,10 +32,8 @@ bool primitives_addon(){return al_init_primitives_addon();}
 bool image_addon(){return al_init_image_addon();}
 bool text_addon(){return al_init_font_addon()and al_init_ttf_addon();}
 bool audio_addon(){return (al_install_audio() and al_init_acodec_addon());}
-void stop_samples(){al_stop_samples();}
 void unistall_audio(){al_uninstall_audio();}
 void unistall_primitives(){al_shutdown_primitives_addon();}
-
 
 //Library
 #include <LexRisLogic/Allegro/LL_Display.h>
@@ -43,7 +42,7 @@ void unistall_primitives(){al_shutdown_primitives_addon();}
 #include <LexRisLogic/Allegro/LL_Color.h>
 #include <LexRisLogic/Allegro/LL_Camera.h>
 #include <LexRisLogic/Allegro/LL_Primitives.h>
-#include <LexRisLogic/Allegro/LL_Image.h>
+#include <LexRisLogic/Allegro/LL_Bitmap.h>
 #include <LexRisLogic/Allegro/LL_Text.h>
 #include <LexRisLogic/Allegro/LL_Audio.h>
 #include <LexRisLogic/Allegro/LL_Video.h>

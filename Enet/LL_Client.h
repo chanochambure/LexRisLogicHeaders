@@ -24,21 +24,21 @@ class Client
         queue<pair<ENetPeer*,string>> _mess_;
     public:
         Client(){}
-        void SetServiceTime(int ms){_service=ms;}
-        int GetServiceTime(){return _service;}
-        bool StartClient(){if(!_init){client = enet_host_create(NULL, 1, 2, 57600/8, 14400/8);_init=client;return _init;}return 0;}
-        bool StopClient(){if(_init){CleanQueue();enet_host_destroy(client);client=nullptr;_init=0;return 1;}return 0;}
-        bool GetConnection(string _IP,int _port);
-        bool GetStatus(){return _connected;}
-        bool Reconnect(){_reset();peer=enet_host_connect(client, &address, 2, 0);if(!peer)return false;return (_connected=_test());}
+        void set_service_time(int ms){_service=ms;}
+        int get_service_time(){return _service;}
+        bool start_client(){if(!_init){client = enet_host_create(NULL, 1, 2, 57600/8, 14400/8);_init=client;return _init;}return 0;}
+        bool stop_client(){if(_init){clean_queue();enet_host_destroy(client);client=nullptr;_init=0;return 1;}return 0;}
+        bool get_connection(string _IP,int _port);
+        bool get_status(){return _connected;}
+        bool reconnect(){_reset();peer=enet_host_connect(client, &address, 2, 0);if(!peer)return false;return (_connected=_test());}
         bool remove(){if(!_mess_.empty()){_mess_.pop();return 1;}return 0;}
         string first(){return _mess_.front().second;}
         string last(){return _mess_.back().second;}
         bool empty(){return _mess_.empty();}
-        void CleanQueue(){while(!_mess_.empty())_mess_.pop();}
-        bool SendMessage(string to_send){if(_init and _connected){if(to_send.size()>0){ENetPacket* packet=enet_packet_create(to_send.c_str(),to_send.size()+1,ENET_PACKET_FLAG_RELIABLE);if(packet)return (!enet_peer_send(peer,0,packet));}}return 0;}
+        void clean_queue(){while(!_mess_.empty())_mess_.pop();}
+        bool send_message(string to_send){if(_init and _connected){if(to_send.size()>0){ENetPacket* packet=enet_packet_create(to_send.c_str(),to_send.size()+1,ENET_PACKET_FLAG_RELIABLE);if(packet)return (!enet_peer_send(peer,0,packet));}}return 0;}
         bool operator () ();
-        ~Client(){StopClient();}
+        ~Client(){stop_client();}
 };
 
 bool Client::_test()
@@ -60,7 +60,7 @@ bool Client::_test()
     }
 }
 
-bool Client::GetConnection(string _IP,int _port)
+bool Client::get_connection(string _IP,int _port)
 {
     enet_address_set_host(&address,_IP.c_str());
     address.port=_port;
