@@ -23,7 +23,6 @@ class Client
         int _service=1000;
         queue<pair<ENetPeer*,string>> _mess_;
     public:
-        Client(){}
         void set_service_time(int ms){_service=ms;}
         int get_service_time(){return _service;}
         bool start_client(){if(!_init){client = enet_host_create(NULL, 1, 2, 57600/8, 14400/8);_init=client;return _init;}return 0;}
@@ -73,10 +72,10 @@ bool Client::get_connection(string _IP,int _port)
 
 bool Client::operator() ()
 {
-    bool a=0;
+    bool a_event=0;
     while(enet_host_service(client,&event,_service)>0)
     {
-        a=1;
+        a_event=1;
         switch(event.type)
         {
             case ENET_EVENT_TYPE_CONNECT:
@@ -93,9 +92,7 @@ bool Client::operator() ()
                 return 0;
         }
     }
-    if(a)
-        return 1;
-    return 0;
+    return a_event;
 }
 
 #endif // LL_CLIENT_H_INCLUDED

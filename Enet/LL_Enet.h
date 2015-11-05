@@ -1,5 +1,5 @@
-#ifndef LL_ALLEGRO_H_INCLUDED
-#define LL_ALLEGRO_H_INCLUDED
+#ifndef LL_ENET_H_INCLUDED
+#define LL_ENET_H_INCLUDED
 
 //Enet
 #include <enet/enet.h>
@@ -7,12 +7,12 @@
 
 //Functions
 
-bool net_addon(){return !(enet_initialize());}
+bool install_enet(){return !(enet_initialize());}
 
-void unistall_enet(){enet_deinitialize();}
+void uninstall_enet(){enet_deinitialize();}
 
 //Library
 #include "LL_Server.h"
 #include "LL_Client.h"
 
-#endif // LL_ALLEGRO_H_INCLUDED
+#endif // LL_ENET_H_INCLUDED

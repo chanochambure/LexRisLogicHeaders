@@ -39,7 +39,7 @@ class Server
         void clean_queue(){while(!_mess_.empty())_mess_.pop();}
         bool operator () ();
         bool event_connected(){return c;}
-        bool event_disConnected(){return d;}
+        bool event_disconnected(){return d;}
         ENetPeer* get_peer_connected(){if(c)return event.peer;return nullptr;}
         ENetPeer* get_peer_disconnected(){if(d)return event.peer;return nullptr;}
         bool send_all(string to_send){if(_init){if(to_send.size()>0){ENetPacket* packet=enet_packet_create(to_send.c_str(),to_send.size()+1,ENET_PACKET_FLAG_RELIABLE);if(packet){enet_host_broadcast(server,0,packet);return 1;}}}return 0;}

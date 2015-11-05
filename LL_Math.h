@@ -1,5 +1,5 @@
-#ifndef LR_MATH_H_INCLUDED
-#define LR_MATH_H_INCLUDED
+#ifndef LL_MATH_H_INCLUDED
+#define LL_MATH_H_INCLUDED
 
 #include <vector>
 #include <math.h>
@@ -62,4 +62,4 @@ double euclidean_distance(Dot<N> one,Dot<N> two)
     return sqrt(acum);
 }
 
-#endif // LR_MATH_H_INCLUDED
+#endif // LL_MATH_H_INCLUDED

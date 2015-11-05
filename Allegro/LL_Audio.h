@@ -23,6 +23,7 @@ class Audio
         float get_volume(){return _vol;}
         void set_mode(ALLEGRO_PLAYMODE flag){_mode=flag;if(instance)al_set_sample_instance_playmode(instance,_mode);}
         bool load();
+        unsigned int get_size(){return al_get_sample_length(sample);}
         void set_position(unsigned int pos){al_set_sample_instance_position(instance,pos);}
         unsigned int get_position(){if(!al_get_sample_instance_playing(instance))return _ps;return al_get_sample_instance_position(instance);}
         void stop(){al_stop_sample_instance(instance);(_ps=0);}

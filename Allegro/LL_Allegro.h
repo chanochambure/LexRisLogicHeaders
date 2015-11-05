@@ -32,8 +32,8 @@ bool primitives_addon(){return al_init_primitives_addon();}
 bool image_addon(){return al_init_image_addon();}
 bool text_addon(){return al_init_font_addon()and al_init_ttf_addon();}
 bool audio_addon(){return (al_install_audio() and al_init_acodec_addon());}
-void unistall_audio(){al_uninstall_audio();}
-void unistall_primitives(){al_shutdown_primitives_addon();}
+void uninstall_audio(){al_uninstall_audio();}
+void uninstall_primitives(){al_shutdown_primitives_addon();}
 
 //Library
 #include <LexRisLogic/Allegro/LL_Display.h>
