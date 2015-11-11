@@ -16,12 +16,13 @@ class StringSplitter
         string get_string(){return _str;}
         bool split(char character='\n');
         unsigned int size(){return _data.size();}
-        string operator [] (unsigned int index_split){return _data[index_split];}
+        string operator [] (unsigned int i){return _data[i];}
         ~StringSplitter(){_data.clear();}
 };
 
 bool StringSplitter::split(char character)
 {
+    _data.clear();
     string data=_str;
     if(data.size()==0)
         return 0;

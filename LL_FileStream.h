@@ -1,5 +1,5 @@
-#ifndef LL_FILE_STREAMER_H_INCLUDED
-#define LL_FILE_STREAMER_H_INCLUDED
+#ifndef LL_FILESTREAM_H_INCLUDED
+#define LL_FILESTREAM_H_INCLUDED
 
 #include <string>
 #include <vector>
@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class FileStreamer
+class FileStream
 {
     private:
         vector<string> _data;
@@ -41,17 +41,17 @@ class FileStreamer
             return 0;
         }
     public:
-        void set_file_path(string new_path){_file_path=new_path;}
-        string get_file_path(){return _file_path;}
+        void set_path(string new_path){_file_path=new_path;}
+        string get_path(){return _file_path;}
         bool load(){if(!_loaded)return _read_file();return 0;}
         void reload(){_data.clear();_read_file();}
         bool save(){return _save_file();}
         void clear_file(){_data.clear();}
-        bool insert_line(unsigned int pos,unsigned int lines){if(pos<=_data.size()){vector<string>::iterator iter=_data.begin()+pos;for(unsigned int i=0;i<lines;++i)iter=_data.insert(iter,string());return 1;}return 0;}
+        bool insert_line(unsigned int pos,unsigned int n_lines){if(pos<=_data.size()){vector<string>::iterator iter=_data.begin()+pos;for(unsigned int i=0;i<n_lines;++i)iter=_data.insert(iter,string());return 1;}return 0;}
         bool remove_line(unsigned int line){if(line<_data.size()){_data.erase(_data.begin()+line);return 1;}return 0;}
-        string& operator [] (unsigned int line){return _data[line];}
         unsigned int size(){return _data.size();}
-        ~FileStreamer(){_data.clear();}
+        string& operator [] (unsigned int line){return _data[line];}
+        ~FileStream(){clear_file();}
 };
 
-#endif // LL_FILE_STREAMER_H_INCLUDED
+#endif // LL_FILESTREAM_H_INCLUDED

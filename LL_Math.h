@@ -17,10 +17,10 @@ T range_mod(T a,T b){return fmod(fmod(a,b)+b,b);}
 
 //Angle Conversion
 
-#define PI 3.14159265358979323846
+#define MATH_PI 3.14159265358979323846
 
-float sexadecimal_to_radian(float sexadecimal){return (sexadecimal*PI)/180;}
-float radian_to_sexadecimal(float radian){return (radian*180)/PI;}
+float sexagesimal_to_radian(float sexagesimal){return (sexagesimal*MATH_PI)/180;}
+float radian_to_sexagesimal(float radian){return (radian*180)/MATH_PI;}
 
 //Random
 
@@ -32,26 +32,36 @@ int random(int mini, int maxi){return mod(int(rand()),(maxi-mini))+mini;}
 
 //Intersection
 
-bool intersection_1D(float a1,float b1,float a2,float b2)
+bool intersection_of_segments(float a1,float b1,float a2,float b2)
 {
     int a=max(a1,a2);
     int b=min(b1,b2);
     return (a<=b);
 }
 
-//class
 template<int N>
-struct Dot
+class Dot
 {
     private:
-        vector<int> dots;
+        vector<float> dots;
     public:
         Dot(){for(int i=0;i<N;++i)dots.push_back(0);}
-        int& operator [](unsigned int p){return dots[p];}
-        ~Dot(){dots.clear();}
+        int get_dimension(){return N;}
+        float& operator [](unsigned int i){return dots[i];}
         Dot<N>& operator = (Dot<N> ot){for(int i=0;i<N;++i)(*this)[i]=ot[i];return (*this);}
         bool operator == (Dot<N> ot){for(int i=0;i<N;++i){if((*this)[i]!=ot[i])return 0;}return 1;}
+        ~Dot(){dots.clear();}
 };
+
+template<int N>
+ostream& operator << (ostream& os,Dot<N> dot)
+{
+    os<<"[";
+    for(unsigned int i=0;i<N-1;++i)
+        os<<dot[i]<<" ";
+    os<<dot[N-1]<<"]";
+    return os;
+}
 
 template<int N>
 double euclidean_distance(Dot<N> one,Dot<N> two)
