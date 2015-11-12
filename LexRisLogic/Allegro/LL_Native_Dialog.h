@@ -1,7 +1,6 @@
 #ifndef LL_NATIVE_DIALOG_H_INCLUDED
 #define LL_NATIVE_DIALOG_H_INCLUDED
 
-#include <LexRisLogic/Allegro/LL_Allegro.h>
 #include <sstream>
 
 bool show_native_message(ALLEGRO_DISPLAY* display,string title,string header,string text,int flags)

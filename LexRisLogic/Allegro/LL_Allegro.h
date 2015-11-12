@@ -36,15 +36,15 @@ void uninstall_audio(){al_uninstall_audio();}
 void uninstall_primitives(){al_shutdown_primitives_addon();}
 
 //Library
-#include <LexRisLogic/Allegro/LL_Display.h>
-#include <LexRisLogic/Allegro/LL_Native_Dialog.h>
-#include <LexRisLogic/Allegro/LL_Input.h>
-#include <LexRisLogic/Allegro/LL_Color.h>
-#include <LexRisLogic/Allegro/LL_Camera.h>
-#include <LexRisLogic/Allegro/LL_Primitives.h>
-#include <LexRisLogic/Allegro/LL_Bitmap.h>
-#include <LexRisLogic/Allegro/LL_Text.h>
-#include <LexRisLogic/Allegro/LL_Audio.h>
-#include <LexRisLogic/Allegro/LL_Video.h>
+#include "LL_Display.h"
+#include "LL_Native_Dialog.h"
+#include "LL_Input.h"
+#include "LL_Color.h"
+#include "LL_Camera.h"
+#include "LL_Primitives.h"
+#include "LL_Bitmap.h"
+#include "LL_Text.h"
+#include "LL_Audio.h"
+#include "LL_Video.h"
 
 #endif // LL_ALLEGRO_H_INCLUDED

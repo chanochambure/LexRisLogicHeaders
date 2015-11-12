@@ -10,6 +10,8 @@ using namespace std;
 class Server
 {
     private:
+        template<typename T>
+        string __to_string__(T data){stringstream st;st<<data;return st.str();}
         ENetAddress address;
         ENetHost* server;
         ENetEvent event;
@@ -59,7 +61,7 @@ bool Server::operator () ()
             case ENET_EVENT_TYPE_RECEIVE:
                 c=0;
                 d=0;
-                _mess_.push(pair<ENetPeer*,string>(event.peer,to_string(event.packet->data)));
+                _mess_.push(pair<ENetPeer*,string>(event.peer,__to_string__(event.packet->data)));
                 break;
             case ENET_EVENT_TYPE_DISCONNECT:
                 c=0;

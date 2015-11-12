@@ -2,6 +2,7 @@
 #define LL_CLIENT_H_INCLUDED
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <queue>
 
@@ -10,6 +11,8 @@ using namespace std;
 class Client
 {
     private:
+        template<typename T>
+        string __to_string__(T data){stringstream st;st<<data;return st.str();}
         ENetAddress address;
         bool _init=0;
         ENetHost* client=nullptr;
@@ -79,7 +82,7 @@ bool Client::operator() ()
                 _connected=1;
                 break;
             case ENET_EVENT_TYPE_RECEIVE:
-                _mess_.push(to_string(event.packet->data));
+                _mess_.push(__to_string__(event.packet->data));
                 break;
             case ENET_EVENT_TYPE_DISCONNECT:
                 _connected=0;
