@@ -2,7 +2,7 @@
 #define LL_TIME_H_INCLUDED
 #include <time.h>
 
-class Chronometer
+class LL_Chronometer
 {
     private:
         clock_t point;

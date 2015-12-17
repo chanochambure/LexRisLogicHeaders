@@ -6,35 +6,36 @@
 
 using namespace std;
 
-struct Key
+struct LL_Key
 {
     string name;
     int keycode;
     bool active=0;
-    Key(string n,int k){name=n;keycode=k;}
+    LL_Key(string n,int k){name=n;keycode=k;}
 };
-class KeyControl
+class LL_KeyControl
 {
     private:
-        vector<Key> key;
+        vector<LL_Key> key;
         ALLEGRO_EVENT_QUEUE* EQ=nullptr;
     public:
-        KeyControl(ALLEGRO_EVENT_QUEUE* NEQ){EQ=NEQ;}
-        Key& operator [] (unsigned int index){return key[index];}
+        LL_KeyControl(ALLEGRO_EVENT_QUEUE* NEQ){EQ=NEQ;}
+        LL_Key& operator [] (unsigned int index){return key[index];}
         int find_key(string Name){for(unsigned int i=0;i<key.size();++i){if(key[i].name==Name)return i;}return -1;}
         int find_key(int keycode){for(unsigned int i=0;i<key.size();++i){if(key[i].keycode==keycode)return i;}return -1;}
-        bool add_key(string Name){if(find_key(Name)!=-1)return 0;int lol=get_keycode();if(find_key(lol)!=-1)return 0;key.push_back(Key(Name,lol));return 1;}
-        bool add_key(string Name,int keycode){if((find_key(Name)!=-1) or (find_key(keycode)!=-1))return 0;key.push_back(Key(Name,keycode));return 1;}
+        bool add_key(string Name){if(find_key(Name)!=-1)return 0;int lol=get_keycode();if(find_key(lol)!=-1)return 0;key.push_back(LL_Key(Name,lol));return 1;}
+        bool add_key(string Name,int keycode){if((find_key(Name)!=-1) or (find_key(keycode)!=-1))return 0;key.push_back(LL_Key(Name,keycode));return 1;}
         bool mod_key(int index,string new_Name){if((0<=index) and (index<key.size()) and (!find_key(new_Name))){key[index].name=new_Name;return 1;}return 0;}
         bool mod_key(int index,int new_keycode){if((0<=index) and (index<key.size()) and (!find_key(new_keycode))){key[index].keycode=new_keycode;return 1;}return 0;}
         bool remove_key(string Name){int lol=find_key(Name);if(lol==-1)return 0;key.erase((key.begin())+lol);return 1;}
         bool remove_key(int keycode){int lol=find_key(keycode);if(lol==-1)return 0;key.erase((key.begin())+lol);return 1;}
         int get_keycode();
         void set_event_queue(ALLEGRO_EVENT_QUEUE* NEQ){EQ=NEQ;}
-        ~KeyControl(){key.clear();}
+        void clear_key_values(){for(unsigned int i=0;i<key.size();++i)key[i].active=0;}
+        ~LL_KeyControl(){key.clear();}
 };
 
-int KeyControl::get_keycode()
+int LL_KeyControl::get_keycode()
 {
     al_flush_event_queue(EQ);
     while(1)
@@ -46,7 +47,7 @@ int KeyControl::get_keycode()
     }
 }
 
-class Input
+class LL_Input
 {
     private:
         bool k_on=0;
@@ -55,7 +56,7 @@ class Input
         unsigned int _c_limits;
         ALLEGRO_EVENT_QUEUE* EQ;
         ALLEGRO_TIMER* T;
-        KeyControl* key=nullptr;
+        LL_KeyControl* key=nullptr;
         int _KeySearchName(string Name){if(key)return key->find_key(Name);return -1;}
         int _KeySearchKeycode(int keycode){if(key)return key->find_key(keycode);return -1;}
         bool close=0;
@@ -73,15 +74,16 @@ class Input
         bool timer_event=0;
         bool enter_block=0;
     public:
-        Input(float fps);
+        LL_Input(float fps);
         bool unregister_display(){if(_re_D){al_unregister_event_source(EQ,al_get_display_event_source(*DS));_re_D=0;return 1;}return 0;}
         bool register_display(ALLEGRO_DISPLAY*& New_Display){if(!_re_D){DS=&New_Display;al_register_event_source(EQ,al_get_display_event_source(*DS));_re_D=1;return 1;}return 0;}
         bool unregister_textlog(){if(_re_TL){al_unregister_event_source(EQ,al_get_native_text_log_event_source(*TL));_re_TL=0;return 1;}return 0;}
         bool register_textlog(ALLEGRO_TEXTLOG*& New_TextLog){if(!_re_TL){TL=&New_TextLog;al_register_event_source(EQ,al_get_native_text_log_event_source(*TL));_re_TL=1;return 1;}return 0;}
         void change_fps(float fps){al_unregister_event_source(EQ, al_get_timer_event_source(T));al_destroy_timer(T);T=al_create_timer(fps);al_register_event_source(EQ, al_get_timer_event_source(T));}
-        void set_key_control(KeyControl* k){key=k;}
-        KeyControl* get_key_control(){return key;}
+        void set_key_control(LL_KeyControl* k){key=k;}
+        LL_KeyControl* get_key_control(){return key;}
         void clear_events(){al_flush_event_queue(EQ);}
+        void clear_key_values(){if(key)key->clear_key_values();}
         bool& operator [] (string Name){_ff=0;int lol=_KeySearchName(Name);if(lol==-1)return _ff;return ((*key)[lol]).active;}
         void operator()();
         void get_exit();
@@ -105,10 +107,10 @@ class Input
         bool& get_display_status(){return close;}
         ALLEGRO_TIMER* get_timer(){return T;}
         operator ALLEGRO_EVENT_QUEUE* (){return EQ;}
-        ~Input();
+        ~LL_Input();
 };
 
-Input::Input(float fps)
+LL_Input::LL_Input(float fps)
 {
     for(int i=0;i<3;++i)
         _c_[i]=0;
@@ -120,7 +122,7 @@ Input::Input(float fps)
     al_start_timer(T);
 }
 
-void Input::operator()()
+void LL_Input::operator()()
 {
     ALLEGRO_EVENT event;
     al_wait_for_event(EQ,&event);
@@ -185,7 +187,7 @@ void Input::operator()()
     timer_event=(event.type==ALLEGRO_EVENT_TIMER);
 }
 
-void Input::get_exit()
+void LL_Input::get_exit()
 {
     ALLEGRO_EVENT event;
     al_wait_for_event(EQ,&event);
@@ -204,7 +206,7 @@ void Input::get_exit()
     }
 }
 
-Input::~Input()
+LL_Input::~LL_Input()
 {
     unregister_display();
     unregister_textlog();

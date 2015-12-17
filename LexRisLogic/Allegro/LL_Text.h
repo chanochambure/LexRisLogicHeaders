@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Font
+class LL_Font
 {
     private:
         ALLEGRO_FONT* font=nullptr;
@@ -21,34 +21,33 @@ class Font
         void refresh(){load();}
         bool destroy(){if(font){al_destroy_font(font);font=nullptr;return 1;};return 0;}
         operator ALLEGRO_FONT*& (){return font;}
-        ~Font(){destroy();}
+        ~LL_Font(){destroy();}
 };
 
-bool Font::load()
+bool LL_Font::load()
 {
     destroy();
     font=al_load_ttf_font(font_path.c_str(),size*text_scale,0);
     return bool(font);
 }
 
-bool Font::load_for_another_target()
+bool LL_Font::load_for_another_target()
 {
     destroy();
     font=al_load_ttf_font(font_path.c_str(),size,0);
     return bool(font);
 }
 
-class Text
+class LL_Text
 {
     private:
-        Font* font;
+        LL_Font* font=nullptr;
         int flag=0;
         string _m_gg;
         ALLEGRO_COLOR TextColor;
         pos_t x=0;
         pos_t y=0;
     public:
-        Text(Font* f){font=f;}
         void set_pos(pos_t xx,pos_t yy){x=xx;y=yy;}
         void set_posx(pos_t xx){x=xx;}
         void set_posy(pos_t yy){y=yy;}
@@ -57,7 +56,8 @@ class Text
         void set_flag(int _flag){flag=_flag;}
         void set_color(ALLEGRO_COLOR Other){TextColor=Other;}
         ALLEGRO_COLOR get_color(){return TextColor;}
-        void set_font(Font* f){font=f;}
+        void set_font(LL_Font* f){font=f;}
+        LL_Font* get_font(){return font;}
         void draw(){al_draw_text(*font,TextColor,x,y,flag,_m_gg.c_str());}
         operator const char* () {return _m_gg.c_str();}
         operator string () {return _m_gg;}

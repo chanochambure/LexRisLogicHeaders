@@ -1,7 +1,7 @@
 #ifndef LL_VIDEO_H_INCLUDED
 #define LL_VIDEO_H_INCLUDED
 
-class Video
+class LL_Video
 {
     private:
         ALLEGRO_VIDEO* video=nullptr;
@@ -42,10 +42,10 @@ class Video
         void play(){if(_pause)al_pause_video(video,(_pause=0));}
         bool destroy(){if(video){al_close_video(video);video=nullptr;return 1;}return 0;}
         operator ALLEGRO_VIDEO* (){return video;}
-        ~Video(){destroy();}
+        ~LL_Video(){destroy();}
 };
 
-bool Video::load()
+bool LL_Video::load()
 {
     destroy();
     if(!al_reserve_samples(1))

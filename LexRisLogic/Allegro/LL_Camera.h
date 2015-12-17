@@ -1,7 +1,7 @@
 #ifndef LL_CAMERA_H_INCLUDED
 #define LL_CAMERA_H_INCLUDED
 
-class Camera
+class LL_Camera
 {
     private:
         display_size_t RealSizeX;
@@ -13,7 +13,7 @@ class Camera
         float _y_l=1;
         void __set_scale(float dx,float dy,display_size_t rx,display_size_t ry){_x_l=dx;_y_l=dy;scale_x=dx/rx;scale_y=dy/ry;text_scale=((scale_x-scale_y)/2)+scale_y;if(text_scale<1)primitives_scale=1;else{primitives_scale=text_scale;}}
     public:
-        Camera(ALLEGRO_DISPLAY* display,display_size_t rsx,display_size_t rsy){_dd=display;RealSizeX=rsx;RealSizeY=rsy;refresh();}
+        LL_Camera(ALLEGRO_DISPLAY* display,display_size_t rsx,display_size_t rsy){_dd=display;RealSizeX=rsx;RealSizeY=rsy;refresh();}
         void set_display(ALLEGRO_DISPLAY* display){_dd=display;refresh();}
         ALLEGRO_DISPLAY* get_display(){return _dd;}
 		void set_realsize(display_size_t rsx,display_size_t rsy){RealSizeX=rsx;RealSizeY=rsy;refresh();}

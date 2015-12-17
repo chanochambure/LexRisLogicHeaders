@@ -1,7 +1,7 @@
 #ifndef LL_AUDIO_H_INCLUDED
 #define LL_AUDIO_H_INCLUDED
 
-class Audio
+class LL_Audio
 {
     private:
         unsigned int _ps=0;
@@ -32,10 +32,10 @@ class Audio
         bool destroy(){if(instance){al_destroy_sample_instance(instance);instance=nullptr;}if(sample){al_destroy_sample(sample);sample=nullptr;return 1;}return 0;}
         operator ALLEGRO_SAMPLE* (){return sample;}
         operator ALLEGRO_SAMPLE_INSTANCE* (){return instance;}
-        ~Audio(){destroy();}
+        ~LL_Audio(){destroy();}
 };
 
-bool Audio::load()
+bool LL_Audio::load()
 {
     destroy();
     if(!al_reserve_samples(1))

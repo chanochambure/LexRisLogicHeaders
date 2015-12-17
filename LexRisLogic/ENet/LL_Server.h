@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class Server
+class LL_Server
 {
     private:
         template<typename T>
@@ -45,10 +45,10 @@ class Server
         bool send_message_to_a_client(ENetPeer* Peer,string to_send){if(_init){if(to_send.size()>0){ENetPacket* packet=enet_packet_create(to_send.c_str(),to_send.size()+1,ENET_PACKET_FLAG_RELIABLE);if(packet)return (!enet_peer_send(Peer,0,packet));}}return 0;}
         bool send_message_to_all_clients(string to_send){if(_init){if(to_send.size()>0){ENetPacket* packet=enet_packet_create(to_send.c_str(),to_send.size()+1,ENET_PACKET_FLAG_RELIABLE);if(packet){enet_host_broadcast(server,0,packet);return 1;}}}return 0;}
         bool stop_server(){if(_init){clear();enet_host_destroy(server);server=nullptr;_init=0;return 1;}return 0;}
-        ~Server(){stop_server();}
+        ~LL_Server(){stop_server();}
 };
 
-bool Server::operator () ()
+bool LL_Server::operator () ()
 {
     if(enet_host_service(server,&event,_service)>0)
     {

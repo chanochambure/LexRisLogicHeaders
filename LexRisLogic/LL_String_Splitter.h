@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class StringSplitter
+class LL_StringSplitter
 {
     private:
         vector<string> _data;
@@ -17,10 +17,10 @@ class StringSplitter
         bool split(char character='\n');
         unsigned int size(){return _data.size();}
         string operator [] (unsigned int i){return _data[i];}
-        ~StringSplitter(){_data.clear();}
+        ~LL_StringSplitter(){_data.clear();}
 };
 
-bool StringSplitter::split(char character)
+bool LL_StringSplitter::split(char character)
 {
     _data.clear();
     string data=_str;

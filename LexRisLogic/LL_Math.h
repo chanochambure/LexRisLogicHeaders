@@ -40,21 +40,21 @@ bool intersection_of_segments(float a1,float b1,float a2,float b2)
 }
 
 template<int N>
-class Dot
+class LL_Dot
 {
     private:
         vector<float> dots;
     public:
-        Dot(){for(int i=0;i<N;++i)dots.push_back(0);}
+        LL_Dot(){for(int i=0;i<N;++i)dots.push_back(0);}
         int get_dimension(){return N;}
         float& operator [](unsigned int i){return dots[i];}
-        Dot<N>& operator = (Dot<N> ot){for(int i=0;i<N;++i)(*this)[i]=ot[i];return (*this);}
-        bool operator == (Dot<N> ot){for(int i=0;i<N;++i){if((*this)[i]!=ot[i])return 0;}return 1;}
-        ~Dot(){dots.clear();}
+        LL_Dot<N>& operator = (LL_Dot<N> ot){for(int i=0;i<N;++i)(*this)[i]=ot[i];return (*this);}
+        bool operator == (LL_Dot<N> ot){for(int i=0;i<N;++i){if((*this)[i]!=ot[i])return 0;}return 1;}
+        ~LL_Dot(){dots.clear();}
 };
 
 template<int N>
-ostream& operator << (ostream& os,Dot<N> dot)
+ostream& operator << (ostream& os,LL_Dot<N> dot)
 {
     os<<"[";
     for(unsigned int i=0;i<N-1;++i)
@@ -64,7 +64,7 @@ ostream& operator << (ostream& os,Dot<N> dot)
 }
 
 template<int N>
-double euclidean_distance(Dot<N> one,Dot<N> two)
+double euclidean_distance(LL_Dot<N> one,LL_Dot<N> two)
 {
     double acum=0;;
     for(int i=0;i<N;++i)

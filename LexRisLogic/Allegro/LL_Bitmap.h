@@ -10,7 +10,7 @@ bool save_bitmap(string name,ALLEGRO_BITMAP* bmp)
     return al_save_bitmap(name.c_str(),bmp);
 }
 
-class Bitmap
+class LL_Bitmap
 {
     protected:
         ALLEGRO_BITMAP* bmp=nullptr;
@@ -23,7 +23,7 @@ class Bitmap
         float bmp_scalex=1;
         float bmp_scaley=1;
     public:
-        Bitmap(){}
+        LL_Bitmap(){}
         void set_pos(pos_t xx,pos_t yy){x=xx;y=yy;}
         void set_posx(pos_t xx){x=xx;}
         void set_posy(pos_t yy){y=yy;}
@@ -44,10 +44,10 @@ class Bitmap
         void draw(){al_draw_scaled_rotated_bitmap(bmp,Xsize/2,Ysize/2,x+((Xsize*scale_x*bmp_scalex)/2),y+((Ysize*scale_y*bmp_scaley)/2),scale_x*bmp_scalex,scale_y*bmp_scaley,angle,flag);}
         void draw_in_another_target(){al_draw_scaled_rotated_bitmap(bmp,Xsize/2,Ysize/2,x+((Xsize*bmp_scalex)/2),y+((Ysize*bmp_scaley)/2),bmp_scalex,bmp_scaley,angle,flag);}
         operator ALLEGRO_BITMAP* (){return bmp;}
-        ~Bitmap(){destroy();}
+        ~LL_Bitmap(){destroy();}
 };
 
-class SubBitmap:public Bitmap
+class LL_SubBitmap:public LL_Bitmap
 {
     private:
         ALLEGRO_BITMAP* parent=nullptr;
@@ -65,7 +65,7 @@ class SubBitmap:public Bitmap
         bool create_sub_bitmap(){destroy();bmp=al_create_sub_bitmap(parent,sub_x,sub_y,Xsize,Ysize);return bmp;}
 };
 
-class Image:public Bitmap
+class LL_Image:public LL_Bitmap
 {
     private:
         string image_path;

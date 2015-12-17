@@ -3,12 +3,12 @@
 
 #include <sstream>
 
-bool show_native_message(ALLEGRO_DISPLAY* display,string title,string header,string text,int flags)
+bool show_native_message(ALLEGRO_DISPLAY* display,string title,string header,string text,int flag)
 {
-    return (1==al_show_native_message_box(display,title.c_str(),header.c_str(),text.c_str(),nullptr,flags));
+    return (1==al_show_native_message_box(display,title.c_str(),header.c_str(),text.c_str(),nullptr,flag));
 }
 
-class FileChooser
+class LL_FileChooser
 {
     private:
         bool _no_exist=1;
@@ -20,7 +20,6 @@ class FileChooser
         int _mode=0;
         unsigned int _selected_files=0;
     public:
-        FileChooser(){}
         void set_display(ALLEGRO_DISPLAY* d){_display=d;}
         ALLEGRO_DISPLAY* get_display(){return _display;}
         void set_path(string path){_path=path;_no_exist=1;}
@@ -46,17 +45,16 @@ class FileChooser
         {
             return al_get_native_file_dialog_path(_chooser,pos);
         }
-        ~FileChooser(){if(_chooser)al_destroy_native_file_dialog(_chooser);}
+        ~LL_FileChooser(){if(_chooser)al_destroy_native_file_dialog(_chooser);}
 };
 
-class TextLog
+class LL_TextLog
 {
     private:
         string _title;
         int _mode=0;
         ALLEGRO_TEXTLOG* _tex=nullptr;
     public:
-        TextLog(){}
         void set_title(string title){_title=title;}
         string get_title(){return _title;}
         void set_mode(int mode){_mode=mode;}
@@ -64,8 +62,9 @@ class TextLog
         bool is_open(){return _tex;}
         bool open(){if(!_tex){_tex=al_open_native_text_log(_title.c_str(),_mode);return _tex;}return 0;}
         void write(string str){al_append_native_text_log(_tex,str.c_str());}
+        void endl(){al_append_native_text_log(_tex,"\n");}
         void close(){if(_tex){al_close_native_text_log(_tex);_tex=nullptr;}}
-        ~TextLog(){close();}
+        ~LL_TextLog(){close();}
 };
 
 #endif // LL_NATIVE_DIALOG_H_INCLUDED

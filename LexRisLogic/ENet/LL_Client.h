@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class Client
+class LL_Client
 {
     private:
         template<typename T>
@@ -41,10 +41,10 @@ class Client
         bool empty(){return _mess_.empty();}
         bool send_message_to_the_server(string to_send){if(_init and _connected){if(to_send.size()>0){ENetPacket* packet=enet_packet_create(to_send.c_str(),to_send.size()+1,ENET_PACKET_FLAG_RELIABLE);if(packet)return (!enet_peer_send(peer,0,packet));}}return 0;}
         bool stop_client(){if(_init){clear();enet_host_destroy(client);client=nullptr;_init=0;return 1;}return 0;}
-        ~Client(){stop_client();}
+        ~LL_Client(){stop_client();}
 };
 
-bool Client::_test()
+bool LL_Client::_test()
 {
     while(1)
     {
@@ -63,7 +63,7 @@ bool Client::_test()
     }
 }
 
-bool Client::connect_to_server()
+bool LL_Client::connect_to_server()
 {
     _reset();
     peer=enet_host_connect(client, &address, 2, 0);
@@ -72,7 +72,7 @@ bool Client::connect_to_server()
     return (_connected=_test());
 }
 
-bool Client::operator() ()
+bool LL_Client::operator() ()
 {
     if(enet_host_service(client,&event,_service)>0)
     {

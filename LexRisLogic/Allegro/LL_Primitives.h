@@ -1,7 +1,7 @@
 #ifndef LL_PRIMITIVES_H_INCLUDED
 #define LL_PRIMITIVES_H_INCLUDED
 
-class Point
+class LL_Point
 {
     private:
         pos_t x=0;
@@ -21,7 +21,7 @@ class Point
         void draw_in_another_target(){al_put_pixel(x,y,_Color);}
 };
 
-class Figure
+class LL_Figure
 {
     protected:
         bool _filled=0;
@@ -43,27 +43,27 @@ class Figure
         bool is_filled(){return _filled;}
 };
 
-class Circle:public Figure
+class LL_Circle:public LL_Figure
 {
     private:
         float _ratio=1;
     public:
-        Circle(){}
-        Circle(pos_t a,pos_t b,float r){set_pos(a,b);_ratio=r;}
+        LL_Circle(){}
+        LL_Circle(pos_t a,pos_t b,float r){set_pos(a,b);_ratio=r;}
         void set_ratio(float ot){_ratio=ot;}
         float get_ratio(){return _ratio;}
         void draw(){if(is_filled())al_draw_filled_ellipse(x,y,_ratio*scale_x,_ratio*scale_y,_Color);al_draw_ellipse(x,y,_ratio*scale_x,_ratio*scale_y,_Color,_size*primitives_scale);}
         void draw_in_another_target(){if(is_filled())al_draw_filled_circle(x,y,_ratio,_Color);al_draw_circle(x,y,_ratio,_Color,_size);}
 };
 
-class Ellipse:public Figure
+class LL_Ellipse:public LL_Figure
 {
     private:
         float _ratiox=1;
         float _ratioy=1;
     public:
-        Ellipse(){}
-        Ellipse(pos_t a,pos_t b,float rx,float ry){set_pos(a,b);_ratiox=rx;_ratioy=ry;}
+        LL_Ellipse(){}
+        LL_Ellipse(pos_t a,pos_t b,float rx,float ry){set_pos(a,b);_ratiox=rx;_ratioy=ry;}
         void set_ratiox(float ot){_ratiox=ot;}
         float get_ratiox(){return _ratiox;}
         void set_ratioy(float ot){_ratioy=ot;}
@@ -72,14 +72,14 @@ class Ellipse:public Figure
         void draw_in_another_target(){if(is_filled())al_draw_filled_ellipse(x,y,_ratiox,_ratioy,_Color);al_draw_ellipse(x,y,_ratiox,_ratioy,_Color,_size);}
 };
 
-class Rectangle:public Figure
+class LL_Rectangle:public LL_Figure
 {
     private:
         float _tamx=0;
         float _tamy=0;
     public:
-        Rectangle(){}
-        Rectangle(pos_t posx,pos_t posy,float tamx,float tamy){set_pos(posx,posy);_tamx=tamx;_tamy=tamy;}
+        LL_Rectangle(){}
+        LL_Rectangle(pos_t posx,pos_t posy,float tamx,float tamy){set_pos(posx,posy);_tamx=tamx;_tamy=tamy;}
         void set_sizex(float ot){_tamx=ot;}
         float get_sizex(){return _tamx;}
         void set_sizey(float ot){_tamy=ot;}
@@ -88,7 +88,7 @@ class Rectangle:public Figure
         void draw_in_another_target(){if(is_filled())al_draw_filled_rectangle(x,y,x+(_tamx),y+(_tamy),_Color);al_draw_rectangle(x,y,x+(_tamx),y+(_tamy),_Color,_size);}
 };
 
-class Function
+class LL_Function
 {
     private:
         pos_t _init_=0;
@@ -100,7 +100,7 @@ class Function
         ALLEGRO_COLOR FunctionColor=al_map_rgb(0,0,0);
         pos_t (*_fx)(pos_t)=nullptr;
     public:
-        Function(pos_t (*ofx)(pos_t)){_fx=ofx;}
+        LL_Function(pos_t (*ofx)(pos_t)){_fx=ofx;}
         void set_pos(pos_t xx,pos_t yy){camx=xx;camy=yy;}
         void set_posx(pos_t xx){camx=xx;}
         void set_posy(pos_t yy){camy=yy;}
@@ -121,7 +121,7 @@ class Function
         void draw_in_another_target();
 };
 
-void Function::draw()
+void LL_Function::draw()
 {
     pos_t i=_init_;
     if(i<=_final_)
@@ -140,7 +140,7 @@ void Function::draw()
     }
 }
 
-void Function::draw_in_another_target()
+void LL_Function::draw_in_another_target()
 {
     pos_t i=_init_;
     if(i<=_final_)

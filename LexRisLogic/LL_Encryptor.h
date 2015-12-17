@@ -8,7 +8,7 @@ using namespace std;
 
 #define DEFAULT_DICTIONARY " 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
-class Encryptor
+class LL_Encryptor
 {
     private:
         typedef pair<unsigned,string> _last_key;
@@ -27,10 +27,10 @@ class Encryptor
         string get_dictionary(){return _dictionary;}
         string encrypt(string word);
         string decrypt(string encrypted_word);
-        ~Encryptor(){clear_keys();}
+        ~LL_Encryptor(){clear_keys();}
 };
 
-bool Encryptor::_validate_word(string word)
+bool LL_Encryptor::_validate_word(string word)
 {
     for(unsigned int i=0;i<word.size();++i)
     {
@@ -40,7 +40,7 @@ bool Encryptor::_validate_word(string word)
     return true;
 }
 
-void Encryptor::_add_(string nk)
+void LL_Encryptor::_add_(string nk)
 {
     unsigned int i=0,j=0;
     while(i<_pass_.size())
@@ -65,7 +65,7 @@ void Encryptor::_add_(string nk)
     _key.push_back(_last_key(j,nk));
 }
 
-string Encryptor::_encrypt(string& key,string word,unsigned int& j)
+string LL_Encryptor::_encrypt(string& key,string word,unsigned int& j)
 {
     for(unsigned int i=0;i<word.size();++i)
     {
@@ -79,7 +79,7 @@ string Encryptor::_encrypt(string& key,string word,unsigned int& j)
     return word;
 }
 
-string Encryptor::_decrypt(string& key,string word)
+string LL_Encryptor::_decrypt(string& key,string word)
 {
     for(unsigned int i=0,j=0;i<word.size();++i)
     {
@@ -93,7 +93,7 @@ string Encryptor::_decrypt(string& key,string word)
     return word;
 }
 
-string Encryptor::encrypt(string word)
+string LL_Encryptor::encrypt(string word)
 {
     unsigned int tempr=0;
     if(_validate_word(word))
@@ -104,7 +104,7 @@ string Encryptor::encrypt(string word)
     return string();
 }
 
-string Encryptor::decrypt(string encrypted_word)
+string LL_Encryptor::decrypt(string encrypted_word)
 {
     if(_validate_word(encrypted_word))
     {

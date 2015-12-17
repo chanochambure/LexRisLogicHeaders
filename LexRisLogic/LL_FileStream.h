@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class FileStream
+class LL_FileStream
 {
     private:
         vector<string> _data;
@@ -51,7 +51,7 @@ class FileStream
         bool remove_line(unsigned int line){if(line<_data.size()){_data.erase(_data.begin()+line);return 1;}return 0;}
         unsigned int size(){return _data.size();}
         string& operator [] (unsigned int line){return _data[line];}
-        ~FileStream(){clear_file();}
+        ~LL_FileStream(){clear_file();}
 };
 
 #endif // LL_FILESTREAM_H_INCLUDED

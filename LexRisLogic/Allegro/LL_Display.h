@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Display
+class LL_Display
 {
     private:
         ALLEGRO_DISPLAY* display=nullptr;
@@ -23,8 +23,9 @@ class Display
         void set_flag(int F){FT=F;_create();}
         void refresh(){al_flip_display();}
         void clear(){al_clear_to_color(al_map_rgb(255,255,255));}
-        Display(display_size_t SizeX,display_size_t SizeY){X=SizeX;Y=SizeY;_create();}
-        ~Display(){_destroy();}
+        void clear_to_color(ALLEGRO_COLOR color){al_clear_to_color(color);}
+        LL_Display(display_size_t SizeX,display_size_t SizeY){X=SizeX;Y=SizeY;_create();}
+        ~LL_Display(){_destroy();}
         operator ALLEGRO_DISPLAY*& (){return display;}
         operator ALLEGRO_BITMAP* (){return al_get_backbuffer(display);}
 };
