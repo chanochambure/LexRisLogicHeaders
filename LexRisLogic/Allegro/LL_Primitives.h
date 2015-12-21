@@ -8,8 +8,8 @@ class LL_Point
         pos_t y=0;
         ALLEGRO_COLOR _Color=al_map_rgb(0,0,0);
     public:
-        Point(){}
-        Point(pos_t a,pos_t b){set_pos(a,b);}
+        LL_Point(){}
+        LL_Point(pos_t a,pos_t b){set_pos(a,b);}
         void set_pos(pos_t xx,pos_t yy){x=xx;y=yy;}
         void set_posx(pos_t xx){x=xx;}
         void set_posy(pos_t yy){y=yy;}

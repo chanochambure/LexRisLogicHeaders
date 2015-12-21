@@ -25,8 +25,8 @@ class LL_KeyControl
         int find_key(int keycode){for(unsigned int i=0;i<key.size();++i){if(key[i].keycode==keycode)return i;}return -1;}
         bool add_key(string Name){if(find_key(Name)!=-1)return 0;int lol=get_keycode();if(find_key(lol)!=-1)return 0;key.push_back(LL_Key(Name,lol));return 1;}
         bool add_key(string Name,int keycode){if((find_key(Name)!=-1) or (find_key(keycode)!=-1))return 0;key.push_back(LL_Key(Name,keycode));return 1;}
-        bool mod_key(int index,string new_Name){if((0<=index) and (index<key.size()) and (!find_key(new_Name))){key[index].name=new_Name;return 1;}return 0;}
-        bool mod_key(int index,int new_keycode){if((0<=index) and (index<key.size()) and (!find_key(new_keycode))){key[index].keycode=new_keycode;return 1;}return 0;}
+        bool mod_key(unsigned int index,string new_Name){if(index<key.size()) and (!find_key(new_Name))){key[index].name=new_Name;return 1;}return 0;}
+        bool mod_key(unsigned int index,int new_keycode){if(index<key.size()) and (!find_key(new_keycode))){key[index].keycode=new_keycode;return 1;}return 0;}
         bool remove_key(string Name){int lol=find_key(Name);if(lol==-1)return 0;key.erase((key.begin())+lol);return 1;}
         bool remove_key(int keycode){int lol=find_key(keycode);if(lol==-1)return 0;key.erase((key.begin())+lol);return 1;}
         int get_keycode();
