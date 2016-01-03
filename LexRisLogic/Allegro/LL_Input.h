@@ -25,8 +25,8 @@ class LL_KeyControl
         int find_key(int keycode){for(unsigned int i=0;i<key.size();++i){if(key[i].keycode==keycode)return i;}return -1;}
         bool add_key(string Name){if(find_key(Name)!=-1)return 0;int lol=get_keycode();if(find_key(lol)!=-1)return 0;key.push_back(LL_Key(Name,lol));return 1;}
         bool add_key(string Name,int keycode){if((find_key(Name)!=-1) or (find_key(keycode)!=-1))return 0;key.push_back(LL_Key(Name,keycode));return 1;}
-        bool mod_key(unsigned int index,string new_Name){if((index<key.size()) and (!find_key(new_Name))){key[index].name=new_Name;return 1;}return 0;}
-        bool mod_key(unsigned int index,int new_keycode){if((index<key.size()) and (!find_key(new_keycode))){key[index].keycode=new_keycode;return 1;}return 0;}
+        bool mod_key(unsigned int index,string new_Name){if((index<key.size()) and (find_key(new_Name)==-1)){key[index].name=new_Name;return 1;}return 0;}
+        bool mod_key(unsigned int index,int new_keycode){if((index<key.size()) and (find_key(new_keycode)==-1)){key[index].keycode=new_keycode;return 1;}return 0;}
         bool remove_key(string Name){int lol=find_key(Name);if(lol==-1)return 0;key.erase((key.begin())+lol);return 1;}
         bool remove_key(int keycode){int lol=find_key(keycode);if(lol==-1)return 0;key.erase((key.begin())+lol);return 1;}
         int get_keycode();
@@ -42,6 +42,8 @@ int LL_KeyControl::get_keycode()
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(EQ,&event);
+        if(event.type==ALLEGRO_EVENT_DISPLAY_CLOSE)
+            return -1;
         if(event.type==ALLEGRO_EVENT_KEY_DOWN)
             return event.keyboard.keycode;
     }
@@ -72,7 +74,7 @@ class LL_Input
         bool _re_D=0;
         bool _re_TL=0;
         bool timer_event=0;
-        bool enter_block=0;
+        bool special_block=0;
     public:
         LL_Input(float fps);
         bool unregister_display(){if(_re_D){al_unregister_event_source(EQ,al_get_display_event_source(*DS));_re_D=0;return 1;}return 0;}
@@ -91,7 +93,7 @@ class LL_Input
         void keyboard_off(){if(k_on)al_unregister_event_source(EQ,al_get_keyboard_event_source());k_on=0;}
         void mouse_on(){if(!m_on)al_register_event_source(EQ,al_get_mouse_event_source());m_on=1;}
         void mouse_off(){if(m_on){al_unregister_event_source(EQ,al_get_mouse_event_source());for(int i=0;i<3;++i)_c_[i]=0;}m_on=0;}
-        bool input_on(string* X,unsigned int c,bool enter_is_blocked=0){keyboard_on();if(c>0 and !input){enter_block=enter_is_blocked;_word=X;input=1;_c_limits=c;if(_word->size()>_c_limits)(*_word)=_word->substr(0,_c_limits);return 1;}return 0;}
+        bool input_on(string* X,unsigned int c,bool special_is_blocked=0){keyboard_on();if(c>0 and !input){special_block=special_is_blocked;_word=X;input=1;_c_limits=c;if(_word->size()>_c_limits)(*_word)=_word->substr(0,_c_limits);return 1;}return 0;}
         bool input_off(string *X){if(input and X==_word){input=0;return 1;}return 0;}
         bool set_mouse_xy(pos_t x,pos_t y){if(al_set_mouse_xy(*DS,x,y)){_x_m=x;_y_m=y;return 1;}return 0;}
         bool set_mouse_z(int z){if(al_set_mouse_z(z)){_z_m=z;return 1;}return 0;}
@@ -149,11 +151,14 @@ void LL_Input::operator()()
             {
                 if(event.keyboard.keycode==67)
                 {
-                    if(!enter_block)
+                    if(!special_block)
                         (*_word)=(*_word)+'\n';
                 }
                 else if(event.keyboard.keycode==64)
-                    (*_word)=(*_word)+'\t';
+                {
+                    if(!special_block)
+                        (*_word)=(*_word)+'\t';
+                }
                 else if(event.keyboard.unichar>=32 and event.keyboard.keycode!=77)
                     (*_word)=(*_word)+char(event.keyboard.unichar);
             }

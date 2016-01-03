@@ -44,7 +44,7 @@ class LL_FileStream
         void set_path(string new_path){_file_path=new_path;}
         string get_path(){return _file_path;}
         bool load(){if(!_loaded)return _read_file();return 0;}
-        void reload(){_data.clear();_read_file();}
+        bool reload(){_data.clear();return _read_file();}
         bool save(){return _save_file();}
         void clear_file(){_data.clear();}
         bool insert_line(unsigned int pos,unsigned int n_lines){if(pos<=_data.size()){vector<string>::iterator iter=_data.begin()+pos;for(unsigned int i=0;i<n_lines;++i)iter=_data.insert(iter,string());return 1;}return 0;}
