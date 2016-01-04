@@ -41,9 +41,9 @@ class LL_FileStream
             return 0;
         }
     public:
-        void set_path(string new_path){_file_path=new_path;}
+        void set_path(string new_path){_data.clear();_file_path=new_path;_loaded=0;}
         string get_path(){return _file_path;}
-        bool load(){if(!_loaded)return _read_file();return 0;}
+        bool load(){return ((!_loaded) and _read_file());}
         bool reload(){_data.clear();return _read_file();}
         bool save(){return _save_file();}
         void clear_file(){_data.clear();}
