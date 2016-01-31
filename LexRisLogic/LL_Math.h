@@ -1,11 +1,8 @@
 #ifndef LL_MATH_H_INCLUDED
 #define LL_MATH_H_INCLUDED
 
-#include <vector>
 #include <math.h>
 #include <random>
-
-using namespace std;
 
 //Operations
 
@@ -37,39 +34,6 @@ bool intersection_of_segments(float a1,float b1,float a2,float b2)
     int a=max(a1,a2);
     int b=min(b1,b2);
     return (a<=b);
-}
-
-template<int N>
-class LL_Dot
-{
-    private:
-        vector<float> dots;
-    public:
-        LL_Dot(){for(int i=0;i<N;++i)dots.push_back(0);}
-        int get_dimension(){return N;}
-        float& operator [](unsigned int i){return dots[i];}
-        LL_Dot<N>& operator = (LL_Dot<N> ot){for(int i=0;i<N;++i)(*this)[i]=ot[i];return (*this);}
-        bool operator == (LL_Dot<N> ot){for(int i=0;i<N;++i){if((*this)[i]!=ot[i])return 0;}return 1;}
-        ~LL_Dot(){dots.clear();}
-};
-
-template<int N>
-ostream& operator << (ostream& os,LL_Dot<N> dot)
-{
-    os<<"[";
-    for(unsigned int i=0;i<N-1;++i)
-        os<<dot[i]<<" ";
-    os<<dot[N-1]<<"]";
-    return os;
-}
-
-template<int N>
-double euclidean_distance(LL_Dot<N> one,LL_Dot<N> two)
-{
-    double acum=0;;
-    for(int i=0;i<N;++i)
-        acum+=pow(one[i]-two[i],2);
-    return sqrt(acum);
 }
 
 #endif // LL_MATH_H_INCLUDED

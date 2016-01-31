@@ -36,6 +36,7 @@ void uninstall_audio(){al_uninstall_audio();}
 void uninstall_primitives(){al_shutdown_primitives_addon();}
 
 //Library
+#include "LL_Path.h"
 #include "LL_Display.h"
 #include "LL_Native_Dialog.h"
 #include "LL_Input.h"
@@ -44,7 +45,11 @@ void uninstall_primitives(){al_shutdown_primitives_addon();}
 #include "LL_Primitives.h"
 #include "LL_Bitmap.h"
 #include "LL_Text.h"
+#include "LL_Mixer.h"
 #include "LL_Audio.h"
 #include "LL_Video.h"
+
+//Special Class
+#include "Special/LL_Interface.h"
 
 #endif // LL_ALLEGRO_H_INCLUDED
