@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <stack>
 #include <vector>
+#include <list>
 #include "../Mathematical/LL_Point.h"
 
 using namespace std;
@@ -33,6 +34,7 @@ template<typename T,int D,unsigned int S>
 class LL_RTree
 {
     private:
+        unsigned int _min_size=(S+1)/2;
         typedef pair<double,unsigned int> dis_pos_t;
         struct data_t
         {
@@ -61,6 +63,8 @@ class LL_RTree
             }
             void set_space()
             {
+                if(size==0)
+                    return;
                 if(type)
                 {
                     mbb=sons[0]->mbb;
@@ -285,13 +289,141 @@ class LL_RTree
         }
         void _merge_node(node* _node)
         {
+            bool node_type=_node->type;
             unsigned int son_underflow=_node->pos_in_parent;
-            if(_node->type)
+            _node=_node->parent;
+            vector<dis_pos_t> data_order;
+            vector<dis_pos_t> data_distance;
+            for(unsigned int i=0;i<_node->size;++i)
             {
+                if(i!=son_underflow)
+                {
+                    double dis=mbb_distance(_node->sons[son_underflow]->mbb,_node->sons[i]->mbb);
+                    if(_node->sons[i]->size>_min_size)
+                        data_order.push_back(dis_pos_t(dis,i));
+                    data_distance.push_back(dis_pos_t(dis,i));
+                }
+            }
+            if(data_order.size())
+            {
+                data_distance.clear();
+                sort(data_order.begin(),data_order.end());
+                node* donater=_node->sons[data_order[0].second];
+                data_order.clear();
+                if(node_type)
+                {
+                    for(unsigned int i=0;i<donater->size;++i)
+                        data_order.push_back(dis_pos_t(mbb_distance(donater->sons[i]->mbb,_node->sons[son_underflow]->mbb),i));
+                    sort(data_order.begin(),data_order.end());
+                    unsigned int change=data_order[0].second;
+                    data_order.clear();
+                    donater->sons[change]->pos_in_parent=_node->sons[son_underflow]->size;
+                    donater->sons[change]->parent=_node->sons[son_underflow];
+                    _node->sons[son_underflow]->sons[_node->sons[son_underflow]->size++]=donater->sons[change];
+                    donater->sons[change]=donater->sons[--(donater->size)];
+                    donater->sons[change]->pos_in_parent=change;
+                    donater->sons[donater->size]=nullptr;
+                }
+                else
+                {
+                    for(unsigned int i=0;i<donater->size;++i)
+                        data_order.push_back(dis_pos_t(mbb_distance(donater->data[i]->mbb,_node->sons[son_underflow]->mbb),i));
+                    sort(data_order.begin(),data_order.end());
+                    unsigned int change=data_order[0].second;
+                    data_order.clear();
+                    _node->sons[son_underflow]->data[_node->sons[son_underflow]->size++]=donater->data[change];
+                    donater->data[change]=donater->data[--(donater->size)];
+                    donater->data[donater->size]=nullptr;
+                }
+                donater->set_space();
+                _node->sons[son_underflow]->set_space();
+                _node->set_space();
             }
             else
             {
-                _node=_node->parent;
+                data_order.clear();
+                sort(data_distance.begin(),data_distance.end());
+                node* owner=_node->sons[data_distance[0].second];
+                node* removed=_node->sons[son_underflow];
+                data_distance.clear();
+                _node->sons[son_underflow]=_node->sons[--(_node->size)];
+                _node->sons[son_underflow]->pos_in_parent=removed->pos_in_parent;
+                _node->sons[_node->size]=nullptr;
+                if(node_type)
+                {
+                    for(unsigned int k=0;k<removed->size;++k)
+                    {
+                        removed->sons[k]->pos_in_parent=owner->size;
+                        removed->sons[k]->parent=owner;
+                        owner->sons[owner->size++]=removed->sons[k];
+                    }
+                }
+                else
+                {
+                    for(unsigned int k=0;k<removed->size;++k)
+                        owner->data[owner->size++]=removed->data[k];
+                }
+                removed->all_data_to_null();
+                delete(removed);
+                owner->set_space();
+                _node->set_space();
+                if(_node->parent)
+                {
+                    if(_node->size<_min_size)
+                        _merge_node(_node);
+                    else
+                    {
+                        while(_node)
+                        {
+                            _node->set_space();
+                            _node=(_node->parent);
+                        }
+                    }
+                }
+                else
+                {
+                    if(_node->size==1)
+                    {
+                        node* new_root=_node->sons[0];
+                        _node->all_data_to_null();
+                        _node->type=new_root->type;
+                        if(_node->type)
+                        {
+                            for(unsigned int k=0;k<new_root->size;++k)
+                            {
+                                new_root->sons[k]->parent=_node;
+                                new_root->pos_in_parent=_node->size;
+                                _node->sons[_node->size++]=new_root->sons[k];
+                            }
+                        }
+                        else
+                        {
+                            for(unsigned int k=0;k<new_root->size;++k)
+                                _node->data[_node->size++]=new_root->data[k];
+                        }
+                        new_root->all_data_to_null();
+                        delete(new_root);
+                    }
+                }
+            }
+        }
+        void _range_query(list<T>* data,node* _node,LL_MBB<D> mbb)
+        {
+            if(_node->type)
+            {
+                for(unsigned int i=0;i<_node->size;++i)
+                {
+                    if(mbb_distance(mbb,_node->sons[i]->mbb)==0)
+                        _range_query(data,_node->sons[i],mbb);
+                }
+            }
+            else
+            {
+                for(unsigned int i=0;i<_node->size;++i)
+                {
+                    if(mbb_distance(mbb,_node->data[i]->mbb)==0)
+                        data->push_back(_node->data[i]->data);
+                }
             }
         }
     public:
@@ -391,14 +523,14 @@ class LL_RTree
                 delete((*leaf)->data[i]);
                 (*leaf)->data[i]=(*leaf)->data[--(*leaf)->size];
                 (*leaf)->data[(*leaf)->size]=nullptr;
+                node* _node=(*leaf);
+                while(_node)
+                {
+                    _node->set_space();
+                    _node=(_node->parent);
+                }
                 if((*leaf)!=root)
                 {
-                    node* _node=(*leaf);
-                    while(_node)
-                    {
-                        _node->set_space();
-                        _node=(_node->parent);
-                    }
                     if((*leaf)->size==((S-1)/2))
                         _merge_node(*leaf);
                 }
@@ -407,50 +539,11 @@ class LL_RTree
             }
             return 0;
         }
-        void allegro_rnode(node* node)
+        list<T> range_query(LL_MBB<D> mbb)
         {
-            if(node)
-            {
-                al_draw_rectangle(node->mbb.first_point[0],node->mbb.first_point[1],node->mbb.second_point[0],node->mbb.second_point[1],al_map_rgb(0,0,0),1);
-                if(node->type)
-                {
-                    for(unsigned int i=0;i<node->size;++i)
-                        allegro_rnode(node->sons[i]);
-                }
-                else
-                {
-                    for(unsigned int i=0;i<node->size;++i)
-                        al_put_pixel(node->data[i]->mbb.first_point[0],node->data[i]->mbb.first_point[1],al_map_rgb(0,0,0));
-                }
-            }
-        }
-        void allegro()
-        {
-            allegro_rnode(root);
-        }
-        void print_rnode(node* node)
-        {
-            if(node)
-            {
-                if(node->type)
-                {
-                    cout<<" ( ("<<node->pos_in_parent<<")"<<endl<<" | ";
-                    for(unsigned int i=0;i<node->size;++i)
-                        print_rnode(node->sons[i]);
-                    cout<<(") ")<<endl;
-                }
-                else
-                {
-                    cout<<" | ("<<node->pos_in_parent<<") | ";
-                    for(unsigned int i=0;i<node->size;++i)
-                        cout<<(node->data[i]->data);
-                    cout<<" | ";
-                }
-            }
-        }
-        void print()
-        {
-            print_rnode(root);
+            list<T> rng_qry;
+            _range_query(&rng_qry,root,mbb);
+            return rng_qry;
         }
         ~LL_RTree(){delete(root);}
 };
