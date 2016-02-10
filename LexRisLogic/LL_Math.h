@@ -36,4 +36,9 @@ bool intersection_of_segments(float a1,float b1,float a2,float b2)
     return (a<=b);
 }
 
+int max_integer(float number)
+{
+    return (int(number)-(number<0));
+}
+
 #endif // LL_MATH_H_INCLUDED

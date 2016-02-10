@@ -1,5 +1,5 @@
-#ifndef LL_FILESTREAM_H_INCLUDED
-#define LL_FILESTREAM_H_INCLUDED
+#ifndef LL_FILE_STREAM_H_INCLUDED
+#define LL_FILE_STREAM_H_INCLUDED
 
 #include <string>
 #include <vector>
@@ -54,4 +54,4 @@ class LL_FileStream
         ~LL_FileStream(){clear_file();}
 };
 
-#endif // LL_FILESTREAM_H_INCLUDED
+#endif // LL_FILE_STREAM_H_INCLUDED

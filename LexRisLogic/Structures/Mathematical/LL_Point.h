@@ -38,4 +38,7 @@ double euclidean_distance(LL_Point<D> one,LL_Point<D> two)
     return sqrt(acum);
 }
 
+LL_Point<2> LL_2D_Point(float x,float y){LL_Point<2> point;point[0]=x;point[1]=y;return point;}
+LL_Point<3> LL_3D_Point(float x,float y,float z){LL_Point<3> point;point[0]=x;point[1]=y;point[2]=z;return point;}
+
 #endif // LL_POINT_H_INCLUDED

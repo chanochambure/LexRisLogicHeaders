@@ -1,15 +1,12 @@
-#ifndef LL_SPARSEMATRIX_H_INCLUDED
-#define LL_SPARSEMATRIX_H_INCLUDED
+#ifndef LL_SPARSE_MATRIX_H_INCLUDED
+#define LL_SPARSE_MATRIX_H_INCLUDED
 
-template<typename T>
+template<typename T,unsigned int size_x,unsigned int size_y>
 class LL_SparseMatrix
 {
     private:
-        typedef LL_SparseMatrix<T> self;
-        typedef unsigned int smp_t;
-        smp_t size_x;
-        smp_t size_y;
         T null_value;
+        typedef unsigned int smp_t;
         struct node
         {
             smp_t pos_x;
@@ -47,7 +44,7 @@ class LL_SparseMatrix
                     delete(the_node);
                 }
             public:
-                controller(node** a,node** b,smp_t px,smp_t py,T null){X=a;Y=b;pos_x=px;pos_y=py;null_value=null;}
+                controller(node** a,node** b,smp_t px,smp_t py,T t_null){X=a;Y=b;pos_x=px;pos_y=py;null_value=t_null;}
                 T get_value()
                 {
                     if(((*X) and (*Y)) and ((*X)==(*Y)))
@@ -72,11 +69,9 @@ class LL_SparseMatrix
         node** vector_x=nullptr;
         node** vector_y=nullptr;
     public:
-        LL_SparseMatrix(smp_t sizex,smp_t sizey,T null)
+        LL_SparseMatrix(T t_null)
         {
-            size_x=sizex;
-            size_y=sizey;
-            null_value=null;
+            null_value=t_null;
             vector_x=new node*[size_x];
             for(unsigned int i=0;i<size_x;i++)
                 vector_x[i]=nullptr;
@@ -116,4 +111,4 @@ class LL_SparseMatrix
         }
 };
 
-#endif // LL_SPARSEMATRIX_H_INCLUDED
+#endif // LL_SPARSE_MATRIX_H_INCLUDED

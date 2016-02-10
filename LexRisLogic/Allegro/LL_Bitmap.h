@@ -23,7 +23,6 @@ class LL_Bitmap
         float bmp_scalex=1;
         float bmp_scaley=1;
     public:
-        LL_Bitmap(){}
         void set_pos(pos_t xx,pos_t yy){x=xx;y=yy;}
         void set_posx(pos_t xx){x=xx;}
         void set_posy(pos_t yy){y=yy;}
