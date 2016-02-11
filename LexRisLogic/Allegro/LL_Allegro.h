@@ -50,6 +50,7 @@ void uninstall_primitives(){al_shutdown_primitives_addon();}
 #include "LL_Video.h"
 
 //Special Class
+#include "Special/LL_Lighting.h"
 #include "Special/LL_Sprite.h"
 #include "Special/LL_Interface.h"
 
