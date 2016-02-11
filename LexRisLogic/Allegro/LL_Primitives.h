@@ -21,26 +21,32 @@ class LL_Pixel
         void draw_in_another_target(){al_put_pixel(x,y,_Color);}
 };
 
-class LL_Figure
+class LL_Primitive
 {
     protected:
         bool _filled=0;
-        pos_t x=0;
-        pos_t y=0;
         float _size=1;
         ALLEGRO_COLOR _Color=al_map_rgb(0,0,0);
     public:
-        void set_pos(pos_t xx,pos_t yy){x=xx;y=yy;}
-        void set_posx(pos_t xx){x=xx;}
-        void set_posy(pos_t yy){y=yy;}
-        pos_t get_posx(){return x;}
-        pos_t get_posy(){return y;}
         void set_thickness(float ot){_size=ot;}
         float get_thickness(){return _size;}
         void set_color(ALLEGRO_COLOR Other){_Color=Other;}
         ALLEGRO_COLOR get_color(){return _Color;}
         void set_is_filled(bool op){_filled=op;}
         bool is_filled(){return _filled;}
+};
+
+class LL_Figure:public LL_Primitive
+{
+    protected:
+        pos_t x=0;
+        pos_t y=0;
+    public:
+        void set_pos(pos_t xx,pos_t yy){x=xx;y=yy;}
+        void set_posx(pos_t xx){x=xx;}
+        void set_posy(pos_t yy){y=yy;}
+        pos_t get_posx(){return x;}
+        pos_t get_posy(){return y;}
 };
 
 class LL_Circle:public LL_Figure
@@ -88,6 +94,49 @@ class LL_Rectangle:public LL_Figure
         void draw_in_another_target(){if(is_filled())al_draw_filled_rectangle(x,y,x+(_tamx),y+(_tamy),_Color);al_draw_rectangle(x,y,x+(_tamx),y+(_tamy),_Color,_size);}
 };
 
+class LL_Triangle:public LL_Primitive
+{
+    private:
+        pos_t camx=0;
+        pos_t camy=0;
+        pos_t x1=0;
+        pos_t x2=0;
+        pos_t x3=0;
+        pos_t y1=0;
+        pos_t y2=0;
+        pos_t y3=0;
+    public:
+        LL_Triangle(){}
+        LL_Triangle(float posx1,float posy1,float posx2,float posy2,float posx3,float posy3){x1=posx1;y1=posy1;x2=posx2;y2=posy2;x3=posx3;y3=posy3;}
+        void set_pos(pos_t xx,pos_t yy){camx=xx;camy=yy;}
+        void set_posx(pos_t x){camx=x;}
+        void set_posy(pos_t y){camy=y;}
+        pos_t get_posx(){return camx;}
+        pos_t get_posy(){return camy;}
+        void set_points(float posx1,float posy1,float posx2,float posy2,float posx3,float posy3){x1=posx1;y1=posy1;x2=posx2;y2=posy2;x3=posx3;y3=posy3;}
+        void set_point_1(pos_t xx,pos_t yy){x1=xx;y1=yy;}
+        pos_t get_posx_point1(){return x1;}
+        pos_t get_posy_point1(){return y1;}
+        void set_point_2(pos_t xx,pos_t yy){x2=xx;y2=yy;}
+        pos_t get_posx_point2(){return x2;}
+        pos_t get_posy_point2(){return y2;}
+        void set_point_3(pos_t xx,pos_t yy){x3=xx;y3=yy;}
+        pos_t get_posx_point3(){return x3;}
+        pos_t get_posy_point3(){return y3;}
+        void draw()
+        {
+            if(is_filled())
+                al_draw_filled_triangle(x1*scale_x+camx,y1*scale_y+camy,x2*scale_x+camx,y2*scale_y+camy,x3*scale_x+camx,y3*scale_y+camy,_Color);
+            al_draw_triangle(x1*scale_x+camx,y1*scale_y+camy,x2*scale_x+camx,y2*scale_y+camy,x3*scale_x+camx,y3*scale_y+camy,_Color,_size*primitives_scale);
+        }
+        void draw_in_another_target()
+        {
+            if(is_filled())
+                al_draw_filled_triangle(x1+camx,y1+camy,x2+camx,y2+camy,x3+camx,y3+camy,_Color);
+            al_draw_triangle(x1+camx,y1+camy,x2+camx,y2+camy,x3+camx,y3+camy,_Color,_size);
+        }
+};
+
 class LL_Function
 {
     private:
@@ -104,8 +153,8 @@ class LL_Function
         void set_pos(pos_t xx,pos_t yy){camx=xx;camy=yy;}
         void set_posx(pos_t xx){camx=xx;}
         void set_posy(pos_t yy){camy=yy;}
-        pos_t get_posx(){return 0;}
-        pos_t get_posy(){return 0;}
+        pos_t get_posx(){return camx;}
+        pos_t get_posy(){return camy;}
         void set_thickness(float ot){_size=ot;}
         float get_thickness(){return _size;}
         void set_color(ALLEGRO_COLOR Other){FunctionColor=Other;}
