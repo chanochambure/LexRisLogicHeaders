@@ -10,16 +10,13 @@ bool save_bitmap(string name,ALLEGRO_BITMAP* bmp)
     return al_save_bitmap(name.c_str(),bmp);
 }
 
-class LL_Bitmap
+class LL_Bitmap_Base
 {
     protected:
-        ALLEGRO_BITMAP* bmp=nullptr;
         int flag=0;
         float angle=0;
         pos_t x=0;
         pos_t y=0;
-        float Xsize=0;
-        float Ysize=0;
         float bmp_scalex=1;
         float bmp_scaley=1;
     public:
@@ -28,8 +25,6 @@ class LL_Bitmap
         void set_posy(pos_t yy){y=yy;}
 		pos_t get_posx(){return x;}
 		pos_t get_posy(){return y;}
-		float get_sizex(){return Xsize;}
-		float get_sizey(){return Ysize;}
         void set_angle(float an){angle=an;}
         float get_angle(){return angle;}
         void set_flag(int f){flag=f;}
@@ -37,6 +32,17 @@ class LL_Bitmap
         void set_scale_y(float sy){bmp_scaley=sy;}
         float get_scale_x(){return bmp_scalex;}
         float get_scale_y(){return bmp_scaley;}
+};
+
+class LL_Bitmap:public LL_Bitmap_Base
+{
+    protected:
+        ALLEGRO_BITMAP* bmp=nullptr;
+        float Xsize=0;
+        float Ysize=0;
+    public:
+		float get_sizex(){return Xsize;}
+		float get_sizey(){return Ysize;}
         void set_target(){if(bmp)al_set_target_bitmap(bmp);}
         bool create(int s_X,int s_Y){destroy();bmp=al_create_bitmap(s_X,s_Y);if(bmp){Xsize=s_X;Ysize=s_Y;return 1;}return 0;}
         bool destroy(){if(bmp){al_destroy_bitmap(bmp);bmp=nullptr;return 1;}return 0;}
