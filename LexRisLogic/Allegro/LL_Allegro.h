@@ -41,7 +41,6 @@ void uninstall_primitives(){al_shutdown_primitives_addon();}
 #include "LL_Native_Dialog.h"
 #include "LL_Input.h"
 #include "LL_Color.h"
-#include "LL_Camera.h"
 #include "LL_Primitives.h"
 #include "LL_Bitmap.h"
 #include "LL_Text.h"

@@ -1,10 +1,12 @@
 #ifndef LL_SPARSE_MATRIX_H_INCLUDED
 #define LL_SPARSE_MATRIX_H_INCLUDED
 
-template<typename T,unsigned int size_x,unsigned int size_y>
+template<typename T>
 class LL_SparseMatrix
 {
     private:
+        unsigned int size_x;
+        unsigned int size_y;
         T null_value;
         typedef unsigned int smp_t;
         struct node
@@ -69,8 +71,10 @@ class LL_SparseMatrix
         node** vector_x=nullptr;
         node** vector_y=nullptr;
     public:
-        LL_SparseMatrix(T t_null)
+        LL_SparseMatrix(smp_t size_in_x,smp_t size_in_y,T t_null)
         {
+            size_x=size_in_x;
+            size_y=size_in_y;
             null_value=t_null;
             vector_x=new node*[size_x];
             for(unsigned int i=0;i<size_x;i++)
