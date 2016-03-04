@@ -27,14 +27,16 @@ void set_new_seed(){srand(rdtsc());}
 
 int random(int mini, int maxi){return mod(int(rand()),(maxi-mini))+mini;}
 
-//Intersection
+//Collision
 
-bool intersection_of_segments(float a1,float b1,float a2,float b2)
+bool interval_intersection(float a1,float b1,float a2,float b2)
 {
     int a=max(a1,a2);
     int b=min(b1,b2);
     return (a<=b);
 }
+
+//Max Integer
 
 int max_integer(float number)
 {

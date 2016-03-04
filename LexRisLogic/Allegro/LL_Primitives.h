@@ -21,6 +21,40 @@ class LL_Pixel
         void draw_in_another_target(){al_put_pixel(x,y,_Color);}
 };
 
+class LL_Line
+{
+    private:
+        pos_t camx=0;
+        pos_t camy=0;
+        pos_t x1=0;
+        pos_t y1=0;
+        pos_t x2=0;
+        pos_t y2=0;
+        ALLEGRO_COLOR _Color=al_map_rgb(0,0,0);
+        float _size=1;
+    public:
+        LL_Line(){}
+        LL_Line(pos_t posx1,pos_t posy1,pos_t posx2,pos_t posy2){x1=posx1;y1=posy1;x2=posx2;y2=posy2;}
+        void set_pos(pos_t xx,pos_t yy){camx=xx;camy=yy;}
+        void set_posx(pos_t x){camx=x;}
+        void set_posy(pos_t y){camy=y;}
+        pos_t get_posx(){return camx;}
+        pos_t get_posy(){return camy;}
+        void set_points(float posx1,float posy1,float posx2,float posy2){x1=posx1;y1=posy1;x2=posx2;y2=posy2;}
+        void set_point_1(pos_t xx,pos_t yy){x1=xx;y1=yy;}
+        pos_t get_posx_point1(){return x1;}
+        pos_t get_posy_point1(){return y1;}
+        void set_point_2(pos_t xx,pos_t yy){x2=xx;y2=yy;}
+        pos_t get_posx_point2(){return x2;}
+        pos_t get_posy_point2(){return y2;}
+        void set_color(ALLEGRO_COLOR Other){_Color=Other;}
+        ALLEGRO_COLOR get_color(){return _Color;}
+        void set_thickness(float ot){_size=ot;}
+        float get_thickness(){return _size;}
+        void draw(){al_draw_line((x1*scale_x)+camx,(y1*scale_y)+camy,(x2*scale_x)+camx,(y2*scale_y)+camy,_Color,_size*primitives_scale);}
+        void draw_in_another_target(){al_draw_line(x1+camx,y1+camy,x2+camx,y2+camy,_Color,_size);}
+};
+
 class LL_Primitive
 {
     protected:

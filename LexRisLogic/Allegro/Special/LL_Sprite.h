@@ -85,8 +85,8 @@ class LL_Sprite:public LL_Bitmap_Base
             special_X_pos=pos_x;
             special_Y_pos=pos_y;
         }
-        unsigned int get_selection(){return selection;}
         bool set_selection(unsigned int new_selection){if(new_selection<num_elements){selection=new_selection;return 1;}return 0;}
+        unsigned int get_selection(){return selection;}
         void draw()
         {
             const int size_in_axe_x=(Xsize[selection]*scale_x*bmp_scalex);
