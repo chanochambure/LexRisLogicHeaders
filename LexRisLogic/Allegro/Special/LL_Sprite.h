@@ -11,8 +11,6 @@ class LL_Sprite:public LL_Bitmap_Base
         unsigned int num_elements;
         float* Xsize=nullptr;
         float* Ysize=nullptr;
-        bool special_X_pos=0;
-        bool special_Y_pos=0;
     public:
         LL_Sprite(unsigned int number_bmps)
         {
@@ -80,11 +78,6 @@ class LL_Sprite:public LL_Bitmap_Base
             return return_value;
         }
         unsigned int size(){return num_elements;}
-        void set_position_to_draw(bool pos_x,bool pos_y)
-        {
-            special_X_pos=pos_x;
-            special_Y_pos=pos_y;
-        }
         bool set_selection(unsigned int new_selection){if(new_selection<num_elements){selection=new_selection;return 1;}return 0;}
         unsigned int get_selection(){return selection;}
         void draw()
@@ -94,8 +87,8 @@ class LL_Sprite:public LL_Bitmap_Base
             al_draw_scaled_rotated_bitmap(bmps[selection],
                                           Xsize[selection]/2,
                                           Ysize[selection]/2,
-                                          x-(special_X_pos*size_in_axe_x)+(size_in_axe_x/2),
-                                          y-(special_Y_pos*size_in_axe_y)+(size_in_axe_y/2),
+                                          x-(!special_X_pos*(size_in_axe_x/2)),
+                                          y-(!special_Y_pos*(size_in_axe_y/2)),
                                           scale_x*bmp_scalex,
                                           scale_y*bmp_scaley,
                                           angle,
@@ -108,8 +101,8 @@ class LL_Sprite:public LL_Bitmap_Base
             al_draw_scaled_rotated_bitmap(bmps[selection],
                                           Xsize[selection]/2,
                                           Ysize[selection]/2,
-                                          x-(special_X_pos*size_in_axe_x)+(size_in_axe_x/2),
-                                          y-(special_Y_pos*size_in_axe_y)+(size_in_axe_y/2),
+                                          x-(!special_X_pos*(size_in_axe_x/2)),
+                                          y-(!special_Y_pos*(size_in_axe_y/2)),
                                           bmp_scalex,
                                           bmp_scaley,
                                           angle,
