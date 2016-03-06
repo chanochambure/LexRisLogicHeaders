@@ -47,30 +47,34 @@ class LL_Bitmap:public LL_Bitmap_Base
 		float get_sizex(){return Xsize;}
 		float get_sizey(){return Ysize;}
         void set_target(){if(bmp)al_set_target_bitmap(bmp);}
+        ALLEGRO_COLOR get_pixel(pos_t x,pos_t y){return al_get_pixel(bmp,x,y);}
         bool create(int s_X,int s_Y){destroy();bmp=al_create_bitmap(s_X,s_Y);if(bmp){Xsize=s_X;Ysize=s_Y;return 1;}return 0;}
         bool destroy(){if(bmp){al_destroy_bitmap(bmp);bmp=nullptr;return 1;}return 0;}
+        bool lock(){return al_lock_bitmap(bmp,ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);}
+        void unlock(){al_unlock_bitmap(bmp);}
         void draw()
         {
-            const int size_in_axe_x=(Xsize*scale_x*bmp_scalex);
-            const int size_in_axe_y=(Ysize*scale_y*bmp_scaley);
+            const pos_t size_in_axe_x=(Xsize*scale_x*bmp_scalex);
+            const pos_t size_in_axe_y=(Ysize*scale_y*bmp_scaley);
             al_draw_scaled_rotated_bitmap(bmp,
                                           Xsize/2,
                                           Ysize/2,
-                                          x-(!special_X_pos*(size_in_axe_x/2)),
-                                          y-(!special_Y_pos*(size_in_axe_y/2)),
+                                          x+(!special_X_pos*(size_in_axe_x/2)),
+                                          y+(!special_Y_pos*(size_in_axe_y/2)),
                                           scale_x*bmp_scalex,
                                           scale_y*bmp_scaley,
-                                          angle,flag);
+                                          angle,
+                                          flag);
         }
         void draw_in_another_target()
         {
-            const int size_in_axe_x=(Xsize*bmp_scalex);
-            const int size_in_axe_y=(Ysize*bmp_scaley);
+            const pos_t size_in_axe_x=(Xsize*bmp_scalex);
+            const pos_t size_in_axe_y=(Ysize*bmp_scaley);
             al_draw_scaled_rotated_bitmap(bmp,
                                           Xsize/2,
                                           Ysize/2,
-                                          x-(!special_X_pos*(size_in_axe_x/2)),
-                                          y-(!special_Y_pos*(size_in_axe_y/2)),
+                                          x+(!special_X_pos*(size_in_axe_x/2)),
+                                          y+(!special_Y_pos*(size_in_axe_y/2)),
                                           bmp_scalex,
                                           bmp_scaley,
                                           angle,
