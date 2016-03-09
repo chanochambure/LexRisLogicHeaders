@@ -12,7 +12,6 @@ namespace LL_ENet
     {
         private:
             typedef std::pair<ENetPeer*,std::string> ENetClient;
-            template<typename T>
             ENetAddress address;
             ENetHost* server;
             ENetEvent event;

@@ -11,7 +11,6 @@ namespace LL_ENet
     class LL_Client
     {
         private:
-            template<typename T>
             ENetAddress address;
             bool _init=0;
             ENetHost* client=nullptr;
