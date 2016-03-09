@@ -61,12 +61,12 @@ class LL_Input
         int _KeySearchName(string Name){if(key)return key->find_key(Name);return -1;}
         int _KeySearchKeycode(int keycode){if(key)return key->find_key(keycode);return -1;}
         bool close=0;
-        bool _d_ff=0;
         bool _ff=0;
-        float _x_m=0;
-        float _y_m=0;
-        int _z_m=0;
-        bool _c_[3];
+        float axe_x=0;
+        float axe_y=0;
+        int axe_z=0;
+        bool mouse_button[3];
+        bool mouse_button_status[3];
         bool input=0;
         ALLEGRO_DISPLAY** DS=nullptr;
         ALLEGRO_TEXTLOG** TL=nullptr;
@@ -90,20 +90,18 @@ class LL_Input
         void get_exit();
         void keyboard_on(){if(!k_on)al_register_event_source(EQ,al_get_keyboard_event_source());k_on=1;}
         void keyboard_off(){if(k_on)al_unregister_event_source(EQ,al_get_keyboard_event_source());k_on=0;}
-        void mouse_on(){if(!m_on)al_register_event_source(EQ,al_get_mouse_event_source());m_on=1;}
-        void mouse_off(){if(m_on){al_unregister_event_source(EQ,al_get_mouse_event_source());for(int i=0;i<3;++i)_c_[i]=0;}m_on=0;}
+        void mouse_on(){m_on=1;}
+        void mouse_off(){m_on=0;}
         bool input_on(string* X,unsigned int c,bool special_is_blocked=0){keyboard_on();if(c>0 and !input){special_block=special_is_blocked;_word=X;input=1;_c_limits=c;if(_word->size()>_c_limits)(*_word)=_word->substr(0,_c_limits);return 1;}return 0;}
         bool input_off(string *X){if(input and X==_word){input=0;return 1;}return 0;}
-        bool set_mouse_xy(pos_t x,pos_t y){if(al_set_mouse_xy(*DS,x,y)){_x_m=x;_y_m=y;return 1;}return 0;}
-        bool set_mouse_z(int z){if(al_set_mouse_z(z)){_z_m=z;return 1;}return 0;}
-        pos_t get_mouse_x(){return _x_m;}
-        pos_t get_mouse_y(){return _y_m;}
-        int get_mouse_z(){return _z_m;}
-        bool& right_click(){return (_c_[1]);}
-        bool& left_click(){return (_c_[0]);}
-        bool& mid_click(){return (_c_[2]);}
-        bool show_cursor(){return al_show_mouse_cursor(*DS);}
-        bool hide_cursor(){return al_hide_mouse_cursor(*DS);}
+        bool set_mouse_xy(pos_t x,pos_t y){if(al_set_mouse_xy(*DS,x,y)){axe_x=x;axe_y=y;return 1;}return 0;}
+        bool set_mouse_z(int z){if(al_set_mouse_z(z)){axe_z=z;return 1;}return 0;}
+        pos_t get_mouse_x(){return axe_x;}
+        pos_t get_mouse_y(){return axe_y;}
+        int get_mouse_z(){return axe_z;}
+        bool& right_click(){return (mouse_button[1]);}
+        bool& left_click(){return (mouse_button[0]);}
+        bool& mid_click(){return (mouse_button[2]);}
         bool get_timer_event(){return timer_event;}
         bool& get_display_status(){return close;}
         ALLEGRO_TIMER* get_timer(){return T;}
@@ -114,7 +112,7 @@ class LL_Input
 LL_Input::LL_Input(float fps)
 {
     for(int i=0;i<3;++i)
-        _c_[i]=0;
+        mouse_button[i]=mouse_button_status[i]=0;
     al_install_keyboard();
     al_install_mouse();
     EQ=al_create_event_queue();
@@ -177,16 +175,22 @@ void LL_Input::operator()()
     }
     if(m_on)
     {
-        if(event.type==ALLEGRO_EVENT_MOUSE_AXES)
+        ALLEGRO_MOUSE_STATE state;
+        al_get_mouse_state(&state);
+        for(unsigned int i=0;i<3;++i)
         {
-            _x_m=event.mouse.x;
-            _y_m=event.mouse.y;
-            _z_m=event.mouse.z;
+            bool actual=(state.buttons & 1<<i);
+            if(mouse_button_status[i]==mouse_button[i])
+                mouse_button_status[i]=mouse_button[i]=actual;
+            else
+            {
+                if(mouse_button[i]==actual)
+                    mouse_button_status[i]=actual;
+            }
         }
-        if(event.type==ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-            _c_[event.mouse.button-1]=1;
-        if(event.type==ALLEGRO_EVENT_MOUSE_BUTTON_UP)
-            _c_[event.mouse.button-1]=0;
+        axe_x=state.x;
+        axe_y=state.y;
+        axe_z=state.z;
     }
     timer_event=(event.type==ALLEGRO_EVENT_TIMER);
 }

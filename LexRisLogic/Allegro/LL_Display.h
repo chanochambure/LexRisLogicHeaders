@@ -10,6 +10,7 @@ class LL_Display
     private:
         //Display
         ALLEGRO_DISPLAY* display=nullptr;
+        ALLEGRO_MOUSE_CURSOR* cursor=nullptr;
         display_size_t X;
         display_size_t Y;
         int FT=ALLEGRO_WINDOWED;
@@ -56,13 +57,33 @@ class LL_Display
         void set_camy(pos_t y){camy=(y*scale_y);}
 		pos_t get_camx(){return camx/scale_x;}
 		pos_t get_camy(){return camy/scale_y;}
-		void plus_x(pos_t px){camx+=px;}
-		void plus_y(pos_t py){camy+=py;}
+		void plus_x(pos_t px){camx+=(px*scale_x);}
+		void plus_y(pos_t py){camy+=(py*scale_y);}
+		pos_t convert_display_posx_to_cam_posx(pos_t x,bool in=1){return (x-(camx*in))/scale_x;}
+		pos_t convert_display_posy_to_cam_posy(pos_t y,bool in=1){return (y-(camy*in))/scale_y;}
+        bool show_cursor(){return al_show_mouse_cursor(display);}
+        bool hide_cursor(){return al_hide_mouse_cursor(display);}
+        bool set_cursor(ALLEGRO_BITMAP* bitmap,int x_focus,int y_focus)
+        {
+            if(cursor)
+                al_destroy_mouse_cursor(cursor);
+            if((cursor=al_create_mouse_cursor(bitmap,x_focus,y_focus)))
+                return al_set_mouse_cursor(display,cursor);
+            return 0;
+        }
         template<typename T>
-        void draw(T* data,bool in=1){pos_t xx=data->get_posx();pos_t yy=data->get_posy();data->set_pos(((xx)*(scale_x)-(camx*in)),((yy)*(scale_y)-(camy*in)));data->draw();data->set_pos(xx,yy);}
+        void draw(T* data,bool in=1)
+        {
+            pos_t xx=data->get_posx();
+            pos_t yy=data->get_posy();
+            data->set_pos(((xx)*(scale_x)-(camx*in)),((yy)*(scale_y)-(camy*in)));
+            data->draw();
+            data->set_pos(xx,yy);
+        }
         operator ALLEGRO_DISPLAY*& (){return display;}
         operator ALLEGRO_BITMAP* (){return al_get_backbuffer(display);}
-        ~LL_Display(){_destroy();}
+        operator ALLEGRO_MOUSE_CURSOR* (){return cursor;}
+        ~LL_Display(){_destroy();if(cursor)al_destroy_mouse_cursor(cursor);cursor=nullptr;}
 };
 
 #endif // LL_DISPLAY_H_INCLUDED
