@@ -65,12 +65,12 @@ class LL_Display
         bool hide_cursor(){return al_hide_mouse_cursor(display);}
         bool set_cursor(ALLEGRO_BITMAP* bitmap,int x_focus,int y_focus)
         {
-            if(cursor)
-                al_destroy_mouse_cursor(cursor);
+            destroy_cursor();
             if((cursor=al_create_mouse_cursor(bitmap,x_focus,y_focus)))
                 return al_set_mouse_cursor(display,cursor);
             return 0;
         }
+        void destroy_cursor(){if(cursor)al_destroy_mouse_cursor(cursor);cursor=nullptr;}
         template<typename T>
         void draw(T* data,bool in=1)
         {
@@ -83,7 +83,7 @@ class LL_Display
         operator ALLEGRO_DISPLAY*& (){return display;}
         operator ALLEGRO_BITMAP* (){return al_get_backbuffer(display);}
         operator ALLEGRO_MOUSE_CURSOR* (){return cursor;}
-        ~LL_Display(){_destroy();if(cursor)al_destroy_mouse_cursor(cursor);cursor=nullptr;}
+        ~LL_Display(){_destroy();destroy_cursor();}
 };
 
 #endif // LL_DISPLAY_H_INCLUDED
