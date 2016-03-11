@@ -45,7 +45,10 @@ namespace LL_Allegro5
             }
             std::string operator [] (unsigned int pos)
             {
-                return al_get_native_file_dialog_path(_chooser,pos);
+                const char* file_path=al_get_native_file_dialog_path(_chooser,pos);
+                if(file_path)
+                    return file_path;
+                return std::string();
             }
             ~LL_FileChooser(){if(_chooser)al_destroy_native_file_dialog(_chooser);}
     };

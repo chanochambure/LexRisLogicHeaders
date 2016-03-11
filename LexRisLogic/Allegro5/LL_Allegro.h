@@ -38,7 +38,7 @@ namespace LL_Allegro5
     void uninstall_primitives(){al_shutdown_primitives_addon();}
 }
 
-//Library
+//Headers
 #include "LL_Path.h"
 #include "LL_Display.h"
 #include "LL_Native_Dialog.h"

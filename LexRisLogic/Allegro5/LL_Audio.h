@@ -9,7 +9,6 @@ namespace LL_Allegro5
     {
         private:
             unsigned int _ps=0;
-            bool _play_status=0;
             ALLEGRO_PLAYMODE _mode=ALLEGRO_PLAYMODE_ONCE;
             ALLEGRO_SAMPLE* sample=nullptr;
             ALLEGRO_SAMPLE_INSTANCE* instance=nullptr;
@@ -26,12 +25,12 @@ namespace LL_Allegro5
             void set_mode(ALLEGRO_PLAYMODE flag){if(instance)al_set_sample_instance_playmode(instance,flag);}
             bool load();
             unsigned int get_size(){return al_get_sample_length(sample);}
-            void set_position(unsigned int pos){al_set_sample_instance_position(instance,pos);}
-            unsigned int get_position(){if(!al_get_sample_instance_playing(instance))return _ps;return al_get_sample_instance_position(instance);}
-            bool is_playing(){return _play_status;}
-            void stop(){_play_status=0;al_stop_sample_instance(instance);(_ps=0);}
-            void pause(){if(al_get_sample_instance_playing(instance)){_ps=get_position();al_set_sample_instance_playing(instance,false);_play_status=false;}}
-            void play(){if(!al_get_sample_instance_playing(instance)){set_position(_ps);al_set_sample_instance_playing(instance,true);_play_status=true;}}
+            void set_position(unsigned int pos){al_set_sample_instance_position(instance,_ps=pos);}
+            unsigned int get_position(){if(instance)return al_get_sample_instance_position(instance);return 0;}
+            bool is_playing(){return al_get_sample_instance_playing(instance);}
+            void stop(){al_stop_sample_instance(instance);_ps=0;}
+            void pause(){if(is_playing()){_ps=get_position();al_set_sample_instance_playing(instance,false);}}
+            void play(){if(!is_playing()){set_position(_ps);al_set_sample_instance_playing(instance,true);}}
             bool destroy(){if(instance){al_destroy_sample_instance(instance);instance=nullptr;}if(sample){al_destroy_sample(sample);sample=nullptr;return 1;}return 0;}
             operator ALLEGRO_SAMPLE* (){return sample;}
             operator ALLEGRO_SAMPLE_INSTANCE* (){return instance;}
