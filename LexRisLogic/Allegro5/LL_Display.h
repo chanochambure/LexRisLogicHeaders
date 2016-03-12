@@ -59,8 +59,8 @@ namespace LL_Allegro5
             pos_t get_camy(){return camy/scale_y;}
             void plus_x(pos_t px){camx+=(px*scale_x);}
             void plus_y(pos_t py){camy+=(py*scale_y);}
-            pos_t convert_display_posx_to_cam_posx(pos_t x,bool in=1){return (x-(camx*in))/scale_x;}
-            pos_t convert_display_posy_to_cam_posy(pos_t y,bool in=1){return (y-(camy*in))/scale_y;}
+            pos_t convert_display_posx_to_cam_posx(pos_t x,bool in=1){return (x+(camx*in))/scale_x;}
+            pos_t convert_display_posy_to_cam_posy(pos_t y,bool in=1){return (y+(camy*in))/scale_y;}
             bool show_cursor(){return al_show_mouse_cursor(display);}
             bool hide_cursor(){return al_hide_mouse_cursor(display);}
             bool set_cursor(ALLEGRO_BITMAP* bitmap,int x_focus,int y_focus)

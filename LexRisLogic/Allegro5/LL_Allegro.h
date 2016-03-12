@@ -30,6 +30,7 @@ namespace LL_Allegro5
     //Functions
     void init_allegro(){al_init();ALLEGRO_MONITOR_INFO info;al_get_monitor_info(0, &info);desktop_size_x=info.x2 -info.x1;desktop_size_y=info.y2-info.y1;}
     void rest(float _time){al_rest(_time);}
+    bool native_dialog_addon(){return al_init_native_dialog_addon();}
     bool primitives_addon(){return al_init_primitives_addon();}
     bool image_addon(){return al_init_image_addon();}
     bool text_addon(){return al_init_font_addon()and al_init_ttf_addon();}

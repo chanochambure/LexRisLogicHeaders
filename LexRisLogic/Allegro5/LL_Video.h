@@ -38,7 +38,7 @@ namespace LL_Allegro5
             std::string get_path(){return video_path;}
             bool load();
             bool set_position(double ss){return al_seek_video(video,ss);}
-            double get_position(int sw=0){return al_get_video_position(video,sw);}
+            double get_position(ALLEGRO_VIDEO_POSITION_TYPE sw=ALLEGRO_VIDEO_POSITION_ACTUAL){return al_get_video_position(video,sw);}
             void draw(){ALLEGRO_BITMAP* bmp=al_get_video_frame(video);if(bmp)al_draw_scaled_rotated_bitmap(bmp,Xsize/2,Ysize/2,x+((Xsize*scale_x*video_scalex)/2),y+((Ysize*scale_y*video_scaley)/2),scale_x*video_scalex,scale_y*video_scaley,angle,flag);}
             void start(){al_start_video(video,al_get_default_mixer());}
             void stop(){pause();al_seek_video(video,0);}
