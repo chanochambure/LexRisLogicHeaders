@@ -94,6 +94,43 @@ namespace LL_DataStructure
                         }
                     }
                 }
+                void set_data_all()
+                {
+                    if(size==0)
+                        return;
+                    if(type)
+                    {
+                        sons[0]->pos_in_parent=0;
+                        sons[0]->set_data_all();
+                        mbb=sons[0]->mbb;
+                        for(unsigned int i=1;i<size;++i)
+                        {
+                            sons[i]->pos_in_parent=i;
+                            sons[i]->set_data_all();
+                            for(unsigned int j=0;j<D;++j)
+                            {
+                                if(sons[i]->mbb.first_point[j]<mbb.first_point[j])
+                                    mbb.first_point[j]=sons[i]->mbb.first_point[j];
+                                if(sons[i]->mbb.second_point[j]>mbb.second_point[j])
+                                    mbb.second_point[j]=sons[i]->mbb.second_point[j];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        mbb=data[0]->mbb;
+                        for(unsigned int i=1;i<size;++i)
+                        {
+                            for(unsigned int j=0;j<D;++j)
+                            {
+                                if(data[i]->mbb.first_point[j]<mbb.first_point[j])
+                                    mbb.first_point[j]=data[i]->mbb.first_point[j];
+                                if(data[i]->mbb.second_point[j]>mbb.second_point[j])
+                                    mbb.second_point[j]=data[i]->mbb.second_point[j];
+                            }
+                        }
+                    }
+                }
                 unsigned int far_node_position()
                 {
                     unsigned int minus=0;
@@ -221,15 +258,17 @@ namespace LL_DataStructure
                     unsigned int MID=(_node->size)>>1;
                     for(unsigned int i=0;i<MID;++i)
                     {
-                        _node->sons[data_order[i].second]->parent=new_node_1;
-                        _node->sons[data_order[i].second]->pos_in_parent=new_node_1->size;
-                        new_node_1->sons[new_node_1->size++]=_node->sons[data_order[i].second];
+                        new_node_1->sons[new_node_1->size]=_node->sons[data_order[i].second];
+                        new_node_1->sons[new_node_1->size]->parent=new_node_1;
+                        new_node_1->sons[new_node_1->size]->pos_in_parent=new_node_1->size;
+                        ++(new_node_1->size);
                     }
                     for(unsigned int i=MID;i<_node->size;++i)
                     {
-                        _node->sons[data_order[i].second]->parent=new_node_2;
-                        _node->sons[data_order[i].second]->pos_in_parent=new_node_2->size;
-                        new_node_2->sons[new_node_2->size++]=_node->sons[data_order[i].second];
+                        new_node_2->sons[new_node_2->size]=_node->sons[data_order[i].second];
+                        new_node_2->sons[new_node_2->size]->parent=new_node_2;
+                        new_node_2->sons[new_node_2->size]->pos_in_parent=new_node_2->size;
+                        ++(new_node_2->size);
                     }
                 }
                 else
@@ -261,18 +300,11 @@ namespace LL_DataStructure
                     _node->sons[split_pos]=new_node_1;
                     _node->sons[_node->size]=new_node_2;
                     new_node_1->pos_in_parent=split_pos;
-                    new_node_2->pos_in_parent=_node->size++;
+                    new_node_2->pos_in_parent=_node->size;
+                    ++(_node->size);
                     delete(temp);
                     if(_node->size==(S+2))
                         _split_node(_node);
-                    else
-                    {
-                        while(_node)
-                        {
-                            _node->set_space();
-                            _node=(_node->parent);
-                        }
-                    }
                 }
                 else
                 {
@@ -284,7 +316,6 @@ namespace LL_DataStructure
                     _node->sons[0]=new_node_1;
                     _node->sons[1]=new_node_2;
                     _node->size=2;
-                    _node->set_space();
                 }
             }
             void _merge_node(node* _node)
@@ -320,8 +351,8 @@ namespace LL_DataStructure
                         donater->sons[change]->pos_in_parent=_node->sons[son_underflow]->size;
                         donater->sons[change]->parent=_node->sons[son_underflow];
                         _node->sons[son_underflow]->sons[_node->sons[son_underflow]->size++]=donater->sons[change];
-                        donater->sons[change]=donater->sons[--(donater->size)];
-                        donater->sons[change]->pos_in_parent=change;
+                        donater->sons[--(donater->size)]->pos_in_parent=change;
+                        donater->sons[change]=donater->sons[donater->size];
                         donater->sons[donater->size]=nullptr;
                     }
                     else
@@ -335,9 +366,6 @@ namespace LL_DataStructure
                         donater->data[change]=donater->data[--(donater->size)];
                         donater->data[donater->size]=nullptr;
                     }
-                    donater->set_space();
-                    _node->sons[son_underflow]->set_space();
-                    _node->set_space();
                 }
                 else
                 {
@@ -346,16 +374,17 @@ namespace LL_DataStructure
                     node* owner=_node->sons[data_distance[0].second];
                     node* removed=_node->sons[son_underflow];
                     data_distance.clear();
-                    _node->sons[son_underflow]=_node->sons[--(_node->size)];
-                    _node->sons[son_underflow]->pos_in_parent=removed->pos_in_parent;
+                    --(_node->size);
+                    _node->sons[son_underflow]=_node->sons[_node->size];
+                    _node->sons[son_underflow]->pos_in_parent=son_underflow;
                     _node->sons[_node->size]=nullptr;
                     if(node_type)
                     {
                         for(unsigned int k=0;k<removed->size;++k)
                         {
-                            removed->sons[k]->pos_in_parent=owner->size;
-                            removed->sons[k]->parent=owner;
-                            owner->sons[owner->size++]=removed->sons[k];
+                            owner->sons[owner->size]=removed->sons[k];
+                            owner->sons[owner->size]->pos_in_parent=owner->size;
+                            owner->sons[owner->size++]->parent=owner;
                         }
                     }
                     else
@@ -365,20 +394,10 @@ namespace LL_DataStructure
                     }
                     removed->all_data_to_null();
                     delete(removed);
-                    owner->set_space();
-                    _node->set_space();
                     if(_node->parent)
                     {
                         if(_node->size<_min_size)
                             _merge_node(_node);
-                        else
-                        {
-                            while(_node)
-                            {
-                                _node->set_space();
-                                _node=(_node->parent);
-                            }
-                        }
                     }
                     else
                     {
@@ -386,23 +405,10 @@ namespace LL_DataStructure
                         {
                             node* new_root=_node->sons[0];
                             _node->all_data_to_null();
-                            _node->type=new_root->type;
-                            if(_node->type)
-                            {
-                                for(unsigned int k=0;k<new_root->size;++k)
-                                {
-                                    new_root->sons[k]->parent=_node;
-                                    new_root->pos_in_parent=_node->size;
-                                    _node->sons[_node->size++]=new_root->sons[k];
-                                }
-                            }
-                            else
-                            {
-                                for(unsigned int k=0;k<new_root->size;++k)
-                                    _node->data[_node->size++]=new_root->data[k];
-                            }
-                            new_root->all_data_to_null();
-                            delete(new_root);
+                            root=new_root;
+                            root->parent=nullptr;
+                            delete(_node);
+                            _node=root;
                         }
                     }
                 }
@@ -496,14 +502,12 @@ namespace LL_DataStructure
                 if((*leaf)->type)
                     _choose_leaf_node(mbb,leaf);
                 (*leaf)->data[(*leaf)->size++]=new data_t(data,mbb);
-                node* _node=(*leaf);
-                while(_node)
-                {
-                    _node->set_space();
-                    _node=(_node->parent);
-                }
+                root->set_data_all();
                 if((*leaf)->size==(S+1))
+                {
                     _split_node(*leaf);
+                    root->set_data_all();
+                }
                 ++num_elements;
                 return 1;
             }
@@ -521,18 +525,16 @@ namespace LL_DataStructure
                         ++i;
                     }
                     delete((*leaf)->data[i]);
-                    (*leaf)->data[i]=(*leaf)->data[--(*leaf)->size];
+                    (*leaf)->data[i]=(*leaf)->data[--((*leaf)->size)];
                     (*leaf)->data[(*leaf)->size]=nullptr;
-                    node* _node=(*leaf);
-                    while(_node)
-                    {
-                        _node->set_space();
-                        _node=(_node->parent);
-                    }
+                    root->set_data_all();
                     if((*leaf)!=root)
                     {
                         if((*leaf)->size==((S-1)/2))
+                        {
                             _merge_node(*leaf);
+                            root->set_data_all();
+                        }
                     }
                     --num_elements;
                     return 1;

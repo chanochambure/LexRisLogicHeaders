@@ -142,16 +142,16 @@ namespace LL_Allegro5
         {
             if(input and event.type==ALLEGRO_EVENT_KEY_CHAR)
             {
-                if(event.keyboard.keycode==63)
+                if(event.keyboard.keycode==ALLEGRO_KEY_BACKSPACE)
                     (*_word)=_word->substr(0,_word->size()-1);
                 else if(_word->size()<_c_limits)
                 {
-                    if(event.keyboard.keycode==67)
+                    if(event.keyboard.keycode==ALLEGRO_KEY_ENTER)
                     {
                         if(!special_block)
                             (*_word)=(*_word)+'\n';
                     }
-                    else if(event.keyboard.keycode==64)
+                    else if(event.keyboard.keycode==ALLEGRO_KEY_TAB)
                     {
                         if(!special_block)
                             (*_word)=(*_word)+'\t';

@@ -117,9 +117,10 @@ namespace LL_Allegro5
             void set_password_type(bool on){_password_type=on;}
             //TEXT CONFIGURATION
             std::string get_value(){return _data;}
-            void set_max_text_size(unsigned int siz){Xsize=((1+(_text_size=siz))*((_font->get_size())));}
+            void set_max_text_size(unsigned int siz){clear();Xsize=((1+(_text_size=siz))*((_font->get_size())));}
             void set_font(LL_Font* font){_font=font;Ysize=(2*font->get_size());}
             void clear(){_data.clear();}
+            bool set_value(std::string new_data){if(new_data.size()<=_text_size){_data=new_data;return 1;}return 0;}
             void draw()
             {
                 _hear_event();
@@ -145,7 +146,7 @@ namespace LL_Allegro5
                 else
                     al_draw_text(*_font,TextColor,x+(_font->get_size()*text_scale),y,ALLEGRO_ALIGN_LEFT,_data.c_str());
             }
-            void textbox_off(){_block=0;}
+            void textbox_off(){_block=0;input->input_off(&_data);_in_input=0;}
             void textbox_on(){_block=1;}
             operator bool (){return _active;}
             ~LL_TextBox(){if(_in_input)input->input_off(&_data);}
