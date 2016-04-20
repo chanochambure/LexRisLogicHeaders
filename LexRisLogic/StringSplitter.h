@@ -1,5 +1,5 @@
-#ifndef LL_STRING_SPLITTER_H_INCLUDED
-#define LL_STRING_SPLITTER_H_INCLUDED
+#ifndef LL_STRINGSPLITTER_H_INCLUDED
+#define LL_STRINGSPLITTER_H_INCLUDED
 
 #include <string>
 #include <vector>
@@ -39,4 +39,4 @@ namespace LL
 }
 }
 
-#endif // LL_STRING_SPLITTER_H_INCLUDED
+#endif // LL_STRINGSPLITTER_H_INCLUDED

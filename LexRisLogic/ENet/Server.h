@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 #include <queue>
-#include "../LL_Convert.h"
+#include "../Convert.h"
 
 namespace LL_ENet
 {

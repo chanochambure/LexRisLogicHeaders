@@ -1,8 +1,8 @@
 #ifndef LL_MATH_STRUCTURE_POLYGON_H_INCLUDED
 #define LL_MATH_STRUCTURE_POLYGON_H_INCLUDED
 
-#include "LL_Point.h"
-#include "LL_Line_Segment.h"
+#include "Point.h"
+#include "LineSegment.h"
 #include <vector>
 
 namespace LL_MathStructure

@@ -35,26 +35,27 @@ namespace LL_Allegro5
     bool image_addon(){return al_init_image_addon();}
     bool text_addon(){return al_init_font_addon()and al_init_ttf_addon();}
     bool audio_addon(){return (al_install_audio() and al_init_acodec_addon());}
+    bool video_addon(){return al_init_video_addon();}
     void uninstall_audio(){al_uninstall_audio();}
     void uninstall_primitives(){al_shutdown_primitives_addon();}
 }
 
 //Headers
-#include "LL_Path.h"
-#include "LL_Display.h"
-#include "LL_Native_Dialog.h"
-#include "LL_Input.h"
-#include "LL_Color.h"
-#include "LL_Primitives.h"
-#include "LL_Bitmap.h"
-#include "LL_Text.h"
-#include "LL_Mixer.h"
-#include "LL_Audio.h"
-#include "LL_Video.h"
+#include "Path.h"
+#include "Display.h"
+#include "NativeDialog.h"
+#include "Input.h"
+#include "Color.h"
+#include "Primitives.h"
+#include "Bitmap.h"
+#include "Text.h"
+#include "Mixer.h"
+#include "Audio.h"
+#include "Video.h"
 
 //Special Class
-#include "Special/LL_Lighting.h"
-#include "Special/LL_Sprite.h"
-#include "Special/LL_Interface.h"
+#include "Special/Lighting.h"
+#include "Special/Sprite.h"
+#include "Special/Interface.h"
 
 #endif // LL_AL5_ALLEGRO_H_INCLUDED

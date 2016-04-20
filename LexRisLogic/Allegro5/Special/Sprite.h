@@ -2,8 +2,8 @@
 #define LL_AL5_SPRITE_H_INCLUDED
 
 #include <string>
-#include "../LL_Bitmap.h"
-#include "../../LL_Convert.h"
+#include "../Bitmap.h"
+#include "../../Convert.h"
 
 namespace LL_Allegro5
 {

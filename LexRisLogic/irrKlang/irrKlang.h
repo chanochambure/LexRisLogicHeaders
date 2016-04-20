@@ -26,6 +26,6 @@ namespace LL_irrKlang
 }
 
 //Headers
-#include "LL_Audio.h"
+#include "Audio.h"
 
 #endif // LL_IRRKLANG_H_INCLUDED

@@ -2,8 +2,8 @@
 #define LL_AL5_INTERFACE_H_INCLUDED
 
 #include <string>
-#include "../LL_Input.h"
-#include "../LL_Text.h"
+#include "../Input.h"
+#include "../Text.h"
 
 namespace LL_Allegro5
 {

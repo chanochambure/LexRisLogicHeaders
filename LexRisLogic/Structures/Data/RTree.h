@@ -5,7 +5,7 @@
 #include <stack>
 #include <vector>
 #include <list>
-#include "../Mathematical/LL_Point.h"
+#include "../Mathematical/Point.h"
 
 namespace LL_DataStructure
 {

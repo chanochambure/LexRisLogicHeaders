@@ -11,7 +11,7 @@ namespace LL_ENet
     void uninstall_enet(){enet_deinitialize();}
 }
 //Library
-#include "LL_Server.h"
-#include "LL_Client.h"
+#include "Server.h"
+#include "Client.h"
 
 #endif // LL_ENET_H_INCLUDED

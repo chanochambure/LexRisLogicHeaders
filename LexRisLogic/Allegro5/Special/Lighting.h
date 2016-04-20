@@ -1,7 +1,7 @@
 #ifndef LL_AL5_LIGHTING_H_INCLUDED
 #define LL_AL5_LIGHTING_H_INCLUDED
 
-#include "../LL_Primitives.h"
+#include "../Primitives.h"
 
 namespace LL_Allegro5
 {

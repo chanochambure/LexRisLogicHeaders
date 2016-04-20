@@ -11,7 +11,6 @@ namespace LL_Allegro5
             ALLEGRO_VIDEO* video=nullptr;
             int flag=0;
             float angle=0;
-            bool _pause=0;
             pos_t x=0;
             pos_t y=0;
             float Xsize=0;
@@ -41,9 +40,10 @@ namespace LL_Allegro5
             double get_position(ALLEGRO_VIDEO_POSITION_TYPE sw=ALLEGRO_VIDEO_POSITION_ACTUAL){return al_get_video_position(video,sw);}
             void draw(){ALLEGRO_BITMAP* bmp=al_get_video_frame(video);if(bmp)al_draw_scaled_rotated_bitmap(bmp,Xsize/2,Ysize/2,x+((Xsize*scale_x*video_scalex)/2),y+((Ysize*scale_y*video_scaley)/2),scale_x*video_scalex,scale_y*video_scaley,angle,flag);}
             void start(){al_start_video(video,al_get_default_mixer());}
+            bool is_playing(){return al_is_video_playing(video);}
             void stop(){pause();al_seek_video(video,0);}
-            void pause(){if(!_pause)al_pause_video(video,(_pause=1));}
-            void play(){if(_pause)al_pause_video(video,(_pause=0));}
+            void pause(){if(is_playing())al_set_video_playing(video,0);}
+            void play(){if(!is_playing())al_set_video_playing(video,1);}
             bool destroy(){if(video){al_close_video(video);video=nullptr;return 1;}return 0;}
             operator ALLEGRO_VIDEO* (){return video;}
             ~LL_Video(){destroy();}
@@ -57,8 +57,8 @@ namespace LL_Allegro5
         video=al_open_video(video_path.c_str());
         if(video)
         {
-            Xsize=al_get_video_width(video);
-            Ysize=al_get_video_height(video);
+            Xsize=al_get_video_scaled_width(video);
+            Ysize=al_get_video_scaled_height(video);
         }
         return video;
     }
