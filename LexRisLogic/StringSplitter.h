@@ -6,37 +6,49 @@
 
 namespace LL
 {
-    class LL_StringSplitter
+    class StringSplitter
     {
         private:
-            std::vector<std::string> _data;
-            std::string _str;
+            std::vector<std::string> _V_data;
+            std::string _V_string;
         public:
-            void set_string(std::string n_str){_data.clear();_str=n_str;}
-            std::string get_string(){return _str;}
-            bool split(char character='\n');
-            unsigned int size(){return _data.size();}
-            std::string operator [] (unsigned int i){return _data[i];}
-            ~LL_StringSplitter(){_data.clear();}
+            void set_string(std::string new_string)
+            {
+                _V_data.clear();
+                _V_string=new_string;
+            }
+            std::string get_string()
+            {
+                return _V_string;
+            }
+            bool split(char character='\n')
+            {
+                _V_data.clear();
+                std::string data=_V_string;
+                if(!data.size())
+                    return false;
+                for(unsigned int position=data.find(character);position<data.size();position=data.find(character))
+                {
+                    _V_data.push_back(data.substr(0,position));
+                    data=data.substr(position+1,data.size()-(position+1));
+                }
+                if(data.size())
+                    _V_data.push_back(data);
+                return true;
+            }
+            unsigned int size()
+            {
+                return _V_data.size();
+            }
+            std::string operator [] (unsigned int index)
+            {
+                return _V_data[index];
+            }
+            ~StringSplitter()
+            {
+                _V_data.clear();
+            }
     };
-
-    bool LL_StringSplitter::split(char character)
-    {
-        _data.clear();
-        std::string data=_str;
-        if(data.size()==0)
-            return 0;
-        unsigned int position=data.find(character);
-        while(position<data.size())
-        {
-            _data.push_back(data.substr(0,position));
-            data=data.substr(position+1,data.size()-(position+1));
-            position=data.find(character);
-        }
-        if(data.size())
-            _data.push_back(data);
-        return 1;
-}
 }
 
 #endif // LL_STRINGSPLITTER_H_INCLUDED

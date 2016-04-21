@@ -73,9 +73,9 @@ namespace LL
                 }
                 return true;
             }
-            int _F_mod(int a,int b)
+            int _F_mod(int dividend,int divisor)
             {
-                return ((a%b)+b)%b;
+                return ((dividend%divisor)+divisor)%divisor;
             }
         public:
             bool add_new_key(std::string new_key)

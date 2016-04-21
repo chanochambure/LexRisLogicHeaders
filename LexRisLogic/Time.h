@@ -5,19 +5,60 @@
 
 namespace LL
 {
-    class LL_Chronometer
+    class Chronometer
     {
         private:
-            clock_t point;
-            double _time_=0;
-            bool in_pause=1;
-            bool stoped=1;
+            clock_t _V_point;
+            double _V_time=0;
+            bool _V_in_pause=true;
+            bool _V_stopped=true;
         public:
-            bool play(){if(stoped){_time_=0;stoped=0;}if(in_pause){point=clock();in_pause=0;return 1;}return 0;}
-            bool pause(){if(!in_pause){_time_+=(((double)(clock()-point))/CLOCKS_PER_SEC);in_pause=1;return 1;}return 0;}
-            bool stop(){if(!stoped){stoped=1;pause();return 1;}return 0;}
-            double get_time(){if(!in_pause)return _time_+(((double)(clock()-point))/CLOCKS_PER_SEC);return _time_;}
-            void clear(){_time_=0;point=clock();}
+            bool play()
+            {
+                if(_V_stopped)
+                {
+                    _V_time=0;
+                    _V_stopped=false;
+                }
+                if(_V_in_pause)
+                {
+                    _V_point=clock();
+                    _V_in_pause=false;
+                    return true;
+                }
+                return false;
+            }
+            bool pause()
+            {
+                if(!_V_in_pause)
+                {
+                    _V_time+=((double(clock()-_V_point))/CLOCKS_PER_SEC);
+                    _V_in_pause=true;
+                    return true;
+                }
+                return false;
+            }
+            bool stop()
+            {
+                if(!_V_stopped)
+                {
+                    _V_stopped=true;
+                    pause();
+                    return true;
+                }
+                return false;
+            }
+            double get_time()
+            {
+                if(!_V_in_pause)
+                    return _V_time+((double(clock()-_V_point))/CLOCKS_PER_SEC);
+                return _V_time;
+            }
+            void clear()
+            {
+                _V_time=0;
+                _V_point=clock();
+            }
 };
 }
 

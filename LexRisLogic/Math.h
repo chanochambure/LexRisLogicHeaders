@@ -6,31 +6,47 @@
 
 namespace LL
 {
-    //Operations
-    template<typename T>
-    T mod(T a,T b){return ((a%b)+b)%b;}
-    template<typename T>
-    T range_mod(T a,T b){return fmod(fmod(a,b)+b,b);}
+    const double MATH_PI=3.14159265358979323846;
 
-    //Angle Conversion
-    #define LL_MATH_PI 3.14159265358979323846
-    float sexagesimal_to_radian(float sexagesimal){return (sexagesimal*LL_MATH_PI)/180;}
-    float radian_to_sexagesimal(float radian){return (radian*180)/LL_MATH_PI;}
-
-    //Random
-    uint64_t rdtsc(){uint32_t a,b;__asm__ __volatile__("rdtsc":"=a"(a),"=d"(b));return ((uint64_t)a|((uint64_t)b)<<32);}
-    void set_new_seed(){srand(rdtsc());}
-    int random(int mini, int maxi){return mod(int(rand()),(maxi-mini))+mini;}
-
-    //Collision
-    bool interval_intersection(float a1,float b1,float a2,float b2)
+    int mod(int dividend,int divisor)
     {
-        int a=std::max(a1,a2);
-        int b=std::min(b1,b2);
-        return (a<=b);
+        return ((dividend%divisor)+divisor)%divisor;
     }
 
-    //Max Integer
+    double range_mod(double dividend,double divisor)
+    {
+        return fmod(fmod(dividend,divisor)+divisor,divisor);
+    }
+
+    float sexagesimal_to_radian(float sexagesimal)
+    {
+        return (sexagesimal*MATH_PI)/180;
+    }
+
+    float radian_to_sexagesimal(float radian)
+    {
+        return (radian*180)/MATH_PI;
+    }
+
+    void random_generate_new_seed()
+    {
+        uint32_t asm_a,asm_d;
+        __asm__ __volatile__("rdtsc":"=a"(asm_a),"=d"(asm_d));
+        srand(((uint64_t)asm_a | ((uint64_t)asm_d)<<32));
+    }
+
+    int random(int min_value, int max_value,bool include_max_value=0)
+    {
+        return mod(rand(),(max_value-min_value+include_max_value))+min_value;
+    }
+
+    bool segment_collision(float ini_segment_1,float fin_segment_1,float ini_segment_2,float fin_segment_2)
+    {
+        int ini_segment=std::max(ini_segment_1,ini_segment_2);
+        int fin_segment=std::min(fin_segment_1,fin_segment_2);
+        return (ini_segment<=fin_segment);
+    }
+
     int max_integer(float number)
     {
         return (int(number)-(number<0));
