@@ -10,9 +10,9 @@ namespace LL
     class Encryptor
     {
         private:
-            typedef std::pair<unsigned,std::string> _T_last_key_Type;
+            typedef std::pair<unsigned,std::string> _T_Type_last_key;
             std::string _V_pass;
-            std::list<_T_last_key_Type> _V_key;
+            std::list<_T_Type_last_key> _V_key;
             std::string _V_dictionary=DICTIONARY;
             std::string _F_encrypt(std::string& key,std::string word,unsigned int& j)
             {
@@ -57,12 +57,12 @@ namespace LL
                 {
                     std::string new_part_;
                     new_part_=new_key.substr(_V_pass.size(),new_key.size()-_V_pass.size());
-                    for(std::list<_T_last_key_Type>::iterator iter=_V_key.begin();iter!=_V_key.end();++iter)
+                    for(std::list<_T_Type_last_key>::iterator iter=_V_key.begin();iter!=_V_key.end();++iter)
                         new_part_=_F_encrypt((*iter).second,new_part_,(*iter).first);
                     j=0;
                     _V_pass+=new_part_;
                 }
-                _V_key.push_back(_T_last_key_Type(j,new_key));
+                _V_key.push_back(_T_Type_last_key(j,new_key));
             }
             bool _F_validate_word(std::string word)
             {
