@@ -5,16 +5,27 @@
 #include <stack>
 #include <vector>
 #include <list>
-#include "../Mathematical/Point.h"
 
 namespace LL_DataStructure
 {
     template<int D>
-    struct LL_MBB
+    class LL_MBB
     {
-        LL_MathStructure::LL_Point<D> first_point;
-        LL_MathStructure::LL_Point<D> second_point;
-        bool operator == (LL_MBB<D> Ot){return ((first_point==Ot.first_point) and (second_point==Ot.second_point));}
+        private:
+            class _C_Point
+            {
+                private:
+                    float dots[D];
+                public:
+                    _C_Point(){for(int i=0;i<D;++i)dots[i]=0;}
+                    float& operator [](unsigned int i){return dots[i];}
+                    _C_Point& operator = (_C_Point ot){for(int i=0;i<D;++i)(*this)[i]=ot[i];return (*this);}
+                    bool operator == (_C_Point ot){for(int i=0;i<D;++i){if((*this)[i]!=ot[i])return 0;}return 1;}
+            };
+        public:
+            _C_Point first_point;
+            _C_Point second_point;
+            bool operator == (LL_MBB<D> Ot){return ((first_point==Ot.first_point) and (second_point==Ot.second_point));}
     };
 
     template<int D>
