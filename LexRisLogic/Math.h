@@ -35,7 +35,7 @@ namespace LL
         srand(((uint64_t)asm_a | ((uint64_t)asm_d)<<32));
     }
 
-    int random(int min_value, int max_value,bool include_max_value=0)
+    int random(int min_value, int max_value,bool include_max_value=false)
     {
         return mod(rand(),(max_value-min_value+include_max_value))+min_value;
     }

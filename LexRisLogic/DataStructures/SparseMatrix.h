@@ -4,116 +4,145 @@
 namespace LL_DataStructure
 {
     template<typename T>
-    class LL_SparseMatrix
+    class SparseMatrix
     {
         private:
-            unsigned int size_x;
-            unsigned int size_y;
-            T null_value;
-            typedef unsigned int smp_t;
-            struct node
+            struct _S_Structure_Node
             {
-                smp_t pos_x;
-                smp_t pos_y;
+                _S_Structure_Node(unsigned int new_pos_x,unsigned int new_pos_y,T new_data)
+                {
+                    pos_x=new_pos_x;
+                    pos_y=new_pos_y;
+                    data=new_data;
+                }
+                unsigned int pos_x;
+                unsigned int pos_y;
                 T data;
-                node* next_x=nullptr;
-                node* next_y=nullptr;
-                node(smp_t x,smp_t y,T dat){pos_x=x;pos_y=y;data=dat;}
-                void delete_y_node(){if(next_y){next_y->delete_y_node();delete(next_y);}next_y=nullptr;}
-                ~node(){delete_y_node();if(next_x)delete(next_x);next_x=nullptr;}
+                _S_Structure_Node* next_x=nullptr;
+                _S_Structure_Node* next_y=nullptr;
+                void delete_y_node()
+                {
+                    if(next_y)
+                    {
+                        next_y->delete_y_node();
+                        delete(next_y);
+                    }
+                    next_y=nullptr;
+                }
+                ~_S_Structure_Node()
+                {
+                    delete_y_node();
+                    if(next_x)
+                        delete(next_x);
+                    next_x=nullptr;
+                }
             };
-            class controller
+            unsigned int _V_size_x;
+            unsigned int _V_size_y;
+            T _V_null_value;
+            _S_Structure_Node** _V_vector_x=nullptr;
+            _S_Structure_Node** _V_vector_y=nullptr;
+        public:
+            SparseMatrix(unsigned int size_x,unsigned int size_y,T null_value)
+            {
+                _V_size_x=size_x;
+                _V_size_y=size_y;
+                _V_null_value=null_value;
+                _V_vector_x=new _S_Structure_Node*[_V_size_x];
+                for(unsigned int i=0;i<_V_size_x;++i)
+                    _V_vector_x[i]=nullptr;
+                _V_vector_y=new _S_Structure_Node*[_V_size_y];
+                for(unsigned int i=0;i<_V_size_y;++i)
+                    _V_vector_y[i]=nullptr;
+            }
+            class Class_Controller
             {
                 private:
-                    T null_value;
-                    node** X=nullptr;
-                    node** Y=nullptr;
-                    smp_t pos_x;
-                    smp_t pos_y;
-                    void create_node(T data)
+                    T _V_null_value;
+                    _S_Structure_Node** _V_pointer_x=nullptr;
+                    _S_Structure_Node** _V_pointer_y=nullptr;
+                    unsigned int _V_pos_x;
+                    unsigned int _V_pos_y;
+                    void _F_create_node(T new_data)
                     {
-                        node* the_node=new node(pos_x,pos_y,data);
-                        the_node->next_x=*X;
-                        the_node->next_y=*Y;
-                        *X=the_node;
-                        *Y=the_node;
+                        _S_Structure_Node* new_node=new _S_Structure_Node(_V_pos_x,_V_pos_y,new_data);
+                        new_node->next_x=*_V_pointer_x;
+                        new_node->next_y=*_V_pointer_y;
+                        *_V_pointer_x=new_node;
+                        *_V_pointer_y=new_node;
                     }
-                    void remove_node()
+                    void _F_remove_node()
                     {
-                        node* the_node=*X;
-                        *X=the_node->next_x;
-                        *Y=the_node->next_y;
-                        the_node->next_x=nullptr;
-                        the_node->next_y=nullptr;
-                        delete(the_node);
+                        _S_Structure_Node* node_to_remove=*_V_pointer_x;
+                        *_V_pointer_x=node_to_remove->next_x;
+                        *_V_pointer_y=node_to_remove->next_y;
+                        node_to_remove->next_x=nullptr;
+                        node_to_remove->next_y=nullptr;
+                        delete(node_to_remove);
                     }
                 public:
-                    controller(node** a,node** b,smp_t px,smp_t py,T t_null){X=a;Y=b;pos_x=px;pos_y=py;null_value=t_null;}
+                    Class_Controller(_S_Structure_Node** pointer_x,_S_Structure_Node** pointer_y,
+                                     unsigned int pos_x,unsigned int pos_y,T null_value)
+                    {
+                        _V_pointer_x=pointer_x;
+                        _V_pointer_y=pointer_y;
+                        _V_pos_x=pos_x;
+                        _V_pos_y=pos_y;
+                        _V_null_value=null_value;
+                    }
                     T get_value()
                     {
-                        if(((*X) and (*Y)) and ((*X)==(*Y)))
-                            return (*((*this).X))->data;
-                        return null_value;
+                        if(((*_V_pointer_x) and (*_V_pointer_y)) and ((*_V_pointer_x)==(*_V_pointer_y)))
+                            return (*((*this)._V_pointer_x))->data;
+                        return _V_null_value;
                     }
-                    operator T(){return get_value();}
-                    T operator = (T dat)
+                    operator T()
                     {
-                        if(((*X) and (*Y)) and ((*X)==(*Y)))
+                        return get_value();
+                    }
+                    T operator = (T new_data)
+                    {
+                        if(((*_V_pointer_x) and (*_V_pointer_y)) and ((*_V_pointer_x)==(*_V_pointer_y)))
                         {
-                            if(dat!=null_value)
-                                (*X)->data=dat;
+                            if(new_data!=_V_null_value)
+                                (*_V_pointer_x)->data=new_data;
                             else
-                                remove_node();
+                                _F_remove_node();
                         }
-                        else if(dat!=null_value)
-                            create_node(dat);
-                        return dat;
+                        else if(new_data!=_V_null_value)
+                            _F_create_node(new_data);
+                        return new_data;
                     }
             };
-            node** vector_x=nullptr;
-            node** vector_y=nullptr;
-        public:
-            LL_SparseMatrix(smp_t size_in_x,smp_t size_in_y,T t_null)
+            Class_Controller operator () (unsigned int pos_x,unsigned int pos_y)
             {
-                size_x=size_in_x;
-                size_y=size_in_y;
-                null_value=t_null;
-                vector_x=new node*[size_x];
-                for(unsigned int i=0;i<size_x;i++)
-                    vector_x[i]=nullptr;
-                vector_y=new node*[size_y];
-                for(unsigned int i=0;i<size_y;i++)
-                    vector_y[i]=nullptr;
+                _S_Structure_Node** root_x=&_V_vector_y[pos_y];
+                for(;(*root_x) and ((*root_x)->pos_x)<pos_x;root_x=&((*root_x)->next_x));
+                _S_Structure_Node** root_y=&_V_vector_x[pos_x];
+                for(;(*root_y) and ((*root_y)->pos_y)<pos_y;root_y=&((*root_y)->next_y));
+                return Class_Controller(root_x,root_y,pos_x,pos_y,_V_null_value);
             }
-            controller operator () (smp_t X,smp_t Y)
-            {
-                node** rootx=&vector_y[Y];
-                for(;*rootx and ((*rootx)->pos_x)<X;rootx=&((*rootx)->next_x));
-                node** rooty=&vector_x[X];
-                for(;*rooty and ((*rooty)->pos_y)<Y;rooty=&((*rooty)->next_y));
-                return controller(rootx,rooty,X,Y,null_value);
-            }
-            smp_t get_size_x(){return size_x;}
-            smp_t get_size_y(){return size_y;}
-            T get_null_value(){return null_value;}
+            unsigned int get_size_x(){return _V_size_x;}
+            unsigned int get_size_y(){return _V_size_y;}
+            T get_null_value(){return _V_null_value;}
             void clear()
             {
-                if(vector_x[0])
-                    delete(vector_x[0]);
-                delete(vector_x);
-                delete(vector_y);
-                vector_x=new node*[size_x];
-                for(unsigned int i=0;i<size_x;i++)
-                    vector_x[i]=nullptr;
-                vector_y=new node*[size_y];
-                for(unsigned int i=0;i<size_y;i++)
-                    vector_y[i]=nullptr;
+                if(_V_vector_x[0])
+                    delete(_V_vector_x[0]);
+                delete(_V_vector_x);
+                delete(_V_vector_y);
+                _V_vector_x=new _S_Structure_Node*[_V_size_x];
+                for(unsigned int i=0;i<_V_size_x;++i)
+                    _V_vector_x[i]=nullptr;
+                _V_vector_y=new _S_Structure_Node*[_V_size_y];
+                for(unsigned int i=0;i<_V_size_y;++i)
+                    _V_vector_y[i]=nullptr;
             }
-            ~LL_SparseMatrix()
+            ~SparseMatrix()
             {
                 clear();
-                delete(vector_x);
-                delete(vector_y);
+                delete(_V_vector_x);
+                delete(_V_vector_y);
             }
     };
 }
