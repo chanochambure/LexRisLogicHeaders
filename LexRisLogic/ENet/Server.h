@@ -11,7 +11,7 @@ namespace LL_ENet
     {
         private:
             typedef std::pair<ENetPeer*,std::string> _T_Type_enet_client;
-            ENetAddress _V_adress;
+            ENetAddress _V_address;
             ENetHost* _V_server_host;
             ENetEvent _V_event;
             std::string _V_ip;
@@ -24,7 +24,7 @@ namespace LL_ENet
         public:
             bool set_ip(std::string new_ip)
             {
-                if(!_V_is_running and !enet_address_set_host(&_V_adress,new_ip.c_str()))
+                if(!_V_is_running and !enet_address_set_host(&_V_address,new_ip.c_str()))
                 {
                     _V_ip=new_ip;
                     return true;
@@ -39,18 +39,23 @@ namespace LL_ENet
             {
                 if(!_V_is_running)
                 {
-                    _V_adress.port=new_port;
+                    _V_address.port=new_port;
                     return true;
                 }
                 return false;
             }
             unsigned int get_port()
             {
-                return _V_adress.port;
+                return _V_address.port;
             }
-            void set_max_peers_connections(unsigned int max_peers_connections)
+            bool set_max_peers_connections(unsigned int max_peers_connections)
             {
-                _V_max_connections=max_peers_connections;
+                if(!_V_is_running)
+                {
+                    _V_max_connections=max_peers_connections;
+                    return true;
+                }
+                return false;
             }
             unsigned int get_max_peers_connections()
             {
@@ -68,9 +73,48 @@ namespace LL_ENet
             {
                 if(!_V_is_running)
                 {
-                    _V_server_host = enet_host_create(&_V_adress, _V_max_connections, 2, 0, 0);
+                    _V_server_host = enet_host_create(&_V_address, _V_max_connections, 2, 0, 0);
                     _V_is_running=_V_server_host;
                     return _V_is_running;
+                }
+                return false;
+            }
+            bool have_an_event()
+            {
+                if(enet_host_service(_V_server_host,&_V_event,_V_time)>0)
+                {
+                    switch(_V_event.type)
+                    {
+                        case ENET_EVENT_TYPE_CONNECT:
+                            {
+                                _V_event_new_connection=true;
+                                _V_event_disconnection=false;
+                            }
+                            break;
+                        case ENET_EVENT_TYPE_RECEIVE:
+                            {
+                                _V_event_new_connection=false;
+                                _V_event_disconnection=false;
+                                _V_message_queue.push(_T_Type_enet_client(_V_event.peer,
+                                                                          (const char*)(_V_event.packet->data)));
+                            }
+                            break;
+                        case ENET_EVENT_TYPE_DISCONNECT:
+                            {
+                                _V_event_new_connection=false;
+                                _V_event_disconnection=true;
+                                _V_event.peer->data=NULL;
+                            }
+                            break;
+                        case ENET_EVENT_TYPE_NONE:
+                            {
+                                _V_event_new_connection=false;
+                                _V_event_disconnection=false;
+                                return false;
+                            }
+                            break;
+                    }
+                    return true;
                 }
                 return false;
             }
@@ -155,45 +199,6 @@ namespace LL_ENet
                     enet_host_destroy(_V_server_host);
                     _V_server_host=nullptr;
                     _V_is_running=false;
-                    return true;
-                }
-                return false;
-            }
-            bool have_an_event()
-            {
-                if(enet_host_service(_V_server_host,&_V_event,_V_time)>0)
-                {
-                    switch(_V_event.type)
-                    {
-                        case ENET_EVENT_TYPE_CONNECT:
-                            {
-                                _V_event_new_connection=true;
-                                _V_event_disconnection=false;
-                            }
-                            break;
-                        case ENET_EVENT_TYPE_RECEIVE:
-                            {
-                                _V_event_new_connection=false;
-                                _V_event_disconnection=false;
-                                _V_message_queue.push(_T_Type_enet_client(_V_event.peer,
-                                                                          (const char*)(_V_event.packet->data)));
-                            }
-                            break;
-                        case ENET_EVENT_TYPE_DISCONNECT:
-                            {
-                                _V_event_new_connection=false;
-                                _V_event_disconnection=true;
-                                _V_event.peer->data=NULL;
-                            }
-                            break;
-                        case ENET_EVENT_TYPE_NONE:
-                            {
-                                _V_event_new_connection=false;
-                                _V_event_disconnection=false;
-                                return false;
-                            }
-                            break;
-                    }
                     return true;
                 }
                 return false;

@@ -4,88 +4,224 @@
 #include <sstream>
 #include <string>
 #include <queue>
-#include "../Convert.h"
 
 namespace LL_ENet
 {
     class Client
     {
         private:
-            ENetAddress address;
-            bool _init=0;
-            ENetHost* client=nullptr;
-            ENetPeer* peer=nullptr;
-            ENetEvent event;
-            bool _connected=0;
-            std::string Ip;
-            bool _reset(){if(peer){enet_peer_reset(peer);return 1;}return 0;}
-            bool _test()
+            unsigned int _V_test_time=5000;
+            ENetAddress _V_address;
+            ENetHost* _V_client_host=nullptr;
+            ENetPeer* _V_client_connection=nullptr;
+            ENetEvent _V_event;
+            bool _V_is_running=false;
+            bool _V_status_connected=false;
+            std::string _V_ip;
+            int _V_time=1000;
+            std::queue<std::string> _V_message_queue;
+            bool _F_reset_connection()
             {
-                while(1)
+                if(_V_client_connection)
                 {
-                    enet_host_service(client,&event,_service);
-                    switch(event.type)
-                    {
-                        case ENET_EVENT_TYPE_CONNECT:
-                            return 1;
-                        case ENET_EVENT_TYPE_RECEIVE:
-                            return 1;
-                        case ENET_EVENT_TYPE_DISCONNECT:
-                            return 0;
-                        case ENET_EVENT_TYPE_NONE:
-                            return 0;
-                    }
+                    enet_peer_reset(_V_client_connection);
+                    return true;
                 }
+                return false;
             }
-            int _service=1000;
-            std::queue<std::string> _mess_;
+            bool _F_test_connection()
+            {
+                unsigned int elapsed_time=0;
+                while(elapsed_time<_V_test_time)
+                {
+                    if(enet_host_service(_V_client_host,&_V_event,_V_time)>0)
+                    {
+                        switch(_V_event.type)
+                        {
+                            case ENET_EVENT_TYPE_CONNECT:
+                                return true;
+                            case ENET_EVENT_TYPE_RECEIVE:
+                                return true;
+                            default:
+                                break;
+                        }
+                    }
+                    elapsed_time+=_V_time;
+                }
+                return false;
+            }
         public:
-            bool set_ip(std::string IP){if(!_init){Ip=IP;enet_address_set_host(&address,Ip.c_str());return 1;}return 0;}
-            std::string get_ip(){return Ip;}
-            bool set_port(unsigned int Port){if(!_init){address.port=Port;return 1;}return 0;}
-            unsigned int get_port(){return address.port;}
-            void set_service_time(int ms){_service=ms;}
-            int get_service_time(){return _service;}
-            bool start_client(){if(!_init){client = enet_host_create(NULL, 1, 2, 57600/8, 14400/8);_init=client;return _init;}return 0;}
+            bool set_ip(std::string new_ip)
+            {
+                if(!_V_is_running and !enet_address_set_host(&_V_address,new_ip.c_str()))
+                {
+                    _V_ip=new_ip;
+                    return true;
+                }
+                return false;
+            }
+            std::string get_ip()
+            {
+                return _V_ip;
+            }
+            bool set_port(unsigned int new_port)
+            {
+                if(!_V_is_running)
+                {
+                    _V_address.port=new_port;
+                    return true;
+                }
+                return false;
+            }
+            unsigned int get_port()
+            {
+                return _V_address.port;
+            }
+            bool set_test_time(unsigned int new_test_time)
+            {
+                if(!_V_is_running and new_test_time>0)
+                {
+                    _V_test_time=new_test_time;
+                    return true;
+                }
+                return false;
+            }
+            unsigned int get_test_time()
+            {
+                return _V_test_time;
+            }
+            void set_wait_time(unsigned int wait_time)
+            {
+                _V_time=wait_time;
+            }
+            unsigned int get_wait_time()
+            {
+                return _V_time;
+            }
+            bool start_client()
+            {
+                if(!_V_is_running)
+                {
+                    _V_client_host=enet_host_create(NULL, 1, 2, 57600/8, 14400/8);
+                    _V_is_running=_V_client_host;
+                    return _V_is_running;
+                }
+                return false;
+            }
             bool connect_to_server()
             {
-                _reset();
-                peer=enet_host_connect(client, &address, 2, 0);
-                if(!peer)
-                    return false;
-                return (_connected=_test());
-            }
-            bool get_status(){return _connected;}
-            bool operator () ()
-            {
-                if(enet_host_service(client,&event,_service)>0)
+                if(!_V_status_connected)
                 {
-                    switch(event.type)
+                    if(_F_reset_connection())
+                        return true;
+                    _V_client_connection=enet_host_connect(_V_client_host, &_V_address, 2, 0);
+                    if(!_V_client_connection)
+                        return false;
+                    return (_V_status_connected=_F_test_connection());
+                }
+                return false;
+            }
+            bool disconnect_from_server()
+            {
+                if(_V_status_connected and _V_client_connection)
+                {
+                    enet_peer_disconnect(_V_client_connection,0);
+                    while(enet_host_service(_V_client_host,&_V_event,_V_time)>0)
+                    {
+                        switch (_V_event.type)
+                        {
+                            case ENET_EVENT_TYPE_RECEIVE:
+                                enet_packet_destroy(_V_event.packet);
+                                break;
+                            case ENET_EVENT_TYPE_DISCONNECT:
+                                return true;
+                            default:
+                                break;
+                        }
+                    }
+                    _V_client_connection=nullptr;
+                    return true;
+                }
+                return false;
+            }
+            bool get_connection_status()
+            {
+                return _V_status_connected;
+            }
+            bool have_an_event()
+            {
+                if(enet_host_service(_V_client_host,&_V_event,_V_time)>0)
+                {
+                    switch(_V_event.type)
                     {
                         case ENET_EVENT_TYPE_CONNECT:
-                            _connected=1;
+                            _V_status_connected=true;
                             break;
                         case ENET_EVENT_TYPE_RECEIVE:
-                            _mess_.push(LL::to_string(event.packet->data));
+                            _V_message_queue.push((const char*)(_V_event.packet->data));
                             break;
                         case ENET_EVENT_TYPE_DISCONNECT:
-                            _connected=0;
-                            event.peer->data=NULL;
+                            _V_status_connected=false;
+                            _V_event.peer->data=NULL;
                             break;
                         case ENET_EVENT_TYPE_NONE:
-                            return 0;
+                            return false;
                     }
-                    return 1;
+                    return true;
                 }
-                return 0;
+                return false;
             }
-            std::string get_message_received(){if(!_mess_.empty())return _mess_.front();return std::string();}
-            bool remove_message_received(){if(!_mess_.empty()){_mess_.pop();return 1;}return 0;}
-            void clear(){while(!_mess_.empty())_mess_.pop();}
-            bool empty(){return _mess_.empty();}
-            bool send_message_to_the_server(std::string to_send){if(_init and _connected){if(to_send.size()>0){ENetPacket* packet=enet_packet_create(to_send.c_str(),to_send.size()+1,ENET_PACKET_FLAG_RELIABLE);if(packet)return (!enet_peer_send(peer,0,packet));}}return 0;}
-            bool stop_client(){if(_init){clear();enet_host_destroy(client);client=nullptr;_init=0;return 1;}return 0;}
-            ~Client(){stop_client();}
+            std::string get_message_received()
+            {
+                if(!_V_message_queue.empty())
+                    return _V_message_queue.front();
+                return std::string();
+            }
+            bool remove_message_received()
+            {
+                if(!_V_message_queue.empty())
+                {
+                    _V_message_queue.pop();
+                    return true;
+                }
+                return false;
+            }
+            void clear()
+            {
+                while(!_V_message_queue.empty())
+                    _V_message_queue.pop();
+            }
+            bool empty()
+            {
+                return _V_message_queue.empty();
+            }
+            bool send(std::string message)
+            {
+                if(_V_is_running and _V_status_connected and message.size())
+                {
+                    ENetPacket* packet=enet_packet_create(message.c_str(),message.size()+1,ENET_PACKET_FLAG_RELIABLE);
+                    if(packet)
+                        return (!enet_peer_send(_V_client_connection,0,packet));
+                }
+                return false;
+            }
+            bool stop_client()
+            {
+                if(_V_is_running)
+                {
+                    disconnect_from_server();
+                    clear();
+                    enet_host_destroy(_V_client_host);
+                    _V_client_host=nullptr;
+                    _V_is_running=false;
+                    return true;
+                }
+                return false;
+            }
+            ~Client()
+            {
+                stop_client();
+            }
     };
 }
 
