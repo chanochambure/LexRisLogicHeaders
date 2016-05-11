@@ -1,5 +1,5 @@
-#ifndef LL_IRRKLANG_AUDIO_H_INCLUDED
-#define LL_IRRKLANG_AUDIO_H_INCLUDED
+#ifndef INCLUDED_LL_IRRKLANG_AUDIO_H
+#define INCLUDED_LL_IRRKLANG_AUDIO_H
 
 #include <string>
 
@@ -171,4 +171,4 @@ namespace LL_irrKlang
     };
 }
 
-#endif // LL_IRRKLANG_AUDIO_H_INCLUDED
+#endif // INCLUDED_LL_IRRKLANG_AUDIO_H

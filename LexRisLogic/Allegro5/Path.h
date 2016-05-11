@@ -1,9 +1,9 @@
-#ifndef LL_AL5_PATH_H_INCLUDED
-#define LL_AL5_PATH_H_INCLUDED
+#ifndef INCLUDED_LL_AL5_PATH_H
+#define INCLUDED_LL_AL5_PATH_H
 
 #include <string>
 
-namespace LL_Allegro5
+namespace LL_AL5
 {
     std::string get_current_absolute_directory()
     {
@@ -38,4 +38,4 @@ namespace LL_Allegro5
     }
 }
 
-#endif // LL_AL5_PATH_H_INCLUDED
+#endif // INCLUDED_LL_AL5_PATH_H

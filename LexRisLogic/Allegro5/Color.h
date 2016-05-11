@@ -1,22 +1,55 @@
-#ifndef LL_AL5_COLOR_H_INCLUDED
-#define LL_AL5_COLOR_H_INCLUDED
+#ifndef INCLUDED_LL_AL5_COLOR_H
+#define INCLUDED_LL_AL5_COLOR_H
 
-namespace LL_Allegro5
+namespace LL_AL5
 {
-    struct LL_Color
+    struct Color
     {
-        unsigned char Red=0;
-        unsigned char Green=0;
-        unsigned char Blue=0;
-        unsigned char Alpha=255;
-        LL_Color(unsigned char r=0,unsigned char g=0,unsigned char b=0,unsigned char a=255){Red=r;Green=g;Blue=b,Alpha=a;}
-        LL_Color(ALLEGRO_COLOR color){Red=(color.r*255);Green=(color.g*255);Blue=(color.b*255);Alpha=(color.a*255);}
-        operator ALLEGRO_COLOR(){return al_map_rgba(Red,Green,Blue,Alpha);}
-        LL_Color operator ! (){return LL_Color(255-Red,255-Green,255-Blue,Alpha);}
-        LL_Color operator = (ALLEGRO_COLOR Ot){Red=(Ot.r*255);Green=(Ot.g*255);Blue=(Ot.b*255);Alpha=(Ot.a*255);return (*this);}
-        bool operator == (LL_Color Ot){return (Ot.Red==Red and Ot.Green==Green and Ot.Blue==Blue and Ot.Alpha==Alpha);}
-        bool operator != (LL_Color Ot){return (Ot.Red!=Red or Ot.Green!=Green or Ot.Blue!=Blue or Ot.Alpha!=Alpha);}
+        Color(unsigned char new_red=0,unsigned char new_green=0,unsigned char new_blue=0,unsigned char new_alpha=255)
+        {
+            red=new_red;
+            green=new_green;
+            blue=new_blue;
+            alpha=new_alpha;
+        }
+        Color(ALLEGRO_COLOR color)
+        {
+            red=(color.r*255);
+            green=(color.g*255);
+            blue=(color.b*255);
+            alpha=(color.a*255);
+        }
+        unsigned char red=0;
+        unsigned char green=0;
+        unsigned char blue=0;
+        unsigned char alpha=255;
+        Color operator ! ()
+        {
+            return Color(255-red,255-green,255-blue,alpha);
+        }
+        Color operator = (ALLEGRO_COLOR another_color)
+        {
+            red=(another_color.r*255);
+            green=(another_color.g*255);
+            blue=(another_color.b*255);
+            alpha=(another_color.a*255);
+            return (*this);
+        }
+        bool operator == (Color another_color)
+        {
+            return (another_color.red==red and another_color.green==green and
+                    another_color.blue==blue and another_color.alpha==alpha);
+        }
+        bool operator != (Color another_color)
+        {
+            return (another_color.red!=red or another_color.green!=green or
+                    another_color.blue!=blue or another_color.alpha!=alpha);
+        }
+        operator ALLEGRO_COLOR()
+        {
+            return al_map_rgba(red,green,blue,alpha);
+        }
     };
 }
 
-#endif // LL_AL5_COLOR_H_INCLUDED
+#endif // INCLUDED_LL_AL5_COLOR_H

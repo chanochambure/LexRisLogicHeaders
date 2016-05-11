@@ -1,5 +1,5 @@
-#ifndef LL_DATA_STRUCTURE_RTREE_H_INCLUDED
-#define LL_DATA_STRUCTURE_RTREE_H_INCLUDED
+#ifndef INCLUDED_LL_DATASTRUCTURE_RTREE_H
+#define INCLUDED_LL_DATASTRUCTURE_RTREE_H
 
 #include <algorithm>
 #include <stack>
@@ -609,4 +609,4 @@ namespace LL_DataStructure
     };
 }
 
-#endif // LL_DATA_STRUCTURE_RTREE_H_INCLUDED
+#endif // INCLUDED_LL_DATASTRUCTURE_RTREE_H

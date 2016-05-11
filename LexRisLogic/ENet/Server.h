@@ -1,8 +1,8 @@
-#ifndef LL_ENET_SERVER_H_INCLUDED
-#define LL_ENET_SERVER_H_INCLUDED
+#ifndef INCLUDED_LL_ENET_SERVER_H
+#define INCLUDED_LL_ENET_SERVER_H
 
-#include <string>
 #include <sstream>
+#include <string>
 #include <queue>
 
 namespace LL_ENet
@@ -210,4 +210,4 @@ namespace LL_ENet
     };
 }
 
-#endif // LL_ENET_SERVER_H_INCLUDED
+#endif // INCLUDED_LL_ENET_SERVER_H

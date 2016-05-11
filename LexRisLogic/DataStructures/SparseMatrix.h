@@ -1,5 +1,5 @@
-#ifndef LL_DATASTRUCTURE_SPARSEMATRIX_H_INCLUDED
-#define LL_DATASTRUCTURE_SPARSEMATRIX_H_INCLUDED
+#ifndef INCLUDED_LL_DATASTRUCTURE_SPARSEMATRIX_H
+#define INCLUDED_LL_DATASTRUCTURE_SPARSEMATRIX_H
 
 namespace LL_DataStructure
 {
@@ -96,10 +96,6 @@ namespace LL_DataStructure
                             return (*((*this)._V_pointer_x))->data;
                         return _V_null_value;
                     }
-                    operator T()
-                    {
-                        return get_value();
-                    }
                     T operator = (T new_data)
                     {
                         if(((*_V_pointer_x) and (*_V_pointer_y)) and ((*_V_pointer_x)==(*_V_pointer_y)))
@@ -113,15 +109,11 @@ namespace LL_DataStructure
                             _F_create_node(new_data);
                         return new_data;
                     }
+                    operator T()
+                    {
+                        return get_value();
+                    }
             };
-            Class_Controller operator () (unsigned int pos_x,unsigned int pos_y)
-            {
-                _S_Structure_Node** root_x=&_V_vector_y[pos_y];
-                for(;(*root_x) and ((*root_x)->pos_x)<pos_x;root_x=&((*root_x)->next_x));
-                _S_Structure_Node** root_y=&_V_vector_x[pos_x];
-                for(;(*root_y) and ((*root_y)->pos_y)<pos_y;root_y=&((*root_y)->next_y));
-                return Class_Controller(root_x,root_y,pos_x,pos_y,_V_null_value);
-            }
             unsigned int get_size_x(){return _V_size_x;}
             unsigned int get_size_y(){return _V_size_y;}
             T get_null_value(){return _V_null_value;}
@@ -138,6 +130,14 @@ namespace LL_DataStructure
                 for(unsigned int i=0;i<_V_size_y;++i)
                     _V_vector_y[i]=nullptr;
             }
+            Class_Controller operator () (unsigned int pos_x,unsigned int pos_y)
+            {
+                _S_Structure_Node** root_x=&_V_vector_y[pos_y];
+                for(;(*root_x) and ((*root_x)->pos_x)<pos_x;root_x=&((*root_x)->next_x));
+                _S_Structure_Node** root_y=&_V_vector_x[pos_x];
+                for(;(*root_y) and ((*root_y)->pos_y)<pos_y;root_y=&((*root_y)->next_y));
+                return Class_Controller(root_x,root_y,pos_x,pos_y,_V_null_value);
+            }
             ~SparseMatrix()
             {
                 clear();
@@ -147,4 +147,4 @@ namespace LL_DataStructure
     };
 }
 
-#endif // LL_DATASTRUCTURE_SPARSEMATRIX_H_INCLUDED
+#endif // INCLUDED_LL_DATASTRUCTURE_SPARSEMATRIX_H

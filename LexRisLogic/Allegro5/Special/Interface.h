@@ -1,17 +1,17 @@
-#ifndef LL_AL5_INTERFACE_H_INCLUDED
-#define LL_AL5_INTERFACE_H_INCLUDED
+#ifndef INCLUDED_LL_AL5_INTERFACE_H
+#define INCLUDED_LL_AL5_INTERFACE_H
 
 #include <string>
 #include "../Input.h"
 #include "../Text.h"
 
-namespace LL_Allegro5
+namespace LL_AL5
 {
     class LL_Interface
     {
         protected:
-            pos_t x=0;
-            pos_t y=0;
+            Type_pos x=0;
+            Type_pos y=0;
             float Xsize=0;
             float Ysize=0;
             LL_Font* _font=nullptr;
@@ -22,11 +22,11 @@ namespace LL_Allegro5
             ALLEGRO_COLOR U_FilledColor;
             ALLEGRO_COLOR C_LineColor;
             ALLEGRO_COLOR C_FilledColor;
-            bool _is_in(){pos_t mx=input->get_mouse_x();pos_t my=input->get_mouse_y();return ((x<=mx and mx<(x+(Xsize*scale_x))) and (y<=my and my<(y+(Ysize*scale_y))));}
+            bool _is_in(){Type_pos mx=input->get_mouse_x();Type_pos my=input->get_mouse_y();return ((x<=mx and mx<(x+(Xsize*bitmap_scale_x))) and (y<=my and my<(y+(Ysize*bitmap_scale_y))));}
             bool _block=0;
         public:
-            pos_t get_posx(){return x;}
-            pos_t get_posy(){return y;}
+            Type_pos get_posx(){return x;}
+            Type_pos get_posy(){return y;}
             float get_sizex(){return Xsize;}
             float get_sizey(){return Ysize;}
             //FIGURE CONFIGURATION
@@ -51,8 +51,8 @@ namespace LL_Allegro5
     {
         private:
             unsigned int _font_size=1;
-            pos_t middle_x=0;
-            pos_t middle_y=0;
+            Type_pos middle_x=0;
+            Type_pos middle_y=0;
             std::string _message;
             bool _lock=0;
             bool _bool_value=0;
@@ -66,25 +66,25 @@ namespace LL_Allegro5
                 C_FilledColor=al_map_rgb(0,0,250);
             }
             //POSITION AND SIZE CONFIGURATION
-            void set_pos(pos_t px,pos_t py){x=px;y=py;middle_x=(Xsize*scale_x/2);middle_y=(Ysize*scale_y/2);}
-            void set_posx(pos_t px){x=px;middle_x=(Xsize*scale_x/2);}
-            void set_posy(pos_t py){y=py;middle_y=(Ysize*scale_y/2);}
+            void set_pos(Type_pos px,Type_pos py){x=px;y=py;middle_x=(Xsize*bitmap_scale_x/2);middle_y=(Ysize*bitmap_scale_y/2);}
+            void set_posx(Type_pos px){x=px;middle_x=(Xsize*bitmap_scale_x/2);}
+            void set_posy(Type_pos py){y=py;middle_y=(Ysize*bitmap_scale_y/2);}
             //TEXT CONFIGURATION
-            void set_message(std::string message){_message=message;Xsize=_message.size()*_font_size;middle_x=(Xsize*scale_x/2);}
+            void set_message(std::string message){_message=message;Xsize=_message.size()*_font_size;middle_x=(Xsize*bitmap_scale_x/2);}
             std::string get_message(){return _message;}
-            void set_font(LL_Font* font){_font=font;_font_size=_font->get_size();Xsize=_message.size()*_font_size;Ysize=(2*_font_size);middle_x=(Xsize*scale_x/2);middle_y=(Ysize*scale_y/2);}
+            void set_font(LL_Font* font){_font=font;_font_size=_font->get_size();Xsize=_message.size()*_font_size;Ysize=(2*_font_size);middle_x=(Xsize*bitmap_scale_x/2);middle_y=(Ysize*bitmap_scale_y/2);}
             void draw()
             {
                 _hear_event();
                 if(_is_in() and input->left_click())
                 {
-                    al_draw_filled_rectangle(x,y,x+(Xsize*scale_x),y+(Ysize*scale_y),C_FilledColor);
-                    al_draw_rectangle(x,y,x+(Xsize*scale_x),y+(Ysize*scale_y),C_LineColor,_size*primitives_scale);
+                    al_draw_filled_rectangle(x,y,x+(Xsize*bitmap_scale_x),y+(Ysize*bitmap_scale_y),C_FilledColor);
+                    al_draw_rectangle(x,y,x+(Xsize*bitmap_scale_x),y+(Ysize*bitmap_scale_y),C_LineColor,_size*primitives_scale);
                 }
                 else
                 {
-                    al_draw_filled_rectangle(x,y,x+(Xsize*scale_x),y+(Ysize*scale_y),U_FilledColor);
-                    al_draw_rectangle(x,y,x+(Xsize*scale_x),y+(Ysize*scale_y),U_LineColor,_size*primitives_scale);
+                    al_draw_filled_rectangle(x,y,x+(Xsize*bitmap_scale_x),y+(Ysize*bitmap_scale_y),U_FilledColor);
+                    al_draw_rectangle(x,y,x+(Xsize*bitmap_scale_x),y+(Ysize*bitmap_scale_y),U_LineColor,_size*primitives_scale);
                 }
                 al_draw_text(*_font,TextColor,x+middle_x,y+middle_y-(_font->get_size()*text_scale/2),ALLEGRO_ALIGN_CENTER,_message.c_str());
             }
@@ -111,9 +111,9 @@ namespace LL_Allegro5
                 C_FilledColor=al_map_rgb(187,250,255);
             }
             //POSITION AND SIZE CONFIGURATION
-            void set_pos(pos_t px,pos_t py){x=px;y=py;}
-            void set_posx(pos_t px){x=px;}
-            void set_posy(pos_t py){y=py;}
+            void set_pos(Type_pos px,Type_pos py){x=px;y=py;}
+            void set_posx(Type_pos px){x=px;}
+            void set_posy(Type_pos py){y=py;}
             void set_password_type(bool on){_password_type=on;}
             //TEXT CONFIGURATION
             std::string get_value(){return _data;}
@@ -128,15 +128,15 @@ namespace LL_Allegro5
                 {
                     if(!_in_input)
                         _in_input=input->input_on(&_data,_text_size,1);
-                    al_draw_filled_rectangle(x,y,x+(Xsize*scale_x),y+(Ysize*scale_y),C_FilledColor);
-                    al_draw_rectangle(x,y,x+(Xsize*scale_x),y+(Ysize*scale_y),C_LineColor,_size*primitives_scale);
+                    al_draw_filled_rectangle(x,y,x+(Xsize*bitmap_scale_x),y+(Ysize*bitmap_scale_y),C_FilledColor);
+                    al_draw_rectangle(x,y,x+(Xsize*bitmap_scale_x),y+(Ysize*bitmap_scale_y),C_LineColor,_size*primitives_scale);
                 }
                 else
                 {
                     if(_in_input)
                         _in_input=!input->input_off(&_data);
-                    al_draw_filled_rectangle(x,y,x+(Xsize*scale_x),y+(Ysize*scale_y),U_FilledColor);
-                    al_draw_rectangle(x,y,x+(Xsize*scale_x),y+(Ysize*scale_y),U_LineColor,_size*primitives_scale);
+                    al_draw_filled_rectangle(x,y,x+(Xsize*bitmap_scale_x),y+(Ysize*bitmap_scale_y),U_FilledColor);
+                    al_draw_rectangle(x,y,x+(Xsize*bitmap_scale_x),y+(Ysize*bitmap_scale_y),U_LineColor,_size*primitives_scale);
                 }
                 if(_password_type)
                 {
@@ -153,4 +153,4 @@ namespace LL_Allegro5
     };
 }
 
-#endif // LL_AL5_INTERFACE_H_INCLUDED
+#endif // INCLUDED_LL_AL5_INTERFACE_H

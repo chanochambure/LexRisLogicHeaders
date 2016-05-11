@@ -1,5 +1,5 @@
-#ifndef LL_IRRKLANG_H_INCLUDED
-#define LL_IRRKLANG_H_INCLUDED
+#ifndef INCLUDED_LL_IRRKLANG_H
+#define INCLUDED_LL_IRRKLANG_H
 
 #include <irrKlang.h>
 
@@ -54,4 +54,4 @@ namespace LL_irrKlang
 //Headers
 #include "Audio.h"
 
-#endif // LL_IRRKLANG_H_INCLUDED
+#endif // INCLUDED_LL_IRRKLANG_H

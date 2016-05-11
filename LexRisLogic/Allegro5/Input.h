@@ -1,10 +1,10 @@
-#ifndef LL_AL5_INPUT_H_INCLUDED
-#define LL_AL5_INPUT_H_INCLUDED
+#ifndef INCLUDED_LL_AL5_INPUT_H
+#define INCLUDED_LL_AL5_INPUT_H
 
 #include <vector>
 #include <string>
 
-namespace LL_Allegro5
+namespace LL_AL5
 {
     struct LL_Key
     {
@@ -94,10 +94,10 @@ namespace LL_Allegro5
             void mouse_off(){m_on=0;}
             bool input_on(std::string* X,unsigned int c,bool special_is_blocked=0){keyboard_on();if(c>0 and !input){special_block=special_is_blocked;_word=X;input=1;_c_limits=c;if(_word->size()>_c_limits)(*_word)=_word->substr(0,_c_limits);return 1;}return 0;}
             bool input_off(std::string *X){if(input and X==_word){input=0;return 1;}return 0;}
-            bool set_mouse_xy(pos_t x,pos_t y){if(al_set_mouse_xy(*DS,x,y)){axe_x=x;axe_y=y;return 1;}return 0;}
+            bool set_mouse_xy(Type_pos x,Type_pos y){if(al_set_mouse_xy(*DS,x,y)){axe_x=x;axe_y=y;return 1;}return 0;}
             bool set_mouse_z(int z){if(al_set_mouse_z(z)){axe_z=z;return 1;}return 0;}
-            pos_t get_mouse_x(){return axe_x;}
-            pos_t get_mouse_y(){return axe_y;}
+            Type_pos get_mouse_x(){return axe_x;}
+            Type_pos get_mouse_y(){return axe_y;}
             int get_mouse_z(){return axe_z;}
             bool& right_click(){return (mouse_button[1]);}
             bool& left_click(){return (mouse_button[0]);}
@@ -235,4 +235,4 @@ namespace LL_Allegro5
     }
 }
 
-#endif // LL_AL5_INPUT_H_INCLUDED
+#endif // INCLUDED_LL_AL5_INPUT_H

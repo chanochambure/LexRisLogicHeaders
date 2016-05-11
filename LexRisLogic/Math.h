@@ -1,5 +1,5 @@
-#ifndef LL_MATH_H_INCLUDED
-#define LL_MATH_H_INCLUDED
+#ifndef INCLUDED_LL_MATH_H
+#define INCLUDED_LL_MATH_H
 
 #include <math.h>
 #include <random>
@@ -53,4 +53,4 @@ namespace LL
     }
 }
 
-#endif // LL_MATH_H_INCLUDED
+#endif // INCLUDED_LL_MATH_H

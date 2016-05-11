@@ -1,9 +1,9 @@
-#ifndef LL_AL5_VIDEO_H_INCLUDED
-#define LL_AL5_VIDEO_H_INCLUDED
+#ifndef INCLUDED_LL_AL5_VIDEO_H
+#define INCLUDED_LL_AL5_VIDEO_H
 
 #include <string>
 
-namespace LL_Allegro5
+namespace LL_AL5
 {
     class LL_Video
     {
@@ -11,19 +11,19 @@ namespace LL_Allegro5
             ALLEGRO_VIDEO* video=nullptr;
             int flag=0;
             float angle=0;
-            pos_t x=0;
-            pos_t y=0;
+            Type_pos x=0;
+            Type_pos y=0;
             float Xsize=0;
             float Ysize=0;
             float video_scalex=1;
             float video_scaley=1;
             std::string video_path;
         public:
-            void set_pos(pos_t xx,pos_t yy){x=xx;y=yy;}
-            void set_posx(pos_t xx){x=xx;}
-            void set_posy(pos_t yy){y=yy;}
-            pos_t get_posx(){return x;}
-            pos_t get_posy(){return y;}
+            void set_pos(Type_pos xx,Type_pos yy){x=xx;y=yy;}
+            void set_posx(Type_pos xx){x=xx;}
+            void set_posy(Type_pos yy){y=yy;}
+            Type_pos get_posx(){return x;}
+            Type_pos get_posy(){return y;}
             float get_sizex(){return Xsize;}
             float get_sizey(){return Ysize;}
             void set_angle(float an){angle=an;}
@@ -38,7 +38,7 @@ namespace LL_Allegro5
             bool load();
             bool set_position(double ss){return al_seek_video(video,ss);}
             double get_position(ALLEGRO_VIDEO_POSITION_TYPE sw=ALLEGRO_VIDEO_POSITION_ACTUAL){return al_get_video_position(video,sw);}
-            void draw(){ALLEGRO_BITMAP* bmp=al_get_video_frame(video);if(bmp)al_draw_scaled_rotated_bitmap(bmp,Xsize/2,Ysize/2,x+((Xsize*scale_x*video_scalex)/2),y+((Ysize*scale_y*video_scaley)/2),scale_x*video_scalex,scale_y*video_scaley,angle,flag);}
+            void draw(){ALLEGRO_BITMAP* bmp=al_get_video_frame(video);if(bmp)al_draw_scaled_rotated_bitmap(bmp,Xsize/2,Ysize/2,x+((Xsize*bitmap_scale_x*video_scalex)/2),y+((Ysize*bitmap_scale_y*video_scaley)/2),bitmap_scale_x*video_scalex,bitmap_scale_y*video_scaley,angle,flag);}
             void start(){al_start_video(video,al_get_default_mixer());}
             bool is_playing(){return al_is_video_playing(video);}
             void stop(){pause();al_seek_video(video,0);}
@@ -64,4 +64,4 @@ namespace LL_Allegro5
     }
 }
 
-#endif // LL_AL5_VIDEO_H_INCLUDED
+#endif // INCLUDED_LL_AL5_VIDEO_H

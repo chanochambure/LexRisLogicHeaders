@@ -1,5 +1,5 @@
-#ifndef LL_TIME_H_INCLUDED
-#define LL_TIME_H_INCLUDED
+#ifndef INCLUDED_LL_TIME_H
+#define INCLUDED_LL_TIME_H
 
 #include <time.h>
 
@@ -62,4 +62,4 @@ namespace LL
 };
 }
 
-#endif // LL_TIME_H_INCLUDED
+#endif // INCLUDED_LL_TIME_H

@@ -1,5 +1,5 @@
-#ifndef LL_FILESTREAM_H_INCLUDED
-#define LL_FILESTREAM_H_INCLUDED
+#ifndef INCLUDED_LL_FILESTREAM_H
+#define INCLUDED_LL_FILESTREAM_H
 
 #include <string>
 #include <vector>
@@ -107,4 +107,4 @@ namespace LL
     };
 }
 
-#endif // LL_FILESTREAM_H_INCLUDED
+#endif // INCLUDED_LL_FILESTREAM_H

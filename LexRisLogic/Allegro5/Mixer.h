@@ -1,7 +1,7 @@
-#ifndef LL_AL5_MIXER_H_INCLUDED
-#define LL_AL5_MIXER_H_INCLUDED
+#ifndef INCLUDED_LL_AL5_MIXER_H
+#define INCLUDED_LL_AL5_MIXER_H
 
-namespace LL_Allegro5
+namespace LL_AL5
 {
     class LL_Mixer
     {
@@ -64,4 +64,4 @@ namespace LL_Allegro5
     }
 }
 
-#endif // LL_AL5_MIXER_H_INCLUDED
+#endif // INCLUDED_LL_AL5_MIXER_H

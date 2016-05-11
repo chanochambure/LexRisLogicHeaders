@@ -1,5 +1,5 @@
-#ifndef LL_ENET_CLIENT_H_INCLUDED
-#define LL_ENET_CLIENT_H_INCLUDED
+#ifndef INCLUDED_LL_ENET_CLIENT_H
+#define INCLUDED_LL_ENET_CLIENT_H
 
 #include <sstream>
 #include <string>
@@ -110,8 +110,7 @@ namespace LL_ENet
             }
             bool connect_to_server()
             {
-                if(_F_reset_connection())
-                    return true;
+                _F_reset_connection();
                 _V_client_connection=enet_host_connect(_V_client_host, &_V_address, 2, 0);
                 if(!_V_client_connection)
                     return false;
@@ -221,4 +220,4 @@ namespace LL_ENet
     };
 }
 
-#endif // LL_ENET_CLIENT_H_INCLUDED
+#endif // INCLUDED_LL_ENET_CLIENT_H

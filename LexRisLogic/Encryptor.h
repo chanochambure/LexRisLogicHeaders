@@ -1,5 +1,5 @@
-#ifndef LL_ENCRYPTOR_H_INCLUDED
-#define LL_ENCRYPTOR_H_INCLUDED
+#ifndef INCLUDED_LL_ENCRYPTOR_H
+#define INCLUDED_LL_ENCRYPTOR_H
 
 #include <string>
 #include <list>
@@ -127,4 +127,4 @@ namespace LL
     };
 }
 
-#endif // LL_ENCRYPTOR_H_INCLUDED
+#endif // INCLUDED_LL_ENCRYPTOR_H

@@ -1,9 +1,9 @@
-#ifndef LL_AL5_BITMAP_H_INCLUDED
-#define LL_AL5_BITMAP_H_INCLUDED
+#ifndef INCLUDED_LL_AL5_BITMAP_H
+#define INCLUDED_LL_AL5_BITMAP_H
 
 #include <string>
 
-namespace LL_Allegro5
+namespace LL_AL5
 {
     bool save_bitmap(std::string name,ALLEGRO_BITMAP* bmp)
     {
@@ -15,18 +15,18 @@ namespace LL_Allegro5
         protected:
             int flag=0;
             float angle=0;
-            pos_t x=0;
-            pos_t y=0;
+            Type_pos x=0;
+            Type_pos y=0;
             float bmp_scalex=1;
             float bmp_scaley=1;
             bool special_X_pos=0;
             bool special_Y_pos=0;
         public:
-            void set_pos(pos_t xx,pos_t yy){x=xx;y=yy;}
-            void set_posx(pos_t xx){x=xx;}
-            void set_posy(pos_t yy){y=yy;}
-            pos_t get_posx(){return x;}
-            pos_t get_posy(){return y;}
+            void set_pos(Type_pos xx,Type_pos yy){x=xx;y=yy;}
+            void set_posx(Type_pos xx){x=xx;}
+            void set_posy(Type_pos yy){y=yy;}
+            Type_pos get_posx(){return x;}
+            Type_pos get_posy(){return y;}
             void set_angle(float an){angle=an;}
             float get_angle(){return angle;}
             void set_flag(int f){flag=f;}
@@ -47,29 +47,29 @@ namespace LL_Allegro5
             float get_sizex(){return Xsize;}
             float get_sizey(){return Ysize;}
             void set_target(){if(bmp)al_set_target_bitmap(bmp);}
-            ALLEGRO_COLOR get_pixel(pos_t x,pos_t y){return al_get_pixel(bmp,x,y);}
+            ALLEGRO_COLOR get_pixel(Type_pos x,Type_pos y){return al_get_pixel(bmp,x,y);}
             bool create(int s_X,int s_Y){destroy();bmp=al_create_bitmap(s_X,s_Y);if(bmp){Xsize=s_X;Ysize=s_Y;return 1;}return 0;}
             bool destroy(){if(bmp){al_destroy_bitmap(bmp);bmp=nullptr;return 1;}return 0;}
             bool lock(){return al_lock_bitmap(bmp,ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);}
             void unlock(){al_unlock_bitmap(bmp);}
             void draw()
             {
-                const pos_t size_in_axe_x=(Xsize*scale_x*bmp_scalex);
-                const pos_t size_in_axe_y=(Ysize*scale_y*bmp_scaley);
+                const Type_pos size_in_axe_x=(Xsize*bitmap_scale_x*bmp_scalex);
+                const Type_pos size_in_axe_y=(Ysize*bitmap_scale_y*bmp_scaley);
                 al_draw_scaled_rotated_bitmap(bmp,
                                               Xsize/2,
                                               Ysize/2,
                                               x+(!special_X_pos*(size_in_axe_x/2)),
                                               y+(!special_Y_pos*(size_in_axe_y/2)),
-                                              scale_x*bmp_scalex,
-                                              scale_y*bmp_scaley,
+                                              bitmap_scale_x*bmp_scalex,
+                                              bitmap_scale_y*bmp_scaley,
                                               angle,
                                               flag);
             }
             void draw_in_another_target()
             {
-                const pos_t size_in_axe_x=(Xsize*bmp_scalex);
-                const pos_t size_in_axe_y=(Ysize*bmp_scaley);
+                const Type_pos size_in_axe_x=(Xsize*bmp_scalex);
+                const Type_pos size_in_axe_y=(Ysize*bmp_scaley);
                 al_draw_scaled_rotated_bitmap(bmp,
                                               Xsize/2,
                                               Ysize/2,
@@ -88,15 +88,15 @@ namespace LL_Allegro5
     {
         private:
             ALLEGRO_BITMAP* parent=nullptr;
-            pos_t sub_x=0;
-            pos_t sub_y=0;
+            Type_pos sub_x=0;
+            Type_pos sub_y=0;
         public:
             void set_bitmap_parent(ALLEGRO_BITMAP* ft){parent=ft;}
             ALLEGRO_BITMAP* get_bitmap_parent(){return parent;}
-            void set_sub_x(pos_t nx){sub_x=nx;}
-            void set_sub_y(pos_t ny){sub_y=ny;}
-            pos_t get_sub_x(){return sub_x;}
-            pos_t get_sub_y(){return sub_y;}
+            void set_sub_x(Type_pos nx){sub_x=nx;}
+            void set_sub_y(Type_pos ny){sub_y=ny;}
+            Type_pos get_sub_x(){return sub_x;}
+            Type_pos get_sub_y(){return sub_y;}
             void set_sizex(int s_x){Xsize=s_x;}
             void set_sizey(int s_y){Ysize=s_y;}
             bool create_sub_bitmap(){destroy();bmp=al_create_sub_bitmap(parent,sub_x,sub_y,Xsize,Ysize);return bmp;}
@@ -114,4 +114,4 @@ namespace LL_Allegro5
     };
 }
 
-#endif // LL_AL5_BITMAP_H_INCLUDED
+#endif // INCLUDED_LL_AL5_BITMAP_H

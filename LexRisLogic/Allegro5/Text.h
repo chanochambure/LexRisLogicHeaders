@@ -1,9 +1,9 @@
-#ifndef LL_AL5_TEXT_H_INCLUDED
-#define LL_AL5_TEXT_H_INCLUDED
+#ifndef INCLUDED_LL_AL5_TEXT_H
+#define INCLUDED_LL_AL5_TEXT_H
 
 #include <string>
 
-namespace LL_Allegro5
+namespace LL_AL5
 {
     class LL_Font
     {
@@ -45,14 +45,14 @@ namespace LL_Allegro5
             int flag=0;
             std::string _message;
             ALLEGRO_COLOR TextColor;
-            pos_t x=0;
-            pos_t y=0;
+            Type_pos x=0;
+            Type_pos y=0;
         public:
-            void set_pos(pos_t xx,pos_t yy){x=xx;y=yy;}
-            void set_posx(pos_t xx){x=xx;}
-            void set_posy(pos_t yy){y=yy;}
-            pos_t get_posx(){return x;}
-            pos_t get_posy(){return y;}
+            void set_pos(Type_pos xx,Type_pos yy){x=xx;y=yy;}
+            void set_posx(Type_pos xx){x=xx;}
+            void set_posy(Type_pos yy){y=yy;}
+            Type_pos get_posx(){return x;}
+            Type_pos get_posy(){return y;}
             void set_flag(int _flag){flag=_flag;}
             void set_color(ALLEGRO_COLOR Other){TextColor=Other;}
             ALLEGRO_COLOR get_color(){return TextColor;}
@@ -66,4 +66,4 @@ namespace LL_Allegro5
     };
 }
 
-#endif // LL_AL5_TEXT_H_INCLUDED
+#endif // INCLUDED_LL_AL5_TEXT_H

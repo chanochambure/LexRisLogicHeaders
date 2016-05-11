@@ -1,90 +1,88 @@
-#ifndef LL_AL5_DISPLAY_H_INCLUDED
-#define LL_AL5_DISPLAY_H_INCLUDED
+#ifndef INCLUDED_LL_AL5_DISPLAY_H
+#define INCLUDED_LL_AL5_DISPLAY_H
 
 #include <string>
 
-namespace LL_Allegro5
+namespace LL_AL5
 {
-    class LL_Display
+    class Display
     {
         private:
-            //Display
-            ALLEGRO_DISPLAY* display=nullptr;
-            ALLEGRO_MOUSE_CURSOR* cursor=nullptr;
-            display_size_t X;
-            display_size_t Y;
-            int FT=ALLEGRO_WINDOWED;
-            bool _destroy(){if(display){al_destroy_display(display);display=nullptr;return 1;}return 0;}
-            void _create(){_destroy();al_set_new_display_flags(FT);display=al_create_display(X,Y);al_flip_display();}
-            //Camera
-            display_size_t RealSizeX;
-            display_size_t RealSizeY;
-            display_size_t LastDisplayX=1;
-            display_size_t LastDisplayY=1;
-            pos_t camx=0;
-            pos_t camy=0;
+            ALLEGRO_DISPLAY* _V_display=nullptr;
+            ALLEGRO_MOUSE_CURSOR* _V_cursor=nullptr;
+            Type_display_size X;
+            Type_display_size Y;
+            Type_display_size RealSizeX;
+            Type_display_size RealSizeY;
+            Type_display_size LastDisplayX=1;
+            Type_display_size LastDisplayY=1;
+            Type_pos camx=0;
+            Type_pos camy=0;
+            int _V_display_mode=ALLEGRO_WINDOWED;
+            bool _F_destroy(){if(_V_display){al_destroy_display(_V_display);_V_display=nullptr;return 1;}return 0;}
+            void _F_create(){_F_destroy();al_set_new_display_flags(_V_display_mode);_V_display=al_create_display(X,Y);al_flip_display();}
             void _refresh_scale()
             {
                 camx=((camx*X)/(LastDisplayX));
                 camy=((camy*Y)/(LastDisplayY));
                 LastDisplayX=X;
                 LastDisplayY=Y;
-                scale_x=float(X)/RealSizeX;
-                scale_y=float(Y)/RealSizeY;
-                text_scale=((scale_x-scale_y)/2)+scale_y;
+                bitmap_scale_x=float(X)/RealSizeX;
+                bitmap_scale_y=float(Y)/RealSizeY;
+                text_scale=((bitmap_scale_x-bitmap_scale_y)/2)+bitmap_scale_y;
                 if(text_scale<1)
                     primitives_scale=1;
                 else
                     primitives_scale=text_scale;
             }
         public:
-            LL_Display(display_size_t SizeX,display_size_t SizeY){RealSizeX=X=SizeX;RealSizeY=Y=SizeY;_create();_refresh_scale();}
-            LL_Display(display_size_t SizeX,display_size_t SizeY,display_size_t RealX,display_size_t RealY){X=SizeX;Y=SizeY;RealSizeX=RealX;RealSizeY=RealY;_create();_refresh_scale();}
-            void set_title(std::string T){al_set_window_title(display,T.c_str());}
-            void resize(display_size_t SizeX,display_size_t SizeY){X=SizeX;Y=SizeY;al_resize_display(display,X,Y);_refresh_scale();}
-            display_size_t get_sizex(){return X;}
-            display_size_t get_sizey(){return Y;}
-            void set_realsize(display_size_t rsx,display_size_t rsy){RealSizeX=rsx;RealSizeY=rsy;_refresh_scale();}
-            display_size_t get_realsizex(){return RealSizeX;}
-            display_size_t get_realsizey(){return RealSizeY;}
-            void set_target(){al_set_target_backbuffer(display);}
-            void set_flag(int F){FT=F;_create();}
+            Display(Type_display_size SizeX,Type_display_size SizeY){RealSizeX=X=SizeX;RealSizeY=Y=SizeY;_F_create();_refresh_scale();}
+            Display(Type_display_size SizeX,Type_display_size SizeY,Type_display_size RealX,Type_display_size RealY){X=SizeX;Y=SizeY;RealSizeX=RealX;RealSizeY=RealY;_F_create();_refresh_scale();}
+            void set_title(std::string T){al_set_window_title(_V_display,T.c_str());}
+            void resize(Type_display_size SizeX,Type_display_size SizeY){X=SizeX;Y=SizeY;al_resize_display(_V_display,X,Y);_refresh_scale();}
+            Type_display_size get_sizex(){return X;}
+            Type_display_size get_sizey(){return Y;}
+            void set_realsize(Type_display_size rsx,Type_display_size rsy){RealSizeX=rsx;RealSizeY=rsy;_refresh_scale();}
+            Type_display_size get_realsizex(){return RealSizeX;}
+            Type_display_size get_realsizey(){return RealSizeY;}
+            void set_target(){al_set_target_backbuffer(_V_display);}
+            void set_flag(int F){_V_display_mode=F;_F_create();}
             void refresh(){al_flip_display();}
             void clear(){al_clear_to_color(al_map_rgb(255,255,255));}
             void clear_to_color(ALLEGRO_COLOR color){al_clear_to_color(color);}
-            void set_cam(pos_t x,pos_t y){camx=(x*scale_x);camy=(y*scale_y);}
-            void set_camx(pos_t x){camx=(x*scale_x);}
-            void set_camy(pos_t y){camy=(y*scale_y);}
-            pos_t get_camx(){return camx/scale_x;}
-            pos_t get_camy(){return camy/scale_y;}
-            void plus_x(pos_t px){camx+=(px*scale_x);}
-            void plus_y(pos_t py){camy+=(py*scale_y);}
-            pos_t convert_display_posx_to_cam_posx(pos_t x,bool in=1){return (x+(camx*in))/scale_x;}
-            pos_t convert_display_posy_to_cam_posy(pos_t y,bool in=1){return (y+(camy*in))/scale_y;}
-            bool show_cursor(){return al_show_mouse_cursor(display);}
-            bool hide_cursor(){return al_hide_mouse_cursor(display);}
+            void set_cam(Type_pos x,Type_pos y){camx=(x*bitmap_scale_x);camy=(y*bitmap_scale_y);}
+            void set_camx(Type_pos x){camx=(x*bitmap_scale_x);}
+            void set_camy(Type_pos y){camy=(y*bitmap_scale_y);}
+            Type_pos get_camx(){return camx/bitmap_scale_x;}
+            Type_pos get_camy(){return camy/bitmap_scale_y;}
+            void plus_x(Type_pos px){camx+=(px*bitmap_scale_x);}
+            void plus_y(Type_pos py){camy+=(py*bitmap_scale_y);}
+            Type_pos convert_display_posx_to_cam_posx(Type_pos x,bool in=1){return (x+(camx*in))/bitmap_scale_x;}
+            Type_pos convert_display_posy_to_cam_posy(Type_pos y,bool in=1){return (y+(camy*in))/bitmap_scale_y;}
+            bool show_cursor(){return al_show_mouse_cursor(_V_display);}
+            bool hide_cursor(){return al_hide_mouse_cursor(_V_display);}
             bool set_cursor(ALLEGRO_BITMAP* bitmap,int x_focus,int y_focus)
             {
                 destroy_cursor();
-                if((cursor=al_create_mouse_cursor(bitmap,x_focus,y_focus)))
-                    return al_set_mouse_cursor(display,cursor);
+                if((_V_cursor=al_create_mouse_cursor(bitmap,x_focus,y_focus)))
+                    return al_set_mouse_cursor(_V_display,_V_cursor);
                 return 0;
             }
-            void destroy_cursor(){if(cursor)al_destroy_mouse_cursor(cursor);cursor=nullptr;}
+            void destroy_cursor(){if(_V_cursor)al_destroy_mouse_cursor(_V_cursor);_V_cursor=nullptr;}
             template<typename T>
             void draw(T* data,bool in=1)
             {
-                pos_t xx=data->get_posx();
-                pos_t yy=data->get_posy();
-                data->set_pos(((xx)*(scale_x)-(camx*in)),((yy)*(scale_y)-(camy*in)));
+                Type_pos xx=data->get_posx();
+                Type_pos yy=data->get_posy();
+                data->set_pos(((xx)*(bitmap_scale_x)-(camx*in)),((yy)*(bitmap_scale_y)-(camy*in)));
                 data->draw();
                 data->set_pos(xx,yy);
             }
-            operator ALLEGRO_DISPLAY*& (){return display;}
-            operator ALLEGRO_BITMAP* (){return al_get_backbuffer(display);}
-            operator ALLEGRO_MOUSE_CURSOR* (){return cursor;}
-            ~LL_Display(){_destroy();destroy_cursor();}
+            operator ALLEGRO_DISPLAY*& (){return _V_display;}
+            operator ALLEGRO_BITMAP* (){return al_get_backbuffer(_V_display);}
+            operator ALLEGRO_MOUSE_CURSOR* (){return _V_cursor;}
+            ~Display(){_F_destroy();destroy_cursor();}
     };
 }
 
-#endif // LL_AL5_DISPLAY_H_INCLUDED
+#endif // INCLUDED_LL_AL5_DISPLAY_H

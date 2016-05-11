@@ -1,5 +1,5 @@
-#ifndef LL_CONVERT_H_INCLUDED
-#define LL_CONVERT_H_INCLUDED
+#ifndef INCLUDED_LL_CONVERT_H
+#define INCLUDED_LL_CONVERT_H
 
 #include <sstream>
 #include <string>
@@ -31,4 +31,4 @@ namespace LL
     }
 }
 
-#endif // LL_CONVERT_H_INCLUDED
+#endif // INCLUDED_LL_CONVERT_H

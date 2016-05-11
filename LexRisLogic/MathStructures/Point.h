@@ -1,5 +1,5 @@
-#ifndef LL_MATH_STRUCTURE_POINT_H_INCLUDED
-#define LL_MATH_STRUCTURE_POINT_H_INCLUDED
+#ifndef INCLUDED_LL_MATHSTRUCTURE_POINT_H
+#define INCLUDED_LL_MATHSTRUCTURE_POINT_H
 
 #include <math.h>
 #include <iostream>
@@ -10,12 +10,12 @@ namespace LL_MathStructure
     class Point
     {
         private:
-            float _V_dots[DIMENSION];
+            float _V_coordinates[DIMENSION];
         public:
             Point()
             {
                 for(unsigned int i=0;i<DIMENSION;++i)
-                    _V_dots[i]=0;
+                    _V_coordinates[i]=0;
             }
             unsigned int get_dimension()
             {
@@ -23,7 +23,7 @@ namespace LL_MathStructure
             }
             float& operator [](unsigned int index)
             {
-                return _V_dots[index];
+                return _V_coordinates[index];
             }
             Point<DIMENSION>& operator = (Point<DIMENSION> another_point)
             {
@@ -79,4 +79,4 @@ namespace LL_MathStructure
     }
 }
 
-#endif // LL_MATH_STRUCTURE_POINT_H_INCLUDED
+#endif // INCLUDED_LL_MATHSTRUCTURE_POINT_H
