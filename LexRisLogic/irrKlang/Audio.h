@@ -37,13 +37,13 @@ namespace LL_irrKlang
             bool set_pan(float new_pan)
             {
                 if(_V_isound)
-                    _V_isound->setPan(new_pan);
+                    _V_isound->setPan(new_pan*-1);
                 return _V_isound;
             }
             float get_pan()
             {
                 if(_V_isound)
-                    return _V_isound->getPan();
+                    return (_V_isound->getPan()*-1);
                 return 0;
             }
             void set_volume(float new_volume)

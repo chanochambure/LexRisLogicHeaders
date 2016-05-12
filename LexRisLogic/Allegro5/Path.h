@@ -5,26 +5,26 @@
 
 namespace LL_AL5
 {
-    std::string get_current_absolute_directory()
+    std::string get_current_directory()
     {
-        char* _dir=al_get_current_directory();
-        std::string dir;
-        if(_dir)
+        char* actual_dir=al_get_current_directory();
+        std::string return_dir;
+        if(actual_dir)
         {
-            dir=_dir;
-            al_free(_dir);
+            return_dir=actual_dir;
+            al_free(actual_dir);
         }
-        return dir;
+        return return_dir;
     }
 
-    bool change_directory(std::string path)
+    bool change_directory(std::string new_path)
     {
-        return al_change_directory(path.c_str());
+        return al_change_directory(new_path.c_str());
     }
 
-    bool make_directory(std::string dir)
+    bool make_directory(std::string new_dir)
     {
-        return al_make_directory(dir.c_str());
+        return al_make_directory(new_dir.c_str());
     }
 
     bool path_exists(std::string path)
@@ -32,7 +32,7 @@ namespace LL_AL5
         return al_filename_exists(path.c_str());
     }
 
-    bool remove_filename(std::string path)
+    bool remove_path(std::string path)
     {
         return al_remove_filename(path.c_str());
     }

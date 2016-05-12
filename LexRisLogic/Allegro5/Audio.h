@@ -5,48 +5,163 @@
 
 namespace LL_AL5
 {
-    class LL_Audio
+    class Audio
     {
         private:
-            unsigned int _ps=0;
-            ALLEGRO_PLAYMODE _mode=ALLEGRO_PLAYMODE_ONCE;
-            ALLEGRO_SAMPLE* sample=nullptr;
-            ALLEGRO_SAMPLE_INSTANCE* instance=nullptr;
-            std::string audio_path;
+            unsigned int _V_position=0;
+            std::string _V_audio_path;
+            ALLEGRO_PLAYMODE _V_playmode=ALLEGRO_PLAYMODE_ONCE;
+            ALLEGRO_SAMPLE* _V_sample=nullptr;
+            ALLEGRO_SAMPLE_INSTANCE* _V_instance=nullptr;
         public:
-            void set_path(std::string new_path){audio_path=new_path;}
-            std::string get_path(){return audio_path;}
-            bool set_speed(float sp){if(instance)return al_set_sample_instance_speed(instance,sp);return 0;}
-            float get_speed(){if(instance)return al_get_sample_instance_speed(instance);return 0;}
-            bool set_pan(float pn){if(instance)return al_set_sample_instance_pan(instance,pn);return 0;}
-            float get_pan(){if(instance)return al_get_sample_instance_pan(instance);return 0;}
-            bool set_volume(float vl){if(instance)return al_set_sample_instance_gain(instance,vl);return 0;}
-            float get_volume(){if(instance)return al_get_sample_instance_gain(instance);return 0;}
-            void set_mode(ALLEGRO_PLAYMODE flag){if(instance)al_set_sample_instance_playmode(instance,flag);}
-            bool load();
-            unsigned int get_size(){return al_get_sample_length(sample);}
-            void set_position(unsigned int pos){al_set_sample_instance_position(instance,_ps=pos);}
-            unsigned int get_position(){if(instance)return al_get_sample_instance_position(instance);return 0;}
-            bool is_playing(){return al_get_sample_instance_playing(instance);}
-            void stop(){al_stop_sample_instance(instance);_ps=0;}
-            void pause(){if(is_playing()){_ps=get_position();al_set_sample_instance_playing(instance,false);}}
-            void play(){if(!is_playing()){set_position(_ps);al_set_sample_instance_playing(instance,true);}}
-            bool destroy(){if(instance){al_destroy_sample_instance(instance);instance=nullptr;}if(sample){al_destroy_sample(sample);sample=nullptr;return 1;}return 0;}
-            operator ALLEGRO_SAMPLE* (){return sample;}
-            operator ALLEGRO_SAMPLE_INSTANCE* (){return instance;}
-            ~LL_Audio(){destroy();}
+            void set_path(std::string new_audio_path)
+            {
+                _V_audio_path=new_audio_path;
+            }
+            std::string get_path()
+            {
+                return _V_audio_path;
+            }
+            bool set_speed(float new_speed)
+            {
+                if(_V_instance)
+                    return al_set_sample_instance_speed(_V_instance,new_speed);
+                return 0;
+            }
+            float get_speed()
+            {
+                if(_V_instance)
+                    return al_get_sample_instance_speed(_V_instance);
+                return 0;
+            }
+            bool set_pan(float new_pan)
+            {
+                if(_V_instance)
+                    return al_set_sample_instance_pan(_V_instance,new_pan);
+                return 0;
+            }
+            float get_pan()
+            {
+                if(_V_instance)
+                    return al_get_sample_instance_pan(_V_instance);
+                return 0;
+            }
+            bool set_volume(float new_volume)
+            {
+                if(_V_instance)
+                    return al_set_sample_instance_gain(_V_instance,new_volume);
+                return 0;
+            }
+            float get_volume()
+            {
+                if(_V_instance)
+                    return al_get_sample_instance_gain(_V_instance);
+                return 0;
+            }
+            bool set_playmode(ALLEGRO_PLAYMODE playmode)
+            {
+                if(_V_instance)
+                    return al_set_sample_instance_playmode(_V_instance,playmode);
+                return 0;
+            }
+            ALLEGRO_PLAYMODE get_playmode()
+            {
+                return _V_playmode;
+            }
+            bool load()
+            {
+                destroy();
+                if(!al_reserve_samples(1))
+                    return false;
+                _V_sample=al_load_sample(_V_audio_path.c_str());
+                if(_V_sample)
+                    _V_instance=al_create_sample_instance(_V_sample);
+                if(_V_instance)
+                    al_attach_sample_instance_to_mixer(_V_instance,al_get_default_mixer());
+                return (_V_sample and _V_instance);
+            }
+            unsigned int size()
+            {
+                if(_V_sample)
+                    return al_get_sample_length(_V_sample);
+                return 0;
+            }
+            float get_time()
+            {
+                if(_V_instance)
+                    return al_get_sample_instance_time(_V_instance);
+                return 0;
+            }
+            bool set_position(unsigned int new_position)
+            {
+                if(_V_instance and al_set_sample_instance_position(_V_instance,new_position))
+                {
+                    _V_position=new_position;
+                    return true;
+                }
+                return false;
+            }
+            unsigned int get_position()
+            {
+                if(_V_instance)
+                    return al_get_sample_instance_position(_V_instance);
+                return 0;
+            }
+            bool is_playing()
+            {
+                if(_V_instance)
+                    return al_get_sample_instance_playing(_V_instance);
+                return false;
+            }
+            void stop()
+            {
+                if(_V_instance)
+                {
+                    al_stop_sample_instance(_V_instance);
+                    _V_position=0;
+                }
+            }
+            void pause()
+            {
+                if(is_playing())
+                {
+                    al_set_sample_instance_playing(_V_instance,false);
+                    _V_position=get_position();
+                }
+            }
+            void play()
+            {
+                if(!is_playing() and set_position(_V_position))
+                    al_set_sample_instance_playing(_V_instance,true);
+            }
+            bool destroy()
+            {
+                if(_V_instance)
+                {
+                    al_destroy_sample_instance(_V_instance);
+                    _V_instance=nullptr;
+                    if(_V_sample)
+                    {
+                        al_destroy_sample(_V_sample);
+                        _V_sample=nullptr;
+                        return true;
+                    }
+                }
+                return false;
+            }
+            operator ALLEGRO_SAMPLE* ()
+            {
+                return _V_sample;
+            }
+            operator ALLEGRO_SAMPLE_INSTANCE* ()
+            {
+                return _V_instance;
+            }
+            ~Audio()
+            {
+                destroy();
+            }
     };
-
-    bool LL_Audio::load()
-    {
-        destroy();
-        if(!al_reserve_samples(1))
-            return false;
-        sample=al_load_sample(audio_path.c_str());
-        if(sample)instance=al_create_sample_instance(sample);
-        if(instance)al_attach_sample_instance_to_mixer(instance,al_get_default_mixer());
-        return (sample and instance);
-    }
 }
 
 #endif // INCLUDED_LL_AL5_AUDIO_H
