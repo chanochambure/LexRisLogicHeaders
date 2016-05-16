@@ -35,19 +35,19 @@ namespace LL_MathStructure
             {
                 _V_end_point=point;
             }
-            float get_posx_ini_point()
+            float get_pos_x_ini_point()
             {
                 return _V_ini_point[0];
             }
-            float get_posy_ini_point()
+            float get_pos_y_ini_point()
             {
                 return _V_ini_point[1];
             }
-            float get_posx_end_point()
+            float get_pos_x_end_point()
             {
                 return _V_end_point[0];
             }
-            float get_posy_end_point()
+            float get_pos_y_end_point()
             {
                 return _V_end_point[1];
             }
@@ -65,41 +65,41 @@ namespace LL_MathStructure
 
     bool intersection_of_lines(LineSegment first_segment,LineSegment second_segment,float* x=nullptr,float* y=nullptr)
     {
-        if((first_segment.get_posx_ini_point()==first_segment.get_posx_end_point()
-                and first_segment.get_posy_ini_point()==first_segment.get_posy_end_point())
-                or (second_segment.get_posx_ini_point()==second_segment.get_posx_end_point()
-                and second_segment.get_posy_ini_point()==second_segment.get_posy_end_point()))
+        if((first_segment.get_pos_x_ini_point()==first_segment.get_pos_x_end_point()
+                and first_segment.get_pos_y_ini_point()==first_segment.get_pos_y_end_point())
+                or (second_segment.get_pos_x_ini_point()==second_segment.get_pos_x_end_point()
+                and second_segment.get_pos_y_ini_point()==second_segment.get_pos_y_end_point()))
             return false;
-        if(((first_segment.get_posx_end_point()-first_segment.get_posx_ini_point())
-                *(second_segment.get_posy_end_point()-second_segment.get_posy_ini_point()))
-                !=((first_segment.get_posy_end_point()-first_segment.get_posy_ini_point())
-                *(second_segment.get_posx_end_point()-second_segment.get_posx_ini_point())))
+        if(((first_segment.get_pos_x_end_point()-first_segment.get_pos_x_ini_point())
+                *(second_segment.get_pos_y_end_point()-second_segment.get_pos_y_ini_point()))
+                !=((first_segment.get_pos_y_end_point()-first_segment.get_pos_y_ini_point())
+                *(second_segment.get_pos_x_end_point()-second_segment.get_pos_x_ini_point())))
         {
             float intersection_point_x,intersection_point_y;
-            if(first_segment.get_posx_end_point()==first_segment.get_posx_ini_point())
+            if(first_segment.get_pos_x_end_point()==first_segment.get_pos_x_ini_point())
             {
-                float m2=((second_segment.get_posy_end_point()-second_segment.get_posy_ini_point())/
-                          (second_segment.get_posx_end_point()-second_segment.get_posx_ini_point()));
-                float b2=second_segment.get_posy_ini_point()-m2*second_segment.get_posx_ini_point();
-                intersection_point_x=first_segment.get_posx_ini_point();
+                float m2=((second_segment.get_pos_y_end_point()-second_segment.get_pos_y_ini_point())/
+                          (second_segment.get_pos_x_end_point()-second_segment.get_pos_x_ini_point()));
+                float b2=second_segment.get_pos_y_ini_point()-m2*second_segment.get_pos_x_ini_point();
+                intersection_point_x=first_segment.get_pos_x_ini_point();
                 intersection_point_y=m2*intersection_point_x+b2;
             }
-            else if(second_segment.get_posx_end_point()==second_segment.get_posx_ini_point())
+            else if(second_segment.get_pos_x_end_point()==second_segment.get_pos_x_ini_point())
             {
-                float m1=((first_segment.get_posy_end_point()-first_segment.get_posy_ini_point())/
-                          (first_segment.get_posx_end_point()-first_segment.get_posx_ini_point()));
-                float b1=first_segment.get_posy_ini_point()-m1*first_segment.get_posx_ini_point();
-                intersection_point_x=second_segment.get_posx_ini_point();
+                float m1=((first_segment.get_pos_y_end_point()-first_segment.get_pos_y_ini_point())/
+                          (first_segment.get_pos_x_end_point()-first_segment.get_pos_x_ini_point()));
+                float b1=first_segment.get_pos_y_ini_point()-m1*first_segment.get_pos_x_ini_point();
+                intersection_point_x=second_segment.get_pos_x_ini_point();
                 intersection_point_y=m1*intersection_point_x+b1;
             }
             else
             {
-                float m1=((first_segment.get_posy_end_point()-first_segment.get_posy_ini_point())/
-                          (first_segment.get_posx_end_point()-first_segment.get_posx_ini_point()));
-                float b1=first_segment.get_posy_ini_point()-m1*first_segment.get_posx_ini_point();
-                float m2=((second_segment.get_posy_end_point()-second_segment.get_posy_ini_point())/
-                          (second_segment.get_posx_end_point()-second_segment.get_posx_ini_point()));
-                float b2=second_segment.get_posy_ini_point()-m2*second_segment.get_posx_ini_point();
+                float m1=((first_segment.get_pos_y_end_point()-first_segment.get_pos_y_ini_point())/
+                          (first_segment.get_pos_x_end_point()-first_segment.get_pos_x_ini_point()));
+                float b1=first_segment.get_pos_y_ini_point()-m1*first_segment.get_pos_x_ini_point();
+                float m2=((second_segment.get_pos_y_end_point()-second_segment.get_pos_y_ini_point())/
+                          (second_segment.get_pos_x_end_point()-second_segment.get_pos_x_ini_point()));
+                float b2=second_segment.get_pos_y_ini_point()-m2*second_segment.get_pos_x_ini_point();
                 intersection_point_x=(b2-b1)/(m1-m2);
                 intersection_point_y=m1*intersection_point_x+b1;
             }

@@ -176,8 +176,8 @@ namespace LL_AL5
             template<typename T>
             void draw(T* object,bool references_axes=true)
             {
-                Type_pos data_pos_x=object->get_posx();
-                Type_pos data_pos_y=object->get_posy();
+                Type_pos data_pos_x=object->get_pos_x();
+                Type_pos data_pos_y=object->get_pos_y();
                 object->set_pos(((data_pos_x)*(bitmap_scale_x)-(_V_cam_pos_x*references_axes)),
                               ((data_pos_y)*(bitmap_scale_y)-(_V_cam_pos_y*references_axes)));
                 object->draw();

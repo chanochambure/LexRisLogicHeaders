@@ -50,17 +50,17 @@ namespace LL_MathStructure
     {
         if(polygon.size()>2)
         {
-            float max_posx=polygon[0][0];
+            float max_pos_x=polygon[0][0];
             for(unsigned int i=1;i<polygon.size();++i)
             {
-                if(polygon[i][0]>max_posx)
-                    max_posx=polygon[i][0];
+                if(polygon[i][0]>max_pos_x)
+                    max_pos_x=polygon[i][0];
             }
             unsigned int count_intersection=0;
             for(unsigned int i=0;i<polygon.size();++i)
             {
                 unsigned int j=(i+1)%polygon.size();
-                count_intersection+=intersection_of_line_segments(LineSegment(point,create_point(max_posx+1,point[1])),
+                count_intersection+=intersection_of_line_segments(LineSegment(point,create_point(max_pos_x+1,point[1])),
                                                     LineSegment(polygon[i],polygon[j]));
             }
             return count_intersection%2;

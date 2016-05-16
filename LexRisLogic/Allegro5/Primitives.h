@@ -3,246 +3,588 @@
 
 namespace LL_AL5
 {
-    class LL_Pixel
+    class Pixel
     {
         private:
-            Type_pos x=0;
-            Type_pos y=0;
-            ALLEGRO_COLOR _Color=al_map_rgb(0,0,0);
+            Type_pos _V_pos_x=0;
+            Type_pos _V_pos_y=0;
+            ALLEGRO_COLOR _V_color=al_map_rgb(0,0,0);
         public:
-            LL_Pixel(){}
-            LL_Pixel(Type_pos a,Type_pos b){set_pos(a,b);}
-            void set_pos(Type_pos xx,Type_pos yy){x=xx;y=yy;}
-            void set_posx(Type_pos xx){x=xx;}
-            void set_posy(Type_pos yy){y=yy;}
-            Type_pos get_posx(){return x;}
-            Type_pos get_posy(){return y;}
-            void set_color(ALLEGRO_COLOR Other){_Color=Other;}
-            ALLEGRO_COLOR get_color(){return _Color;}
-            void draw(){al_draw_filled_rectangle(x,y,x+bitmap_scale_x,y+bitmap_scale_y,_Color);}
-            void draw_in_another_target(){al_put_pixel(x,y,_Color);}
-    };
-
-    class LL_Line
-    {
-        private:
-            Type_pos camx=0;
-            Type_pos camy=0;
-            Type_pos x1=0;
-            Type_pos y1=0;
-            Type_pos x2=0;
-            Type_pos y2=0;
-            ALLEGRO_COLOR _Color=al_map_rgb(0,0,0);
-            float _size=1;
-        public:
-            LL_Line(){}
-            LL_Line(Type_pos posx1,Type_pos posy1,Type_pos posx2,Type_pos posy2){x1=posx1;y1=posy1;x2=posx2;y2=posy2;}
-            void set_pos(Type_pos xx,Type_pos yy){camx=xx;camy=yy;}
-            void set_posx(Type_pos x){camx=x;}
-            void set_posy(Type_pos y){camy=y;}
-            Type_pos get_posx(){return camx;}
-            Type_pos get_posy(){return camy;}
-            void set_points(float posx1,float posy1,float posx2,float posy2){x1=posx1;y1=posy1;x2=posx2;y2=posy2;}
-            void set_point_1(Type_pos xx,Type_pos yy){x1=xx;y1=yy;}
-            Type_pos get_posx_point1(){return x1;}
-            Type_pos get_posy_point1(){return y1;}
-            void set_point_2(Type_pos xx,Type_pos yy){x2=xx;y2=yy;}
-            Type_pos get_posx_point2(){return x2;}
-            Type_pos get_posy_point2(){return y2;}
-            void set_color(ALLEGRO_COLOR Other){_Color=Other;}
-            ALLEGRO_COLOR get_color(){return _Color;}
-            void set_thickness(float ot){_size=ot;}
-            float get_thickness(){return _size;}
-            void draw(){al_draw_line((x1*bitmap_scale_x)+camx,(y1*bitmap_scale_y)+camy,(x2*bitmap_scale_x)+camx,(y2*bitmap_scale_y)+camy,_Color,_size*primitives_scale);}
-            void draw_in_another_target(){al_draw_line(x1+camx,y1+camy,x2+camx,y2+camy,_Color,_size);}
-    };
-
-    class LL_Primitive
-    {
-        protected:
-            bool _filled=0;
-            float _size=1;
-            ALLEGRO_COLOR _Color=al_map_rgb(0,0,0);
-        public:
-            void set_thickness(float ot){_size=ot;}
-            float get_thickness(){return _size;}
-            void set_color(ALLEGRO_COLOR Other){_Color=Other;}
-            ALLEGRO_COLOR get_color(){return _Color;}
-            void set_is_filled(bool op){_filled=op;}
-            bool is_filled(){return _filled;}
-    };
-
-    class LL_Figure:public LL_Primitive
-    {
-        protected:
-            Type_pos x=0;
-            Type_pos y=0;
-        public:
-            void set_pos(Type_pos xx,Type_pos yy){x=xx;y=yy;}
-            void set_posx(Type_pos xx){x=xx;}
-            void set_posy(Type_pos yy){y=yy;}
-            Type_pos get_posx(){return x;}
-            Type_pos get_posy(){return y;}
-    };
-
-    class LL_Circle:public LL_Figure
-    {
-        private:
-            float _ratio=1;
-        public:
-            LL_Circle(){}
-            LL_Circle(Type_pos a,Type_pos b,float r){set_pos(a,b);_ratio=r;}
-            void set_ratio(float ot){_ratio=ot;}
-            float get_ratio(){return _ratio;}
-            void draw(){if(is_filled())al_draw_filled_ellipse(x,y,_ratio*bitmap_scale_x,_ratio*bitmap_scale_y,_Color);al_draw_ellipse(x,y,_ratio*bitmap_scale_x,_ratio*bitmap_scale_y,_Color,_size*primitives_scale);}
-            void draw_in_another_target(){if(is_filled())al_draw_filled_circle(x,y,_ratio,_Color);al_draw_circle(x,y,_ratio,_Color,_size);}
-    };
-
-    class LL_Ellipse:public LL_Figure
-    {
-        private:
-            float _ratiox=1;
-            float _ratioy=1;
-        public:
-            LL_Ellipse(){}
-            LL_Ellipse(Type_pos a,Type_pos b,float rx,float ry){set_pos(a,b);_ratiox=rx;_ratioy=ry;}
-            void set_ratiox(float ot){_ratiox=ot;}
-            float get_ratiox(){return _ratiox;}
-            void set_ratioy(float ot){_ratioy=ot;}
-            float get_ratioy(){return _ratioy;}
-            void draw(){if(is_filled())al_draw_filled_ellipse(x,y,_ratiox*bitmap_scale_x,_ratioy*bitmap_scale_y,_Color);al_draw_ellipse(x,y,_ratiox*bitmap_scale_x,_ratioy*bitmap_scale_y,_Color,_size*primitives_scale);}
-            void draw_in_another_target(){if(is_filled())al_draw_filled_ellipse(x,y,_ratiox,_ratioy,_Color);al_draw_ellipse(x,y,_ratiox,_ratioy,_Color,_size);}
-    };
-
-    class LL_Rectangle:public LL_Figure
-    {
-        private:
-            float _tamx=0;
-            float _tamy=0;
-        public:
-            LL_Rectangle(){}
-            LL_Rectangle(Type_pos posx,Type_pos posy,float tamx,float tamy){set_pos(posx,posy);_tamx=tamx;_tamy=tamy;}
-            void set_sizex(float ot){_tamx=ot;}
-            float get_sizex(){return _tamx;}
-            void set_sizey(float ot){_tamy=ot;}
-            float get_sizey(){return _tamy;}
-            void draw(){if(is_filled())al_draw_filled_rectangle(x,y,x+(_tamx*bitmap_scale_x),y+(_tamy*bitmap_scale_y),_Color);al_draw_rectangle(x,y,x+(_tamx*bitmap_scale_x),y+(_tamy*bitmap_scale_y),_Color,_size*primitives_scale);}
-            void draw_in_another_target(){if(is_filled())al_draw_filled_rectangle(x,y,x+(_tamx),y+(_tamy),_Color);al_draw_rectangle(x,y,x+(_tamx),y+(_tamy),_Color,_size);}
-    };
-
-    class LL_Triangle:public LL_Primitive
-    {
-        private:
-            Type_pos camx=0;
-            Type_pos camy=0;
-            Type_pos x1=0;
-            Type_pos x2=0;
-            Type_pos x3=0;
-            Type_pos y1=0;
-            Type_pos y2=0;
-            Type_pos y3=0;
-        public:
-            LL_Triangle(){}
-            LL_Triangle(float posx1,float posy1,float posx2,float posy2,float posx3,float posy3){x1=posx1;y1=posy1;x2=posx2;y2=posy2;x3=posx3;y3=posy3;}
-            void set_pos(Type_pos xx,Type_pos yy){camx=xx;camy=yy;}
-            void set_posx(Type_pos x){camx=x;}
-            void set_posy(Type_pos y){camy=y;}
-            Type_pos get_posx(){return camx;}
-            Type_pos get_posy(){return camy;}
-            void set_points(float posx1,float posy1,float posx2,float posy2,float posx3,float posy3){x1=posx1;y1=posy1;x2=posx2;y2=posy2;x3=posx3;y3=posy3;}
-            void set_point_1(Type_pos xx,Type_pos yy){x1=xx;y1=yy;}
-            Type_pos get_posx_point1(){return x1;}
-            Type_pos get_posy_point1(){return y1;}
-            void set_point_2(Type_pos xx,Type_pos yy){x2=xx;y2=yy;}
-            Type_pos get_posx_point2(){return x2;}
-            Type_pos get_posy_point2(){return y2;}
-            void set_point_3(Type_pos xx,Type_pos yy){x3=xx;y3=yy;}
-            Type_pos get_posx_point3(){return x3;}
-            Type_pos get_posy_point3(){return y3;}
+            Pixel(){}
+            Pixel(Type_pos pos_x,Type_pos pos_y)
+            {
+                _V_pos_x=pos_x;
+                _V_pos_y=pos_y;
+            }
+            void set_pos(Type_pos new_pos_x,Type_pos new_pos_y)
+            {
+                _V_pos_x=new_pos_x;
+                _V_pos_y=new_pos_y;
+            }
+            void set_pos_x(Type_pos new_pos_x)
+            {
+                _V_pos_x=new_pos_x;
+            }
+            Type_pos get_pos_x()
+            {
+                return _V_pos_x;
+            }
+            void set_pos_y(Type_pos new_pos_y)
+            {
+                _V_pos_y=new_pos_y;
+            }
+            Type_pos get_pos_y()
+            {
+                return _V_pos_y;
+            }
+            void set_color(ALLEGRO_COLOR new_color)
+            {
+                _V_color=new_color;
+            }
+            ALLEGRO_COLOR get_color()
+            {
+                return _V_color;
+            }
             void draw()
             {
-                if(is_filled())
-                    al_draw_filled_triangle(x1*bitmap_scale_x+camx,y1*bitmap_scale_y+camy,x2*bitmap_scale_x+camx,y2*bitmap_scale_y+camy,x3*bitmap_scale_x+camx,y3*bitmap_scale_y+camy,_Color);
-                al_draw_triangle(x1*bitmap_scale_x+camx,y1*bitmap_scale_y+camy,x2*bitmap_scale_x+camx,y2*bitmap_scale_y+camy,x3*bitmap_scale_x+camx,y3*bitmap_scale_y+camy,_Color,_size*primitives_scale);
+                al_draw_filled_rectangle(_V_pos_x,_V_pos_y,_V_pos_x+bitmap_scale_x,_V_pos_y+bitmap_scale_y,_V_color);
             }
             void draw_in_another_target()
             {
-                if(is_filled())
-                    al_draw_filled_triangle(x1+camx,y1+camy,x2+camx,y2+camy,x3+camx,y3+camy,_Color);
-                al_draw_triangle(x1+camx,y1+camy,x2+camx,y2+camy,x3+camx,y3+camy,_Color,_size);
+                al_put_pixel(_V_pos_x,_V_pos_y,_V_color);
             }
     };
 
-    class LL_Function
+    class Line
     {
         private:
-            Type_pos _init_=0;
-            Type_pos _final_=1;
-            Type_pos camx=0;
-            Type_pos camy=0;
-            float pass=0;
-            float _size=1;
-            ALLEGRO_COLOR FunctionColor=al_map_rgb(0,0,0);
-            Type_pos (*_fx)(Type_pos)=nullptr;
+            Type_pos _V_cam_pos_x=0;
+            Type_pos _V_cam_pos_y=0;
+            Type_pos _V_pos_x1=0;
+            Type_pos _V_pos_y1=0;
+            Type_pos _V_pos_x2=0;
+            Type_pos _V_pos_y2=0;
+            ALLEGRO_COLOR _V_color=al_map_rgb(0,0,0);
+            float _V_thickness=1;
         public:
-            LL_Function(Type_pos (*ofx)(Type_pos)){_fx=ofx;}
-            void set_pos(Type_pos xx,Type_pos yy){camx=xx;camy=yy;}
-            void set_posx(Type_pos xx){camx=xx;}
-            void set_posy(Type_pos yy){camy=yy;}
-            Type_pos get_posx(){return camx;}
-            Type_pos get_posy(){return camy;}
-            void set_thickness(float ot){_size=ot;}
-            float get_thickness(){return _size;}
-            void set_color(ALLEGRO_COLOR Other){FunctionColor=Other;}
-            ALLEGRO_COLOR get_color(){return FunctionColor;}
-            void set_pass(float _p){pass=_p;}
-            float get_pass(){return pass;}
-            void set_init(Type_pos x){_init_=x;}
-            Type_pos get_init(){return _init_;}
-            void set_final(Type_pos x){_final_=x;}
-            Type_pos get_final(){return _final_;}
-            void set_function(Type_pos (*ofx)(Type_pos)){_fx=ofx;}
-            void draw();
-            void draw_in_another_target();
+            Line(){}
+            Line(Type_pos pos_x1,Type_pos pos_y1,Type_pos pos_x2,Type_pos pos_y2)
+            {
+                _V_pos_x1=pos_x1;
+                _V_pos_y1=pos_y1;
+                _V_pos_x2=pos_x2;
+                _V_pos_y2=pos_y2;
+            }
+            void set_pos(Type_pos new_cam_pos_x,Type_pos new_cam_pos_y)
+            {
+                _V_cam_pos_x=new_cam_pos_x;
+                _V_cam_pos_y=new_cam_pos_y;
+            }
+            void set_pos_x(Type_pos new_cam_pos_x)
+            {
+                _V_cam_pos_x=new_cam_pos_x;
+            }
+            Type_pos get_pos_x()
+            {
+                return _V_cam_pos_x;
+            }
+            void set_pos_y(Type_pos new_cam_pos_y)
+            {
+                _V_cam_pos_y=new_cam_pos_y;
+            }
+            Type_pos get_pos_y()
+            {
+                return _V_cam_pos_y;
+            }
+            void set_points(float new_pos_x1,float new_pos_y1,float new_pos_x2,float new_pos_y2)
+            {
+                _V_pos_x1=new_pos_x1;
+                _V_pos_y1=new_pos_y1;
+                _V_pos_x2=new_pos_x2;
+                _V_pos_y2=new_pos_y2;
+            }
+            void set_pos_1(Type_pos new_pos_x1,Type_pos new_pos_y1)
+            {
+                _V_pos_x1=new_pos_x1;
+                _V_pos_y1=new_pos_y1;
+            }
+            Type_pos get_pos_x_1()
+            {
+                return _V_pos_x1;
+            }
+            Type_pos get_pos_y_1()
+            {
+                return _V_pos_y1;
+            }
+            void set_pos_2(Type_pos new_pos_x2,Type_pos new_pos_y2)
+            {
+                _V_pos_x2=new_pos_x2;
+                _V_pos_y2=new_pos_y2;
+            }
+            Type_pos get_pos_x_2()
+            {
+                return _V_pos_x2;
+            }
+            Type_pos get_pos_y_2()
+            {
+                return _V_pos_y2;
+            }
+            void set_color(ALLEGRO_COLOR new_color)
+            {
+                _V_color=new_color;
+            }
+            ALLEGRO_COLOR get_color()
+            {
+                return _V_color;
+            }
+            void set_thickness(float new_thickness)
+            {
+                _V_thickness=new_thickness;
+            }
+            float get_thickness()
+            {
+                return _V_thickness;
+            }
+            void draw()
+            {
+                al_draw_line((_V_pos_x1*bitmap_scale_x)+_V_cam_pos_x,(_V_pos_y1*bitmap_scale_y)+_V_cam_pos_y,
+                             (_V_pos_x2*bitmap_scale_x)+_V_cam_pos_x,(_V_pos_y2*bitmap_scale_y)+_V_cam_pos_y,
+                             _V_color,_V_thickness*primitives_scale);
+            }
+            void draw_in_another_target()
+            {
+                al_draw_line(_V_pos_x1+_V_cam_pos_x,_V_pos_y1+_V_cam_pos_y,
+                             _V_pos_x2+_V_cam_pos_x,_V_pos_y2+_V_cam_pos_y,
+                             _V_color,_V_thickness);
+            }
     };
 
-    void LL_Function::draw()
+    class Primitive
     {
-        Type_pos i=_init_;
-        if(i<=_final_)
-        {
-            if(pass>0)
+        protected:
+            bool _V_is_filled=false;
+            float _V_thickness=1;
+            ALLEGRO_COLOR _V_color=al_map_rgb(0,0,0);
+        public:
+            void set_thickness(float new_thickness)
             {
-                Type_pos j=_init_+pass;
-                while(j<_final_)
-                {
-                    al_draw_line((i*bitmap_scale_x)+camx,(_fx(i)*bitmap_scale_y)+camy,(j*bitmap_scale_x)+camx,(_fx(j)*bitmap_scale_y)+camy,FunctionColor,_size*primitives_scale);
-                    i+=pass;
-                    j+=pass;
-                }
+                _V_thickness=new_thickness;
             }
-            al_draw_line((i*bitmap_scale_x)+camx,(_fx(i)*bitmap_scale_y)+camy,(_final_*bitmap_scale_x)+camx,(_fx(_final_)*bitmap_scale_y)+camy,FunctionColor,_size*primitives_scale);
-        }
-    }
+            float get_thickness()
+            {
+                return _V_thickness;
+            }
+            void set_color(ALLEGRO_COLOR new_color)
+            {
+                _V_color=new_color;
+            }
+            ALLEGRO_COLOR get_color()
+            {
+                return _V_color;
+            }
+            void set_filled_status(bool is_filled)
+            {
+                _V_is_filled=is_filled;
+            }
+            bool get_filled_status()
+            {
+                return _V_is_filled;
+            }
+    };
 
-    void LL_Function::draw_in_another_target()
+    class Figure:public Primitive
     {
-        Type_pos i=_init_;
-        if(i<=_final_)
-        {
-            if(pass>0)
+        protected:
+            Type_pos _V_pos_x=0;
+            Type_pos _V_pos_y=0;
+        public:
+            void set_pos(Type_pos new_pos_x,Type_pos new_pos_y)
             {
-                Type_pos j=_init_+pass;
-                while(j<_final_)
+                _V_pos_x=new_pos_x;
+                _V_pos_y=new_pos_y;
+            }
+            void set_pos_x(Type_pos new_pos_x)
+            {
+                _V_pos_x=new_pos_x;
+            }
+            Type_pos get_pos_x()
+            {
+                return _V_pos_x;
+            }
+            void set_pos_y(Type_pos new_pos_y)
+            {
+                _V_pos_y=new_pos_y;
+            }
+            Type_pos get_pos_y()
+            {
+                return _V_pos_y;
+            }
+    };
+
+    class Circle:public Figure
+    {
+        private:
+            float _V_ratio=1;
+        public:
+            Circle(){}
+            Circle(Type_pos pos_x,Type_pos pos_y,float new_ratio)
+            {
+                set_pos(pos_x,pos_y);
+                _V_ratio=new_ratio;
+            }
+            void set_ratio(float new_ratio)
+            {
+                _V_ratio=new_ratio;
+            }
+            float get_ratio()
+            {
+                return _V_ratio;
+            }
+            void draw()
+            {
+                if(get_filled_status())
+                    al_draw_filled_ellipse(_V_pos_x,_V_pos_y,_V_ratio*bitmap_scale_x,_V_ratio*bitmap_scale_y,_V_color);
+                al_draw_ellipse(_V_pos_x,_V_pos_y,_V_ratio*bitmap_scale_x,_V_ratio*bitmap_scale_y,_V_color,
+                                _V_thickness*primitives_scale);
+            }
+            void draw_in_another_target()
+            {
+                if(get_filled_status())
+                    al_draw_filled_circle(_V_pos_x,_V_pos_y,_V_ratio,_V_color);
+                al_draw_circle(_V_pos_x,_V_pos_y,_V_ratio,_V_color,_V_thickness);
+            }
+    };
+
+    class Ellipse:public Figure
+    {
+        private:
+            float _V_ratio_x=1;
+            float _V_ratio_y=1;
+        public:
+            Ellipse(){}
+            Ellipse(Type_pos pos_x,Type_pos pos_y,float ratio_x,float ratio_y)
+            {
+                set_pos(pos_x,pos_y);
+                _V_ratio_x=ratio_x;
+                _V_ratio_y=ratio_y;
+            }
+            void set_ratio_x(float new_ratio_x)
+            {
+                _V_ratio_x=new_ratio_x;
+            }
+            float get_ratio_x()
+            {
+                return _V_ratio_x;
+            }
+            void set_ratio_y(float new_ratio_y)
+            {
+                _V_ratio_y=new_ratio_y;
+            }
+            float get_ratio_y()
+            {
+                return _V_ratio_y;
+            }
+            void draw()
+            {
+                if(get_filled_status())
+                    al_draw_filled_ellipse(_V_pos_x,_V_pos_y,_V_ratio_x*bitmap_scale_x,_V_ratio_y*bitmap_scale_y,
+                                           _V_color);
+                al_draw_ellipse(_V_pos_x,_V_pos_y,_V_ratio_x*bitmap_scale_x,_V_ratio_y*bitmap_scale_y,_V_color,
+                                _V_thickness*primitives_scale);
+            }
+            void draw_in_another_target()
+            {
+                if(get_filled_status())
+                    al_draw_filled_ellipse(_V_pos_x,_V_pos_y,_V_ratio_x,_V_ratio_y,_V_color);
+                al_draw_ellipse(_V_pos_x,_V_pos_y,_V_ratio_x,_V_ratio_y,_V_color,_V_thickness);
+            }
+    };
+
+    class Rectangle:public Figure
+    {
+        private:
+            float _V_size_x=0;
+            float _V_size_y=0;
+        public:
+            Rectangle(){}
+            Rectangle(Type_pos pos_x,Type_pos pos_y,float size_x,float size_y)
+            {
+                set_pos(pos_x,pos_y);
+                _V_size_x=size_x;
+                _V_size_y=size_y;
+            }
+            void set_size_x(float new_size_x)
+            {
+                _V_size_x=new_size_x;
+            }
+            float get_size_x()
+            {
+                return _V_size_x;
+            }
+            void set_size_y(float new_size_y)
+            {
+                _V_size_y=new_size_y;
+            }
+            float get_size_y()
+            {
+                return _V_size_y;
+            }
+            void draw()
+            {
+                if(get_filled_status())
+                    al_draw_filled_rectangle(_V_pos_x,_V_pos_y,_V_pos_x+(_V_size_x*bitmap_scale_x),
+                                             _V_pos_y+(_V_size_y*bitmap_scale_y),_V_color);
+                al_draw_rectangle(_V_pos_x,_V_pos_y,_V_pos_x+(_V_size_x*bitmap_scale_x),
+                                  _V_pos_y+(_V_size_y*bitmap_scale_y),_V_color,_V_thickness*primitives_scale);
+            }
+            void draw_in_another_target()
+            {
+                if(get_filled_status())
+                    al_draw_filled_rectangle(_V_pos_x,_V_pos_y,_V_pos_x+(_V_size_x),_V_pos_y+(_V_size_y),_V_color);
+                al_draw_rectangle(_V_pos_x,_V_pos_y,_V_pos_x+(_V_size_x),_V_pos_y+(_V_size_y),_V_color,_V_thickness);
+            }
+    };
+
+    class Triangle:public Primitive
+    {
+        private:
+            Type_pos _V_cam_pos_x=0;
+            Type_pos _V_cam_pos_y=0;
+            Type_pos _V_pos_x1=0;
+            Type_pos _V_pos_x2=0;
+            Type_pos _V_pos_x3=0;
+            Type_pos _V_pos_y1=0;
+            Type_pos _V_pos_y2=0;
+            Type_pos _V_pos_y3=0;
+        public:
+            Triangle(){}
+            Triangle(float pos_x1,float pos_y1,float pos_x2,float pos_y2,float pos_x3,float pos_y3)
+            {
+                _V_pos_x1=pos_x1;
+                _V_pos_y1=pos_y1;
+                _V_pos_x2=pos_x2;
+                _V_pos_y2=pos_y2;
+                _V_pos_x3=pos_x3;
+                _V_pos_y3=pos_y3;
+            }
+            void set_pos(Type_pos new_cam_pos_x,Type_pos new_cam_pos_y)
+            {
+                _V_cam_pos_x=new_cam_pos_x;
+                _V_cam_pos_y=new_cam_pos_y;
+            }
+            void set_pos_x(Type_pos new_cam_pos_x)
+            {
+                _V_cam_pos_x=new_cam_pos_x;
+            }
+            Type_pos get_pos_x()
+            {
+                return _V_cam_pos_x;
+            }
+            void set_pos_y(Type_pos new_cam_pos_y)
+            {
+                _V_cam_pos_y=new_cam_pos_y;
+            }
+            Type_pos get_pos_y()
+            {
+                return _V_cam_pos_y;
+            }
+            void set_points(float new_pos_x1,float new_pos_y1,float new_pos_x2,float new_pos_y2,
+                            float new_pos_x3,float new_pos_y3)
+            {
+                _V_pos_x1=new_pos_x1;
+                _V_pos_y1=new_pos_y1;
+                _V_pos_x2=new_pos_x2;
+                _V_pos_y2=new_pos_y2;
+                _V_pos_x3=new_pos_x3;
+                _V_pos_y3=new_pos_y3;
+            }
+            void set_pos_1(Type_pos new_pos_x1,Type_pos new_pos_y1)
+            {
+                _V_pos_x1=new_pos_x1;
+                _V_pos_y1=new_pos_y1;
+            }
+            Type_pos get_pos_x_1()
+            {
+                return _V_pos_x1;
+            }
+            Type_pos get_pos_y_1()
+            {
+                return _V_pos_y1;
+            }
+            void set_pos_2(Type_pos new_pos_x2,Type_pos new_pos_y2)
+            {
+                _V_pos_x2=new_pos_x2;
+                _V_pos_y2=new_pos_y2;
+            }
+            Type_pos get_pos_x_2()
+            {
+                return _V_pos_x2;
+            }
+            Type_pos get_pos_y_2()
+            {
+                return _V_pos_y2;
+            }
+            void set_pos_3(Type_pos new_pos_x3,Type_pos new_pos_y3)
+            {
+                _V_pos_x3=new_pos_x3;
+                _V_pos_y3=new_pos_y3;
+            }
+            Type_pos get_pos_x_3()
+            {
+                return _V_pos_x3;
+            }
+            Type_pos get_pos_y_3()
+            {
+                return _V_pos_y3;
+            }
+            void draw()
+            {
+                if(get_filled_status())
+                    al_draw_filled_triangle(_V_pos_x1*bitmap_scale_x+_V_cam_pos_x,
+                                            _V_pos_y1*bitmap_scale_y+_V_cam_pos_y,
+                                            _V_pos_x2*bitmap_scale_x+_V_cam_pos_x,
+                                            _V_pos_y2*bitmap_scale_y+_V_cam_pos_y,
+                                            _V_pos_x3*bitmap_scale_x+_V_cam_pos_x,
+                                            _V_pos_y3*bitmap_scale_y+_V_cam_pos_y,_V_color);
+                al_draw_triangle(_V_pos_x1*bitmap_scale_x+_V_cam_pos_x,_V_pos_y1*bitmap_scale_y+_V_cam_pos_y,
+                                 _V_pos_x2*bitmap_scale_x+_V_cam_pos_x,_V_pos_y2*bitmap_scale_y+_V_cam_pos_y,
+                                 _V_pos_x3*bitmap_scale_x+_V_cam_pos_x,_V_pos_y3*bitmap_scale_y+_V_cam_pos_y,
+                                 _V_color,_V_thickness*primitives_scale);
+            }
+            void draw_in_another_target()
+            {
+                if(get_filled_status())
+                    al_draw_filled_triangle(_V_pos_x1+_V_cam_pos_x,_V_pos_y1+_V_cam_pos_y,
+                                            _V_pos_x2+_V_cam_pos_x,_V_pos_y2+_V_cam_pos_y,
+                                            _V_pos_x3+_V_cam_pos_x,_V_pos_y3+_V_cam_pos_y,_V_color);
+                al_draw_triangle(_V_pos_x1+_V_cam_pos_x,_V_pos_y1+_V_cam_pos_y,_V_pos_x2+_V_cam_pos_x,
+                                 _V_pos_y2+_V_cam_pos_y,_V_pos_x3+_V_cam_pos_x,_V_pos_y3+_V_cam_pos_y,
+                                 _V_color,_V_thickness);
+            }
+    };
+
+    class Function
+    {
+        private:
+            Type_pos _V_init_function=0;
+            Type_pos _V_final_function=1;
+            Type_pos _V_cam_pos_x=0;
+            Type_pos _V_cam_pos_y=0;
+            float _V_step_function=1;
+            float _V_thickness=1;
+            ALLEGRO_COLOR _V_color=al_map_rgb(0,0,0);
+            Type_pos (*_P_Function_fx)(Type_pos)=nullptr;
+        public:
+            Function(Type_pos (*Function_fx)(Type_pos))
+            {
+                _P_Function_fx=Function_fx;
+            }
+            void set_pos(Type_pos new_cam_pos_x,Type_pos new_cam_pos_y)
+            {
+                _V_cam_pos_x=new_cam_pos_x;
+                _V_cam_pos_y=new_cam_pos_y;
+            }
+            void set_pos_x(Type_pos new_cam_pos_x)
+            {
+                _V_cam_pos_x=new_cam_pos_x;
+            }
+            Type_pos get_pos_x()
+            {
+                return _V_cam_pos_x;
+            }
+            void set_pos_y(Type_pos new_cam_pos_y)
+            {
+                _V_cam_pos_y=new_cam_pos_y;
+            }
+            Type_pos get_pos_y()
+            {
+                return _V_cam_pos_y;
+            }
+            void set_thickness(float new_thickness)
+            {
+                _V_thickness=new_thickness;
+            }
+            float get_thickness()
+            {
+                return _V_thickness;
+            }
+            void set_color(ALLEGRO_COLOR new_color)
+            {
+                _V_color=new_color;
+            }
+            ALLEGRO_COLOR get_color()
+            {
+                return _V_color;
+            }
+            bool set_step(float new_step)
+            {
+                if(new_step>0)
                 {
-                    al_draw_line((i)+camx,(_fx(i))+camy,(j)+camx,(_fx(j))+camy,FunctionColor,_size);
-                    i+=pass;
-                    j+=pass;
+                    _V_step_function=new_step;
+                    return true;
+                }
+                return false;
+            }
+            float get_step()
+            {
+                return _V_step_function;
+            }
+            void set_initial_x(Type_pos new_init)
+            {
+                _V_init_function=new_init;
+            }
+            Type_pos get_initial_x()
+            {
+                return _V_init_function;
+            }
+            void set_final_x(Type_pos new_final)
+            {
+                _V_final_function=new_final;
+            }
+            Type_pos get_final_x()
+            {
+                return _V_final_function;
+            }
+            void set_function(Type_pos (*Function_fx)(Type_pos))
+            {
+                _P_Function_fx=Function_fx;
+            }
+            void draw()
+            {
+                if(_V_init_function<=_V_final_function)
+                {
+                    Type_pos i=_V_init_function;
+                    Type_pos j=_V_init_function+_V_step_function;
+                    while(j<_V_final_function)
+                    {
+                        al_draw_line((i*bitmap_scale_x)+_V_cam_pos_x,(_P_Function_fx(i)*bitmap_scale_y)+_V_cam_pos_y,
+                                     (j*bitmap_scale_x)+_V_cam_pos_x,(_P_Function_fx(j)*bitmap_scale_y)+_V_cam_pos_y,
+                                     _V_color,_V_thickness*primitives_scale);
+                        i+=_V_step_function;
+                        j+=_V_step_function;
+                    }
+                    al_draw_line((i*bitmap_scale_x)+_V_cam_pos_x,(_P_Function_fx(i)*bitmap_scale_y)+_V_cam_pos_y,
+                                 (_V_final_function*bitmap_scale_x)+_V_cam_pos_x,
+                                 (_P_Function_fx(_V_final_function)*bitmap_scale_y)+_V_cam_pos_y,_V_color,
+                                 _V_thickness*primitives_scale);
                 }
             }
-            al_draw_line((i)+camx,(_fx(i))+camy,(_final_)+camx,(_fx(_final_))+camy,FunctionColor,_size);
-        }
-    }
+            void draw_in_another_target()
+            {
+                if(_V_init_function<=_V_final_function)
+                {
+                    Type_pos i=_V_init_function;
+                    Type_pos j=_V_init_function+_V_step_function;
+                    while(j<_V_final_function)
+                    {
+                        al_draw_line((i)+_V_cam_pos_x,(_P_Function_fx(i))+_V_cam_pos_y,(j)+_V_cam_pos_x,(_P_Function_fx(j))+_V_cam_pos_y,_V_color,_V_thickness);
+                        i+=_V_step_function;
+                        j+=_V_step_function;
+                    }
+                    al_draw_line((i)+_V_cam_pos_x,(_P_Function_fx(i))+_V_cam_pos_y,(_V_final_function)+_V_cam_pos_x,(_P_Function_fx(_V_final_function))+_V_cam_pos_y,_V_color,_V_thickness);
+                }
+            }
+    };
 }
 
 #endif // INCLUDED_LL_AL5_PRIMITIVES_H
