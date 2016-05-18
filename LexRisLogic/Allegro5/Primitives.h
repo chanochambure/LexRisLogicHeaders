@@ -96,7 +96,7 @@ namespace LL_AL5
             {
                 return _V_cam_pos_y;
             }
-            void set_points(float new_pos_x1,float new_pos_y1,float new_pos_x2,float new_pos_y2)
+            void set_points(Type_pos new_pos_x1,Type_pos new_pos_y1,Type_pos new_pos_x2,Type_pos new_pos_y2)
             {
                 _V_pos_x1=new_pos_x1;
                 _V_pos_y1=new_pos_y1;
@@ -358,7 +358,7 @@ namespace LL_AL5
             Type_pos _V_pos_y3=0;
         public:
             Triangle(){}
-            Triangle(float pos_x1,float pos_y1,float pos_x2,float pos_y2,float pos_x3,float pos_y3)
+            Triangle(Type_pos pos_x1,Type_pos pos_y1,Type_pos pos_x2,Type_pos pos_y2,Type_pos pos_x3,Type_pos pos_y3)
             {
                 _V_pos_x1=pos_x1;
                 _V_pos_y1=pos_y1;
@@ -388,8 +388,8 @@ namespace LL_AL5
             {
                 return _V_cam_pos_y;
             }
-            void set_points(float new_pos_x1,float new_pos_y1,float new_pos_x2,float new_pos_y2,
-                            float new_pos_x3,float new_pos_y3)
+            void set_points(Type_pos new_pos_x1,Type_pos new_pos_y1,Type_pos new_pos_x2,Type_pos new_pos_y2,
+                            Type_pos new_pos_x3,Type_pos new_pos_y3)
             {
                 _V_pos_x1=new_pos_x1;
                 _V_pos_y1=new_pos_y1;

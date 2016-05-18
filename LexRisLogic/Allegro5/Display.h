@@ -56,7 +56,8 @@ namespace LL_AL5
                 _F_create();
                 _F_set_global_scale();
             }
-            Display(Type_display_size size_x,Type_display_size size_y,Type_display_size real_size_x,Type_display_size real_size_y)
+            Display(Type_display_size size_x,Type_display_size size_y,
+                    Type_display_size real_size_x,Type_display_size real_size_y)
             {
                 _V_size_x=size_x;
                 _V_size_y=size_y;
@@ -108,19 +109,19 @@ namespace LL_AL5
                 _V_cam_pos_x=(new_pos_x*bitmap_scale_x);
                 _V_cam_pos_y=(new_pos_y*bitmap_scale_y);
             }
-            void set_camx(Type_pos new_pos_x)
+            void set_cam_x(Type_pos new_pos_x)
             {
                 _V_cam_pos_x=(new_pos_x*bitmap_scale_x);
             }
-            Type_pos get_camx()
+            Type_pos get_cam_x()
             {
                 return _V_cam_pos_x/bitmap_scale_x;
             }
-            void set_camy(Type_pos new_pos_y)
+            void set_cam_y(Type_pos new_pos_y)
             {
                 _V_cam_pos_y=(new_pos_y*bitmap_scale_y);
             }
-            Type_pos get_camy()
+            Type_pos get_cam_y()
             {
                 return _V_cam_pos_y/bitmap_scale_y;
             }

@@ -16,7 +16,7 @@ namespace LL_AL5
             float Ysize=0;
             LL_Font* _font=nullptr;
             ALLEGRO_COLOR TextColor;
-            LL_Input* input=nullptr;
+            Input* input=nullptr;
             float _size=1;
             ALLEGRO_COLOR U_LineColor;
             ALLEGRO_COLOR U_FilledColor;
@@ -58,7 +58,7 @@ namespace LL_AL5
             bool _bool_value=0;
             void _hear_event(){if(!_lock and _block and input->left_click() and _is_in()){_bool_value=_lock=1;return;}if(!input->left_click())_lock=0;_bool_value=0;}
         public:
-            LL_Button(LL_Input* in)
+            LL_Button(Input* in)
             {
                 input=in;
                 TextColor=U_LineColor=C_LineColor=al_map_rgb(0,0,0);
@@ -103,7 +103,7 @@ namespace LL_AL5
             bool _in_input=0;
             void _hear_event(){if(_block and input->left_click() and _is_in())_active=1;else if(!_is_in() and input->left_click())_active=0;}
         public:
-            LL_TextBox(LL_Input* in)
+            LL_TextBox(Input* in)
             {
                 input=in;
                 TextColor=U_LineColor=C_LineColor=al_map_rgb(0,0,0);
