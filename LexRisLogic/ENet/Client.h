@@ -143,7 +143,7 @@ namespace LL_ENet
             {
                 return _V_status_connected;
             }
-            bool have_an_event()
+            bool get_event()
             {
                 if(enet_host_service(_V_client_host,&_V_event,_V_time)>0)
                 {

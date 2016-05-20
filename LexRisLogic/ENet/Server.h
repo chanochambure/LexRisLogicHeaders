@@ -79,7 +79,7 @@ namespace LL_ENet
                 }
                 return false;
             }
-            bool have_an_event()
+            bool get_event()
             {
                 if(enet_host_service(_V_server_host,&_V_event,_V_time)>0)
                 {
@@ -118,11 +118,11 @@ namespace LL_ENet
                 }
                 return false;
             }
-            bool have_a_new_connection()
+            bool get_new_connection()
             {
                 return _V_event_new_connection;
             }
-            bool have_a_disconnection()
+            bool get_disconnection()
             {
                 return _V_event_disconnection;
             }

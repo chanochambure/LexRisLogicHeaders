@@ -6,14 +6,14 @@
 
 namespace LL
 {
-    const char* DICTIONARY=" 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const char* DEFAULT_DICTIONARY=" 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     class Encryptor
     {
         private:
             typedef std::pair<unsigned,std::string> _T_Type_last_key;
             std::string _V_pass;
             std::list<_T_Type_last_key> _V_key;
-            std::string _V_dictionary=DICTIONARY;
+            std::string _V_dictionary=DEFAULT_DICTIONARY;
             std::string _F_encrypt(std::string& key,std::string word,unsigned int& j)
             {
                 for(unsigned int i=0;i<word.size();++i)

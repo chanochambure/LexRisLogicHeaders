@@ -39,7 +39,7 @@ namespace LL_DataStructure
     {
         private:
             typedef std::pair<double,unsigned int> _T_Type_pair_dis_pos;
-            const unsigned int _C_MIN_NODE_SIZE=(NODE_SIZE+1)/2;
+            const unsigned int _C_CONSTANT_MIN_NODE_SIZE=(NODE_SIZE+1)/2;
             struct _S_Structure_DataNode
             {
                 _S_Structure_DataNode(T new_data,MBB<DIMENSION> new_mbb)
@@ -348,7 +348,7 @@ namespace LL_DataStructure
                     if(i!=son_in_underflow)
                     {
                         double son_distance=mbb_distance(node->sons[son_in_underflow]->mbb,node->sons[i]->mbb);
-                        if(node->sons[i]->size>_C_MIN_NODE_SIZE)
+                        if(node->sons[i]->size>_C_CONSTANT_MIN_NODE_SIZE)
                             sorted_data.push_back(_T_Type_pair_dis_pos(son_distance,i));
                         sorted_distance.push_back(_T_Type_pair_dis_pos(son_distance,i));
                     }
@@ -424,7 +424,7 @@ namespace LL_DataStructure
                     delete(node_to_remove);
                     if(node->parent)
                     {
-                        if(node->size<_C_MIN_NODE_SIZE)
+                        if(node->size<_C_CONSTANT_MIN_NODE_SIZE)
                             _F_merge_node(node);
                     }
                     else
