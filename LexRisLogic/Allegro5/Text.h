@@ -5,64 +5,139 @@
 
 namespace LL_AL5
 {
-    class LL_Font
+    class Font
     {
         private:
-            ALLEGRO_FONT* font=nullptr;
-            std::string font_path;
-            float size;
+            ALLEGRO_FONT* _V_font=nullptr;
+            std::string _V_font_path;
+            float _V_size=12;
         public:
-            void set_path(std::string new_path){font_path=new_path;}
-            std::string get_path(){return font_path;}
-            void set_size(float Tsize){size=Tsize;}
-            float get_size(){return size;}
-            bool load();
-            bool load_for_another_target();
-            void refresh(){load();}
-            bool destroy(){if(font){al_destroy_font(font);font=nullptr;return 1;};return 0;}
-            operator ALLEGRO_FONT*& (){return font;}
-            ~LL_Font(){destroy();}
+            void set_path(std::string new_font_path)
+            {
+                _V_font_path=new_font_path;
+            }
+            std::string get_path()
+            {
+                return _V_font_path;
+            }
+            bool set_size(float new_size)
+            {
+                if(new_size>0)
+                {
+                    _V_size=new_size;
+                    return true;
+                }
+                return false;
+            }
+            float get_size()
+            {
+                return _V_size;
+            }
+            bool load_ttf_font()
+            {
+                destroy();
+                _V_font=al_load_ttf_font(_V_font_path.c_str(),_V_size*text_scale,0);
+                return bool(_V_font);
+            }
+            bool load_ttf_font_for_another_target()
+            {
+                destroy();
+                _V_font=al_load_ttf_font(_V_font_path.c_str(),_V_size,0);
+                return bool(_V_font);
+            }
+            bool destroy()
+            {
+                if(_V_font)
+                {
+                    al_destroy_font(_V_font);
+                    _V_font=nullptr;
+                    return true;
+                }
+                return false;
+            }
+            operator ALLEGRO_FONT* ()
+            {
+                return _V_font;
+            }
+            ~Font()
+            {
+                destroy();
+            }
     };
 
-    bool LL_Font::load()
-    {
-        destroy();
-        font=al_load_ttf_font(font_path.c_str(),size*text_scale,0);
-        return bool(font);
-    }
-
-    bool LL_Font::load_for_another_target()
-    {
-        destroy();
-        font=al_load_ttf_font(font_path.c_str(),size,0);
-        return bool(font);
-    }
-
-    class LL_Text
+    class Text
     {
         private:
-            LL_Font* font=nullptr;
-            int flag=0;
-            std::string _message;
-            ALLEGRO_COLOR TextColor;
-            Type_pos x=0;
-            Type_pos y=0;
+            Font* _V_font=nullptr;
+            int _V_flag=0;
+            std::string _V_text;
+            ALLEGRO_COLOR _V_color;
+            Type_pos _V_pos_x=0;
+            Type_pos _V_pos_y=0;
         public:
-            void set_pos(Type_pos xx,Type_pos yy){x=xx;y=yy;}
-            void set_posx(Type_pos xx){x=xx;}
-            void set_posy(Type_pos yy){y=yy;}
-            Type_pos get_posx(){return x;}
-            Type_pos get_posy(){return y;}
-            void set_flag(int _flag){flag=_flag;}
-            void set_color(ALLEGRO_COLOR Other){TextColor=Other;}
-            ALLEGRO_COLOR get_color(){return TextColor;}
-            void set_font(LL_Font* f){font=f;}
-            LL_Font* get_font(){return font;}
-            void draw(){al_draw_text(*font,TextColor,x,y,flag,_message.c_str());}
-            operator const char* () {return _message.c_str();}
-            operator std::string () {return _message;}
-            const char* operator = (const char* ot){_message=ot;return ot;}
-            std::string operator = (std::string ot){_message=ot;return ot;}
+            void set_pos(Type_pos new_pos_x,Type_pos new_pos_y)
+            {
+                _V_pos_x=new_pos_x;
+                _V_pos_y=new_pos_y;
+            }
+            void set_pos_x(Type_pos new_pos_x)
+            {
+                _V_pos_x=new_pos_x;
+            }
+            Type_pos get_pos_x()
+            {
+                return _V_pos_x;
+            }
+            void set_pos_y(Type_pos new_pos_y)
+            {
+                _V_pos_y=new_pos_y;
+            }
+            Type_pos get_pos_y()
+            {
+                return _V_pos_y;
+            }
+            void set_flag(int new_flag)
+            {
+                _V_flag=new_flag;
+            }
+            void set_color(ALLEGRO_COLOR new_color)
+            {
+                _V_color=new_color;
+            }
+            ALLEGRO_COLOR get_color()
+            {
+                return _V_color;
+            }
+            void set_font(Font* new_font)
+            {
+                _V_font=new_font;
+            }
+            Font* get_font()
+            {
+                return _V_font;
+            }
+            void draw()
+            {
+                al_draw_text(*_V_font,_V_color,_V_pos_x,_V_pos_y,_V_flag,_V_text.c_str());
+            }
+            const char* operator = (const char* new_text)
+            {
+                _V_text=new_text;
+                return new_text;
+            }
+            std::string operator = (std::string new_text)
+            {
+                _V_text=new_text;
+                return new_text;
+            }
+            operator const char* ()
+            {
+                return _V_text.c_str();
+            }
+            operator std::string ()
+            {
+                return _V_text;
+            }
     };
 }
 

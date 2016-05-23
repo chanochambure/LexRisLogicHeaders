@@ -5,112 +5,372 @@
 
 namespace LL_AL5
 {
-    bool save_bitmap(std::string name,ALLEGRO_BITMAP* bmp)
+    bool save_bitmap(std::string bitmap_file_name,ALLEGRO_BITMAP* bitmap)
     {
-        return al_save_bitmap(name.c_str(),bmp);
+        return al_save_bitmap(bitmap_file_name.c_str(),bitmap);
     }
 
-    class LL_Bitmap_Base
+    class BitmapBase
     {
         protected:
-            int flag=0;
-            float angle=0;
-            Type_pos x=0;
-            Type_pos y=0;
-            float bmp_scalex=1;
-            float bmp_scaley=1;
-            bool special_X_pos=0;
-            bool special_Y_pos=0;
+            int _V_flag=0;
+            float _V_angle=0;
+            Type_pos _V_pos_x=0;
+            Type_pos _V_pos_y=0;
+            float _V_scale_x=1;
+            float _V_scale_y=1;
+            bool _V_centering_option_x=false;
+            bool _V_centering_option_y=false;
         public:
-            void set_pos(Type_pos xx,Type_pos yy){x=xx;y=yy;}
-            void set_posx(Type_pos xx){x=xx;}
-            void set_posy(Type_pos yy){y=yy;}
-            Type_pos get_posx(){return x;}
-            Type_pos get_posy(){return y;}
-            void set_angle(float an){angle=an;}
-            float get_angle(){return angle;}
-            void set_flag(int f){flag=f;}
-            void set_scale_x(float sx){bmp_scalex=sx;}
-            void set_scale_y(float sy){bmp_scaley=sy;}
-            float get_scale_x(){return bmp_scalex;}
-            float get_scale_y(){return bmp_scaley;}
-            void set_position_to_draw(bool pos_x,bool pos_y){special_X_pos=pos_x;special_Y_pos=pos_y;}
+            void set_pos(Type_pos new_pos_x,Type_pos new_pos_y)
+            {
+                _V_pos_x=new_pos_x;
+                _V_pos_y=new_pos_y;
+            }
+            void set_pos_x(Type_pos new_pos_x)
+            {
+                _V_pos_x=new_pos_x;
+            }
+            Type_pos get_pos_x()
+            {
+                return _V_pos_x;
+            }
+            void set_pos_y(Type_pos new_pos_y)
+            {
+                _V_pos_y=new_pos_y;
+            }
+            Type_pos get_pos_y()
+            {
+                return _V_pos_y;
+            }
+            void set_angle(float new_angle)
+            {
+                _V_angle=new_angle;
+            }
+            float get_angle()
+            {
+                return _V_angle;
+            }
+            void set_flag(int new_flag)
+            {
+                _V_flag=new_flag;
+            }
+            void set_scale_x(float new_scale_x)
+            {
+                _V_scale_x=new_scale_x;
+            }
+            float get_scale_x()
+            {
+                return _V_scale_x;
+            }
+            void set_scale_y(float new_scale_y)
+            {
+                _V_scale_y=new_scale_y;
+            }
+            float get_scale_y()
+            {
+                return _V_scale_y;
+            }
+            void set_centering_option(bool new_centering_option_x,bool new_centering_option_y)
+            {
+                _V_centering_option_x=new_centering_option_x;
+                _V_centering_option_y=new_centering_option_y;
+            }
     };
 
-    class LL_Bitmap:public LL_Bitmap_Base
+    class Bitmap:public BitmapBase
     {
         protected:
-            ALLEGRO_BITMAP* bmp=nullptr;
-            float Xsize=0;
-            float Ysize=0;
+            ALLEGRO_BITMAP* _V_bitmap=nullptr;
+            float _V_size_x=0;
+            float _V_size_y=0;
         public:
-            float get_sizex(){return Xsize;}
-            float get_sizey(){return Ysize;}
-            void set_target(){if(bmp)al_set_target_bitmap(bmp);}
-            ALLEGRO_COLOR get_pixel(Type_pos x,Type_pos y){return al_get_pixel(bmp,x,y);}
-            bool create(int s_X,int s_Y){destroy();bmp=al_create_bitmap(s_X,s_Y);if(bmp){Xsize=s_X;Ysize=s_Y;return 1;}return 0;}
-            bool destroy(){if(bmp){al_destroy_bitmap(bmp);bmp=nullptr;return 1;}return 0;}
-            bool lock(){return al_lock_bitmap(bmp,ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);}
-            void unlock(){al_unlock_bitmap(bmp);}
+            float get_size_x()
+            {
+                return _V_size_x;
+            }
+            float get_size_y()
+            {
+                return _V_size_y;
+            }
+            bool create(int size_x,int size_y)
+            {
+                destroy();
+                _V_bitmap=al_create_bitmap(size_x,size_y);
+                if(_V_bitmap)
+                {
+                    _V_size_x=size_x;
+                    _V_size_y=size_y;
+                    return true;
+                }
+                return false;
+            }
+            bool destroy()
+            {
+                if(_V_bitmap)
+                {
+                    al_destroy_bitmap(_V_bitmap);
+                    _V_bitmap=nullptr;
+                    return true;
+                }
+                return false;
+            }
+            void set_target()
+            {
+                if(_V_bitmap)
+                    al_set_target_bitmap(_V_bitmap);
+            }
+            bool lock()
+            {
+                return al_lock_bitmap(_V_bitmap,ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);
+            }
+            void unlock()
+            {
+                al_unlock_bitmap(_V_bitmap);
+            }
+            ALLEGRO_COLOR get_pixel_color(Type_pos pos_x,Type_pos pos_y)
+            {
+                return al_get_pixel(_V_bitmap,pos_x,pos_y);
+            }
             void draw()
             {
-                const Type_pos size_in_axe_x=(Xsize*bitmap_scale_x*bmp_scalex);
-                const Type_pos size_in_axe_y=(Ysize*bitmap_scale_y*bmp_scaley);
-                al_draw_scaled_rotated_bitmap(bmp,
-                                              Xsize/2,
-                                              Ysize/2,
-                                              x+(!special_X_pos*(size_in_axe_x/2)),
-                                              y+(!special_Y_pos*(size_in_axe_y/2)),
-                                              bitmap_scale_x*bmp_scalex,
-                                              bitmap_scale_y*bmp_scaley,
-                                              angle,
-                                              flag);
+                const Type_pos size_in_axe_x=(_V_size_x*bitmap_scale_x*_V_scale_x);
+                const Type_pos size_in_axe_y=(_V_size_y*bitmap_scale_y*_V_scale_y);
+                al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
+                                              _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
+                                              _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                              bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
             }
             void draw_in_another_target()
             {
-                const Type_pos size_in_axe_x=(Xsize*bmp_scalex);
-                const Type_pos size_in_axe_y=(Ysize*bmp_scaley);
-                al_draw_scaled_rotated_bitmap(bmp,
-                                              Xsize/2,
-                                              Ysize/2,
-                                              x+(!special_X_pos*(size_in_axe_x/2)),
-                                              y+(!special_Y_pos*(size_in_axe_y/2)),
-                                              bmp_scalex,
-                                              bmp_scaley,
-                                              angle,
-                                              flag);
+                const Type_pos size_in_axe_x=(_V_size_x*_V_scale_x);
+                const Type_pos size_in_axe_y=(_V_size_y*_V_scale_y);
+                al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
+                                              _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
+                                              _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                              _V_scale_x,_V_scale_y,_V_angle,_V_flag);
             }
-            operator ALLEGRO_BITMAP* (){return bmp;}
-            ~LL_Bitmap(){destroy();}
+            operator ALLEGRO_BITMAP* ()
+            {
+                return _V_bitmap;
+            }
+            ~Bitmap()
+            {
+                destroy();
+            }
     };
 
-    class LL_SubBitmap:public LL_Bitmap
+    class SubBitmap:public BitmapBase
     {
         private:
-            ALLEGRO_BITMAP* parent=nullptr;
-            Type_pos sub_x=0;
-            Type_pos sub_y=0;
+            ALLEGRO_BITMAP* _V_parent_bitmap=nullptr;
+            ALLEGRO_BITMAP* _V_bitmap=nullptr;
+            Type_pos _V_sub_x=0;
+            Type_pos _V_sub_y=0;
+            float _V_size_x=0;
+            float _V_size_y=0;
         public:
-            void set_bitmap_parent(ALLEGRO_BITMAP* ft){parent=ft;}
-            ALLEGRO_BITMAP* get_bitmap_parent(){return parent;}
-            void set_sub_x(Type_pos nx){sub_x=nx;}
-            void set_sub_y(Type_pos ny){sub_y=ny;}
-            Type_pos get_sub_x(){return sub_x;}
-            Type_pos get_sub_y(){return sub_y;}
-            void set_sizex(int s_x){Xsize=s_x;}
-            void set_sizey(int s_y){Ysize=s_y;}
-            bool create_sub_bitmap(){destroy();bmp=al_create_sub_bitmap(parent,sub_x,sub_y,Xsize,Ysize);return bmp;}
+            void set_parent_bitmap(ALLEGRO_BITMAP* new_parent_bitmap)
+            {
+                destroy();
+                _V_parent_bitmap=new_parent_bitmap;
+            }
+            ALLEGRO_BITMAP* get_parent_bitmap()
+            {
+                return _V_parent_bitmap;
+            }
+            void set_sub_x(Type_pos new_sub_x)
+            {
+                _V_sub_x=new_sub_x;
+            }
+            Type_pos get_sub_x()
+            {
+                return _V_sub_x;
+            }
+            void set_sub_y(Type_pos new_sub_y)
+            {
+                _V_sub_y=new_sub_y;
+            }
+            Type_pos get_sub_y()
+            {
+                return _V_sub_y;
+            }
+            void set_size_x(int new_size_x)
+            {
+                _V_size_x=new_size_x;
+            }
+            float get_size_x()
+            {
+                return _V_size_x;
+            }
+            void set_size_y(int new_size_y)
+            {
+                _V_size_y=new_size_y;
+            }
+            float get_size_y()
+            {
+                return _V_size_y;
+            }
+            bool create()
+            {
+                destroy();
+                if(_V_parent_bitmap)
+                {
+                    _V_bitmap=al_create_sub_bitmap(_V_parent_bitmap,_V_sub_x,_V_sub_y,_V_size_x,_V_size_y);
+                    return _V_bitmap;
+                }
+                return false;
+            }
+            bool destroy()
+            {
+                if(_V_bitmap)
+                {
+                    al_destroy_bitmap(_V_bitmap);
+                    _V_bitmap=nullptr;
+                    return true;
+                }
+                return false;
+            }
+            void set_target()
+            {
+                if(_V_bitmap)
+                    al_set_target_bitmap(_V_bitmap);
+            }
+            bool lock()
+            {
+                return al_lock_bitmap(_V_bitmap,ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);
+            }
+            void unlock()
+            {
+                al_unlock_bitmap(_V_bitmap);
+            }
+            ALLEGRO_COLOR get_pixel_color(Type_pos pos_x,Type_pos pos_y)
+            {
+                return al_get_pixel(_V_bitmap,pos_x,pos_y);
+            }
+            void draw()
+            {
+                const Type_pos size_in_axe_x=(_V_size_x*bitmap_scale_x*_V_scale_x);
+                const Type_pos size_in_axe_y=(_V_size_y*bitmap_scale_y*_V_scale_y);
+                al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
+                                              _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
+                                              _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                              bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
+            }
+            void draw_in_another_target()
+            {
+                const Type_pos size_in_axe_x=(_V_size_x*_V_scale_x);
+                const Type_pos size_in_axe_y=(_V_size_y*_V_scale_y);
+                al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
+                                              _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
+                                              _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                              _V_scale_x,_V_scale_y,_V_angle,_V_flag);
+            }
+            operator ALLEGRO_BITMAP* ()
+            {
+                return _V_bitmap;
+            }
+            ~SubBitmap()
+            {
+                destroy();
+            }
     };
 
-    class LL_Image:public LL_Bitmap
+    class Image:public BitmapBase
     {
         private:
-            std::string image_path;
+            ALLEGRO_BITMAP* _V_bitmap=nullptr;
+            std::string _V_image_path;
+            float _V_size_x=0;
+            float _V_size_y=0;
         public:
-            void set_path(std::string new_path){image_path=new_path;}
-            std::string get_path(){return image_path;}
-            bool load(){destroy();bmp=al_load_bitmap(image_path.c_str());if(bmp){Xsize=al_get_bitmap_width(bmp);Ysize=al_get_bitmap_height(bmp);}return bmp;}
-            bool save(){return save_bitmap(image_path,bmp);}
+            void set_path(std::string new_image_path)
+            {
+                _V_image_path=new_image_path;
+            }
+            std::string get_path()
+            {
+                return _V_image_path;
+            }
+            float get_size_x()
+            {
+                return _V_size_x;
+            }
+            float get_size_y()
+            {
+                return _V_size_y;
+            }
+            bool load()
+            {
+                destroy();
+                _V_bitmap=al_load_bitmap(_V_image_path.c_str());
+                if(_V_bitmap)
+                {
+                    _V_size_x=al_get_bitmap_width(_V_bitmap);
+                    _V_size_y=al_get_bitmap_height(_V_bitmap);
+                    return true;
+                }
+                return false;
+            }
+            bool save()
+            {
+                if(_V_bitmap)
+                    return save_bitmap(_V_image_path,_V_bitmap);
+                return false;
+            }
+            bool destroy()
+            {
+                if(_V_bitmap)
+                {
+                    al_destroy_bitmap(_V_bitmap);
+                    _V_bitmap=nullptr;
+                    return true;
+                }
+                return false;
+            }
+            void set_target()
+            {
+                if(_V_bitmap)
+                    al_set_target_bitmap(_V_bitmap);
+            }
+            bool lock()
+            {
+                return al_lock_bitmap(_V_bitmap,ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);
+            }
+            void unlock()
+            {
+                al_unlock_bitmap(_V_bitmap);
+            }
+            ALLEGRO_COLOR get_pixel_color(Type_pos pos_x,Type_pos pos_y)
+            {
+                return al_get_pixel(_V_bitmap,pos_x,pos_y);
+            }
+            void draw()
+            {
+                const Type_pos size_in_axe_x=(_V_size_x*bitmap_scale_x*_V_scale_x);
+                const Type_pos size_in_axe_y=(_V_size_y*bitmap_scale_y*_V_scale_y);
+                al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
+                                              _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
+                                              _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                              bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
+            }
+            void draw_in_another_target()
+            {
+                const Type_pos size_in_axe_x=(_V_size_x*_V_scale_x);
+                const Type_pos size_in_axe_y=(_V_size_y*_V_scale_y);
+                al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
+                                              _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
+                                              _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                              _V_scale_x,_V_scale_y,_V_angle,_V_flag);
+            }
+            operator ALLEGRO_BITMAP* ()
+            {
+                return _V_bitmap;
+            }
+            ~Image()
+            {
+                destroy();
+            }
     };
 }
 

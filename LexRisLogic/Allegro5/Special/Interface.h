@@ -14,7 +14,7 @@ namespace LL_AL5
             Type_pos y=0;
             float Xsize=0;
             float Ysize=0;
-            LL_Font* _font=nullptr;
+            Font* _font=nullptr;
             ALLEGRO_COLOR TextColor;
             Input* input=nullptr;
             float _size=1;
@@ -41,7 +41,7 @@ namespace LL_AL5
             void set_thickness(float ot){_size=ot;}
             float get_thickness(){return _size;}
             //TEXT CONFIGURATION
-            LL_Font* get_font(){return _font;}
+            Font* get_font(){return _font;}
             void set_text_color(ALLEGRO_COLOR Other){TextColor=Other;}
             ALLEGRO_COLOR get_text_color(){return TextColor;}
             virtual ~LL_Interface(){}
@@ -72,7 +72,7 @@ namespace LL_AL5
             //TEXT CONFIGURATION
             void set_message(std::string message){_message=message;Xsize=_message.size()*_font_size;middle_x=(Xsize*bitmap_scale_x/2);}
             std::string get_message(){return _message;}
-            void set_font(LL_Font* font){_font=font;_font_size=_font->get_size();Xsize=_message.size()*_font_size;Ysize=(2*_font_size);middle_x=(Xsize*bitmap_scale_x/2);middle_y=(Ysize*bitmap_scale_y/2);}
+            void set_font(Font* font){_font=font;_font_size=_font->get_size();Xsize=_message.size()*_font_size;Ysize=(2*_font_size);middle_x=(Xsize*bitmap_scale_x/2);middle_y=(Ysize*bitmap_scale_y/2);}
             void draw()
             {
                 _hear_event();
@@ -118,7 +118,7 @@ namespace LL_AL5
             //TEXT CONFIGURATION
             std::string get_value(){return _data;}
             void set_max_text_size(unsigned int siz){clear();Xsize=((1+(_text_size=siz))*((_font->get_size())));}
-            void set_font(LL_Font* font){_font=font;Ysize=(2*font->get_size());}
+            void set_font(Font* font){_font=font;Ysize=(2*font->get_size());}
             void clear(){_data.clear();}
             bool set_value(std::string new_data){if(new_data.size()<=_text_size){_data=new_data;return 1;}return 0;}
             void draw()

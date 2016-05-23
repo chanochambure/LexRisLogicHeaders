@@ -7,7 +7,7 @@
 
 namespace LL_AL5
 {
-    class LL_Sprite:public LL_Bitmap_Base
+    class LL_Sprite:public BitmapBase
     {
         private:
             ALLEGRO_BITMAP** bmps=nullptr;
@@ -89,31 +89,31 @@ namespace LL_AL5
             unsigned int get_selection(){return selection;}
             void draw()
             {
-                const Type_pos size_in_axe_x=(Xsize[selection]*bitmap_scale_x*bmp_scalex);
-                const Type_pos size_in_axe_y=(Ysize[selection]*bitmap_scale_y*bmp_scaley);
+                const Type_pos size_in_axe_x=(Xsize[selection]*bitmap_scale_x*_V_scale_x);
+                const Type_pos size_in_axe_y=(Ysize[selection]*bitmap_scale_y*_V_scale_y);
                 al_draw_scaled_rotated_bitmap(bmps[selection],
                                               Xsize[selection]/2,
                                               Ysize[selection]/2,
-                                              x+(!special_X_pos*(size_in_axe_x/2)),
-                                              y+(!special_Y_pos*(size_in_axe_y/2)),
-                                              bitmap_scale_x*bmp_scalex,
-                                              bitmap_scale_y*bmp_scaley,
-                                              angle,
-                                              flag);
+                                              _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
+                                              _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                              bitmap_scale_x*_V_scale_x,
+                                              bitmap_scale_y*_V_scale_y,
+                                              _V_angle,
+                                              _V_flag);
             }
             void draw_in_another_target()
             {
-                const Type_pos size_in_axe_x=(Xsize[selection]*bmp_scalex);
-                const Type_pos size_in_axe_y=(Ysize[selection]*bmp_scaley);
+                const Type_pos size_in_axe_x=(Xsize[selection]*_V_scale_x);
+                const Type_pos size_in_axe_y=(Ysize[selection]*_V_scale_y);
                 al_draw_scaled_rotated_bitmap(bmps[selection],
                                               Xsize[selection]/2,
                                               Ysize[selection]/2,
-                                              x+(!special_X_pos*(size_in_axe_x/2)),
-                                              y+(!special_Y_pos*(size_in_axe_y/2)),
-                                              bmp_scalex,
-                                              bmp_scaley,
-                                              angle,
-                                              flag);
+                                              _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
+                                              _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                              _V_scale_x,
+                                              _V_scale_x,
+                                              _V_angle,
+                                              _V_flag);
             }
             operator ALLEGRO_BITMAP* (){return bmps[selection];}
             ~LL_Sprite(){destroy();}
