@@ -76,6 +76,14 @@ namespace LL_AL5
                 _V_centering_option_x=new_centering_option_x;
                 _V_centering_option_y=new_centering_option_y;
             }
+            bool get_centering_option_x()
+            {
+                return _V_centering_option_x;
+            }
+            bool get_centering_option_y()
+            {
+                return _V_centering_option_y;
+            }
     };
 
     class Bitmap:public BitmapBase

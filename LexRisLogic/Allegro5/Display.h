@@ -193,7 +193,7 @@ namespace LL_AL5
                 al_set_target_backbuffer(_V_display);
                 _F_set_global_scale();
             }
-            operator ALLEGRO_DISPLAY*& ()
+            operator ALLEGRO_DISPLAY* ()
             {
                 return _V_display;
             }

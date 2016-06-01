@@ -388,7 +388,8 @@ namespace LL_AL5
             {
                 return _V_cam_pos_y;
             }
-            void set_points(Type_pos new_pos_x1,Type_pos new_pos_y1,Type_pos new_pos_x2,Type_pos new_pos_y2,
+            void set_points(Type_pos new_pos_x1,Type_pos new_pos_y1,
+                            Type_pos new_pos_x2,Type_pos new_pos_y2,
                             Type_pos new_pos_x3,Type_pos new_pos_y3)
             {
                 _V_pos_x1=new_pos_x1;
@@ -563,10 +564,11 @@ namespace LL_AL5
                         i+=_V_step_function;
                         j+=_V_step_function;
                     }
-                    al_draw_line((i*bitmap_scale_x)+_V_cam_pos_x,(_P_Function_fx(i)*bitmap_scale_y)+_V_cam_pos_y,
+                    al_draw_line((i*bitmap_scale_x)+_V_cam_pos_x,
+                                 (_P_Function_fx(i)*bitmap_scale_y)+_V_cam_pos_y,
                                  (_V_final_function*bitmap_scale_x)+_V_cam_pos_x,
-                                 (_P_Function_fx(_V_final_function)*bitmap_scale_y)+_V_cam_pos_y,_V_color,
-                                 _V_thickness*primitives_scale);
+                                 (_P_Function_fx(_V_final_function)*bitmap_scale_y)+_V_cam_pos_y,
+                                 _V_color,_V_thickness*primitives_scale);
                 }
             }
             void draw_in_another_target()
@@ -577,11 +579,15 @@ namespace LL_AL5
                     Type_pos j=_V_init_function+_V_step_function;
                     while(j<_V_final_function)
                     {
-                        al_draw_line((i)+_V_cam_pos_x,(_P_Function_fx(i))+_V_cam_pos_y,(j)+_V_cam_pos_x,(_P_Function_fx(j))+_V_cam_pos_y,_V_color,_V_thickness);
+                        al_draw_line((i)+_V_cam_pos_x,(_P_Function_fx(i))+_V_cam_pos_y,
+                                     (j)+_V_cam_pos_x,(_P_Function_fx(j))+_V_cam_pos_y,
+                                     _V_color,_V_thickness);
                         i+=_V_step_function;
                         j+=_V_step_function;
                     }
-                    al_draw_line((i)+_V_cam_pos_x,(_P_Function_fx(i))+_V_cam_pos_y,(_V_final_function)+_V_cam_pos_x,(_P_Function_fx(_V_final_function))+_V_cam_pos_y,_V_color,_V_thickness);
+                    al_draw_line((i)+_V_cam_pos_x,(_P_Function_fx(i))+_V_cam_pos_y,
+                                 (_V_final_function)+_V_cam_pos_x,(_P_Function_fx(_V_final_function))+_V_cam_pos_y,
+                                 _V_color,_V_thickness);
                 }
             }
     };

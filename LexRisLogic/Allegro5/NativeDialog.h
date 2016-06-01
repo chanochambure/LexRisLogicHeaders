@@ -148,7 +148,7 @@ namespace LL_AL5
             {
                 return _V_textlog;
             }
-            operator ALLEGRO_TEXTLOG*& ()
+            operator ALLEGRO_TEXTLOG* ()
             {
                 return _V_textlog;
             }

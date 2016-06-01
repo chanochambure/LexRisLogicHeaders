@@ -7,116 +7,196 @@
 
 namespace LL_AL5
 {
-    class LL_Sprite:public BitmapBase
+    class Sprite:public BitmapBase
     {
         private:
-            ALLEGRO_BITMAP** bmps=nullptr;
-            unsigned int selection=0;
-            unsigned int num_elements;
-            float* Xsize=nullptr;
-            float* Ysize=nullptr;
+            ALLEGRO_BITMAP** _V_bitmap_set=nullptr;
+            float* _V_size_x=nullptr;
+            float* _V_size_y=nullptr;
+            unsigned int _V_index=0;
+            unsigned int _V_size=1;
+            bool _V_initialised=false;
         public:
-            LL_Sprite(unsigned int number_bmps)
+            float get_size_x()
             {
-                num_elements=number_bmps;
-                bmps=new ALLEGRO_BITMAP*[number_bmps];
-                Xsize=new float[number_bmps];
-                Ysize=new float[number_bmps];
-                for(unsigned int i=0;i<num_elements;++i)
-                {
-                    Xsize[i]=0;
-                    Ysize[i]=0;
-                    bmps[i]=nullptr;
-                }
+                return _V_size_x[_V_index];
             }
-            float get_sizex(){return Xsize[selection];}
-            float get_sizey(){return Ysize[selection];}
-            void set_target(){if(bmps[selection])al_set_target_bitmap(bmps[selection]);}
-            ALLEGRO_COLOR get_pixel(Type_pos x,Type_pos y){return al_get_pixel(bmps[selection],x,y);}
-            bool lock(){return al_lock_bitmap(bmps[selection],ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);}
-            void unlock(){al_unlock_bitmap(bmps[selection]);}
-            bool create_selection(int s_X,int s_Y){destroy_selection();bmps[selection]=al_create_bitmap(s_X,s_Y);if(bmps[selection]){Xsize[selection]=s_X;Ysize[selection]=s_Y;return 1;}return 0;}
-            bool destroy_selection()
+            float get_size_y()
             {
-                if(bmps[selection])
-                {
-                    al_destroy_bitmap(bmps[selection]);
-                    bmps[selection]=nullptr;
-                    Xsize[selection]=0;
-                    Ysize[selection]=0;
-                    return 1;
-                }
-                return 0;
+                return _V_size_y[_V_index];
             }
-            unsigned int create_from_directory(std::string sprites_dir,std::string format)
+            unsigned int get_size()
             {
-                if(sprites_dir[sprites_dir.size()-1]!='/' or sprites_dir[sprites_dir.size()-1]!='\\')
-                    sprites_dir=sprites_dir+'/';
-                if(format[0]!='.')
-                    format='.'+format;
-                destroy();
-                unsigned int return_value=0;
-                for(unsigned int i=0;i<num_elements;++i)
+                return _V_size;
+            }
+            bool set_size(unsigned int new_size)
+            {
+                if(_V_initialised or !new_size)
+                    return false;
+                _V_size=new_size;
+                if(_V_index>=_V_size)
+                    _V_index=0;
+                return true;
+            }
+            bool set_selection(unsigned int new_selection)
+            {
+                if(new_selection<_V_size)
                 {
-                    bmps[i]=al_load_bitmap((sprites_dir+LL::to_string(i+1)+format).c_str());
-                    if(bmps[i])
+                    _V_index=new_selection;
+                    return true;
+                }
+                return false;
+            }
+            unsigned int get_selection()
+            {
+                return _V_index;
+            }
+            bool create()
+            {
+                if(_V_initialised)
+                    return false;
+                _V_bitmap_set=new ALLEGRO_BITMAP*[_V_size];
+                _V_size_x=new float[_V_size];
+                _V_size_y=new float[_V_size];
+                for(unsigned int i=0;i<_V_size;++i)
+                {
+                    _V_size_x[i]=0;
+                    _V_size_y[i]=0;
+                    _V_bitmap_set[i]=nullptr;
+                }
+                _V_initialised=true;
+                return true;
+            }
+            bool create_selection(int size_x,int size_y)
+            {
+                if(_V_initialised)
+                {
+                    destroy_selection();
+                    _V_bitmap_set[_V_index]=al_create_bitmap(size_x,size_y);
+                    if(_V_bitmap_set[_V_index])
                     {
-                        Xsize[i]=al_get_bitmap_width(bmps[i]);
-                        Ysize[i]=al_get_bitmap_height(bmps[i]);
-                        ++return_value;
+                        _V_size_x[_V_index]=size_x;
+                        _V_size_y[_V_index]=size_y;
+                        return true;
                     }
                 }
-                return return_value;
+                return false;
+            }
+            bool destroy_selection()
+            {
+                if(_V_initialised and _V_bitmap_set[_V_index])
+                {
+                    al_destroy_bitmap(_V_bitmap_set[_V_index]);
+                    _V_bitmap_set[_V_index]=nullptr;
+                    _V_size_x[_V_index]=0;
+                    _V_size_y[_V_index]=0;
+                    return true;
+                }
+                return false;
+            }
+            bool create_data_from_directory(std::string sprites_path,std::string bitmap_format)
+            {
+                if(_V_initialised)
+                {
+                    destroy_data();
+                    for(unsigned int i=0;i<_V_size;++i)
+                    {
+                        _V_bitmap_set[i]=al_load_bitmap((sprites_path+LL::to_string(i+1)+bitmap_format).c_str());
+                        if(!_V_bitmap_set[i])
+                        {
+                            destroy_data();
+                            return false;
+                        }
+                        _V_size_x[i]=al_get_bitmap_width(_V_bitmap_set[i]);
+                        _V_size_y[i]=al_get_bitmap_height(_V_bitmap_set[i]);
+                    }
+                    return true;
+                }
+                return false;
+            }
+            bool destroy_data()
+            {
+                if(_V_initialised)
+                {
+                    bool return_value=false;
+                    for(unsigned int i=0;i<_V_size;++i)
+                    {
+                        if(_V_bitmap_set[i])
+                        {
+                            return_value=true;
+                            _V_size_x[i]=0;
+                            _V_size_y[i]=0;
+                            al_destroy_bitmap(_V_bitmap_set[i]);
+                            _V_bitmap_set[i]=nullptr;
+                        }
+                    }
+                    return return_value;
+                }
+                return false;
             }
             bool destroy()
             {
-                bool return_value=0;
-                for(unsigned int i=0;i<num_elements;++i)
+                if(_V_initialised)
                 {
-                    if(bmps[i])
-                    {
-                        return_value=1;
-                        Xsize[i]=0;
-                        Ysize[i]=0;
-                        al_destroy_bitmap(bmps[i]);
-                    }
-                    bmps[i]=nullptr;
+                    destroy_data();
+                    delete(_V_size_x);
+                    delete(_V_size_y);
+                    delete(_V_bitmap_set);
+                    _V_size_x=nullptr;
+                    _V_size_y=nullptr;
+                    _V_bitmap_set=nullptr;
+                    _V_initialised=false;
+                    return true;
                 }
-                return return_value;
+                return false;
             }
-            unsigned int size(){return num_elements;}
-            bool set_selection(unsigned int new_selection){if(new_selection<num_elements){selection=new_selection;return 1;}return 0;}
-            unsigned int get_selection(){return selection;}
+            void set_target()
+            {
+                if(_V_bitmap_set[_V_index])
+                    al_set_target_bitmap(_V_bitmap_set[_V_index]);
+            }
+            bool lock()
+            {
+                return al_lock_bitmap(_V_bitmap_set[_V_index],ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);
+            }
+            void unlock()
+            {
+                al_unlock_bitmap(_V_bitmap_set[_V_index]);
+            }
+            ALLEGRO_COLOR get_pixel_color(Type_pos pos_x,Type_pos pos_y)
+            {
+                return al_get_pixel(_V_bitmap_set[_V_index],pos_x,pos_y);
+            }
             void draw()
             {
-                const Type_pos size_in_axe_x=(Xsize[selection]*bitmap_scale_x*_V_scale_x);
-                const Type_pos size_in_axe_y=(Ysize[selection]*bitmap_scale_y*_V_scale_y);
-                al_draw_scaled_rotated_bitmap(bmps[selection],
-                                              Xsize[selection]/2,
-                                              Ysize[selection]/2,
+                const Type_pos size_in_axe_x=(_V_size_x[_V_index]*bitmap_scale_x*_V_scale_x);
+                const Type_pos size_in_axe_y=(_V_size_y[_V_index]*bitmap_scale_y*_V_scale_y);
+                al_draw_scaled_rotated_bitmap(_V_bitmap_set[_V_index],
+                                              _V_size_x[_V_index]/2,
+                                              _V_size_y[_V_index]/2,
                                               _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
                                               _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
-                                              bitmap_scale_x*_V_scale_x,
-                                              bitmap_scale_y*_V_scale_y,
-                                              _V_angle,
-                                              _V_flag);
+                                              bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
             }
             void draw_in_another_target()
             {
-                const Type_pos size_in_axe_x=(Xsize[selection]*_V_scale_x);
-                const Type_pos size_in_axe_y=(Ysize[selection]*_V_scale_y);
-                al_draw_scaled_rotated_bitmap(bmps[selection],
-                                              Xsize[selection]/2,
-                                              Ysize[selection]/2,
+                const Type_pos size_in_axe_x=(_V_size_x[_V_index]*_V_scale_x);
+                const Type_pos size_in_axe_y=(_V_size_y[_V_index]*_V_scale_y);
+                al_draw_scaled_rotated_bitmap(_V_bitmap_set[_V_index],
+                                              _V_size_x[_V_index]/2,
+                                              _V_size_y[_V_index]/2,
                                               _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
                                               _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
-                                              _V_scale_x,
-                                              _V_scale_x,
-                                              _V_angle,
-                                              _V_flag);
+                                              _V_scale_x,_V_scale_y,_V_angle,_V_flag);
             }
-            operator ALLEGRO_BITMAP* (){return bmps[selection];}
-            ~LL_Sprite(){destroy();}
+            operator ALLEGRO_BITMAP* ()
+            {
+                return _V_bitmap_set[_V_index];
+            }
+            ~Sprite()
+            {
+                destroy();
+            }
     };
 }
 

@@ -80,6 +80,21 @@ namespace LL_AL5
                     al_attach_sample_instance_to_mixer(_V_instance,al_get_default_mixer());
                 return (_V_sample and _V_instance);
             }
+            bool destroy()
+            {
+                if(_V_instance)
+                {
+                    al_destroy_sample_instance(_V_instance);
+                    _V_instance=nullptr;
+                    if(_V_sample)
+                    {
+                        al_destroy_sample(_V_sample);
+                        _V_sample=nullptr;
+                        return true;
+                    }
+                }
+                return false;
+            }
             unsigned int size()
             {
                 if(_V_sample)
@@ -92,7 +107,7 @@ namespace LL_AL5
                     return al_get_sample_instance_time(_V_instance);
                 return 0;
             }
-            bool set_position(unsigned int new_position)
+            bool set_audio_position(unsigned int new_position)
             {
                 if(_V_instance and al_set_sample_instance_position(_V_instance,new_position))
                 {
@@ -101,7 +116,7 @@ namespace LL_AL5
                 }
                 return false;
             }
-            unsigned int get_position()
+            unsigned int get_audio_position()
             {
                 if(_V_instance)
                     return al_get_sample_instance_position(_V_instance);
@@ -126,28 +141,13 @@ namespace LL_AL5
                 if(is_playing())
                 {
                     al_set_sample_instance_playing(_V_instance,false);
-                    _V_position=get_position();
+                    _V_position=get_audio_position();
                 }
             }
             void play()
             {
-                if(!is_playing() and set_position(_V_position))
+                if(!is_playing() and set_audio_position(_V_position))
                     al_set_sample_instance_playing(_V_instance,true);
-            }
-            bool destroy()
-            {
-                if(_V_instance)
-                {
-                    al_destroy_sample_instance(_V_instance);
-                    _V_instance=nullptr;
-                    if(_V_sample)
-                    {
-                        al_destroy_sample(_V_sample);
-                        _V_sample=nullptr;
-                        return true;
-                    }
-                }
-                return false;
             }
             operator ALLEGRO_SAMPLE* ()
             {

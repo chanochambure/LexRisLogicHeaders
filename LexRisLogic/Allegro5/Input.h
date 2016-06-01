@@ -121,10 +121,11 @@ namespace LL_AL5
             std::string* _V_input_objetive=nullptr;
             unsigned int _V_max_input_size;
             ALLEGRO_EVENT_QUEUE* _V_event_queue;
-            ALLEGRO_TIMER* _V_timer;
             KeyControl* _V_key_control=nullptr;
             bool _V_display_exit_status=false;
             bool _V_textlog_exit_status=false;
+            float _V_time=0;
+            bool _V_timer_event=false;
             bool _V_auxiliar_key=false;
             int _V_mouse_x=0;
             int _V_mouse_y=0;
@@ -132,13 +133,13 @@ namespace LL_AL5
             bool _V_mouse_buttons[3]={false,false,false};
             bool _V_mouse_buttons_auxiliar[3]={false,false,false};
             bool _V_input_activated=false;
-            ALLEGRO_DISPLAY** _V_display=nullptr;
-            ALLEGRO_TEXTLOG** _V_textlog=nullptr;
+            ALLEGRO_DISPLAY* _V_display=nullptr;
+            ALLEGRO_TEXTLOG* _V_textlog=nullptr;
+            ALLEGRO_TIMER* _V_timer=nullptr;
+            bool _V_timer_registered=false;
             bool _V_display_registered=false;
             bool _V_textlog_registered=false;
-            bool _V_timer_status=false;
             bool _V_char_lock=false;
-            unsigned int _V_frames_per_second;
             int _F_find_key(std::string key_name)
             {
                 if(_V_key_control)
@@ -152,33 +153,51 @@ namespace LL_AL5
                 return -1;
             }
         public:
-            Input(unsigned int frames_per_second=60)
+            Input()
             {
-                _V_frames_per_second=frames_per_second;
                 al_install_keyboard();
                 al_install_mouse();
                 _V_event_queue=al_create_event_queue();
-                _V_timer=al_create_timer(1.0/_V_frames_per_second);
-                al_register_event_source(_V_event_queue, al_get_timer_event_source(_V_timer));
-                al_start_timer(_V_timer);
+            }
+            bool unregister_timer()
+            {
+                if(_V_timer_registered)
+                {
+                    al_unregister_event_source(_V_event_queue,al_get_timer_event_source(_V_timer));
+                    _V_timer_registered=false;
+                    _V_timer=nullptr;
+                    return true;
+                }
+                return false;
+            }
+            bool register_timer(ALLEGRO_TIMER* new_timer)
+            {
+                if(!_V_timer_registered)
+                {
+                    _V_timer=new_timer;
+                    al_register_event_source(_V_event_queue,al_get_timer_event_source(_V_timer));
+                    _V_timer_registered=true;
+                    return true;
+                }
+                return false;
             }
             bool unregister_display()
             {
                 if(_V_display_registered)
                 {
-                    al_unregister_event_source(_V_event_queue,al_get_display_event_source(*_V_display));
+                    al_unregister_event_source(_V_event_queue,al_get_display_event_source(_V_display));
                     _V_display_registered=false;
                     _V_display=nullptr;
                     return true;
                 }
                 return false;
             }
-            bool register_display(ALLEGRO_DISPLAY*& new_display)
+            bool register_display(ALLEGRO_DISPLAY* new_display)
             {
                 if(!_V_display_registered)
                 {
-                    _V_display=&new_display;
-                    al_register_event_source(_V_event_queue,al_get_display_event_source(*_V_display));
+                    _V_display=new_display;
+                    al_register_event_source(_V_event_queue,al_get_display_event_source(_V_display));
                     _V_display_registered=true;
                     return true;
                 }
@@ -188,40 +207,23 @@ namespace LL_AL5
             {
                 if(_V_textlog_registered)
                 {
-                    al_unregister_event_source(_V_event_queue,al_get_native_text_log_event_source(*_V_textlog));
+                    al_unregister_event_source(_V_event_queue,al_get_native_text_log_event_source(_V_textlog));
                     _V_textlog_registered=false;
                     _V_textlog=nullptr;
                     return true;
                 }
                 return false;
             }
-            bool register_textlog(ALLEGRO_TEXTLOG*& new_textlog)
+            bool register_textlog(ALLEGRO_TEXTLOG* new_textlog)
             {
                 if(!_V_textlog_registered)
                 {
-                    _V_textlog=&new_textlog;
-                    al_register_event_source(_V_event_queue,al_get_native_text_log_event_source(*_V_textlog));
+                    _V_textlog=new_textlog;
+                    al_register_event_source(_V_event_queue,al_get_native_text_log_event_source(_V_textlog));
                     _V_textlog_registered=true;
                     return true;
                 }
                 return false;
-            }
-            bool set_fps(unsigned int frames_per_second)
-            {
-                if(frames_per_second and frames_per_second!=_V_frames_per_second)
-                {
-                    _V_frames_per_second=frames_per_second;
-                    al_unregister_event_source(_V_event_queue,al_get_timer_event_source(_V_timer));
-                    al_destroy_timer(_V_timer);
-                    _V_timer=al_create_timer(1.0/_V_frames_per_second);
-                    al_register_event_source(_V_event_queue,al_get_timer_event_source(_V_timer));
-                    return true;
-                }
-                return false;
-            }
-            unsigned int get_fps()
-            {
-                return _V_frames_per_second;
             }
             void set_key_control(KeyControl* new_key_control)
             {
@@ -239,6 +241,17 @@ namespace LL_AL5
             {
                 if(_V_key_control)
                     _V_key_control->clear_key_status();
+            }
+            bool set_wait_time(float wait_time)
+            {
+                if(wait_time<0)
+                    return false;
+                _V_time=wait_time;
+                return true;
+            }
+            unsigned int get_wait_time()
+            {
+                return _V_time;
             }
             bool keyboard_on()
             {
@@ -313,7 +326,7 @@ namespace LL_AL5
             }
             bool set_mouse_xy(int new_mouse_x,int new_mouse_y)
             {
-                if(al_set_mouse_xy(*_V_display,new_mouse_x,new_mouse_y))
+                if(al_set_mouse_xy(_V_display,new_mouse_x,new_mouse_y))
                 {
                     _V_mouse_x=new_mouse_x;
                     _V_mouse_y=new_mouse_y;
@@ -356,7 +369,7 @@ namespace LL_AL5
             }
             bool get_timer_event()
             {
-                return _V_timer_status;
+                return _V_timer_event;
             }
             bool& get_display_status()
             {
@@ -366,91 +379,111 @@ namespace LL_AL5
             {
                 return _V_textlog_exit_status;
             }
-            void get_event()
+            bool get_event()
             {
                 ALLEGRO_EVENT event;
-                al_wait_for_event(_V_event_queue,&event);
-                if(_V_display_registered)
+                if(al_wait_for_event_timed(_V_event_queue,&event,_V_time))
                 {
-                    if(event.type==ALLEGRO_EVENT_DISPLAY_CLOSE)
-                        _V_display_exit_status=true;
-                }
-                if(_V_textlog_registered)
-                {
-                    if(event.type==ALLEGRO_EVENT_NATIVE_DIALOG_CLOSE)
-                        _V_textlog_exit_status=true;
-                }
-                if(_V_keyboard_status)
-                {
-                    if(_V_input_activated and event.type==ALLEGRO_EVENT_KEY_CHAR)
+                    if(_V_timer_registered)
+                        _V_timer_event=(event.type==ALLEGRO_EVENT_TIMER);
+                    if(_V_display_registered)
                     {
-                        if(event.keyboard.keycode==ALLEGRO_KEY_BACKSPACE)
-                            (*_V_input_objetive)=_V_input_objetive->substr(0,_V_input_objetive->size()-1);
-                        else if(_V_input_objetive->size()<_V_max_input_size)
+                        if(event.type==ALLEGRO_EVENT_DISPLAY_CLOSE)
                         {
-                            if(event.keyboard.keycode==ALLEGRO_KEY_ENTER)
-                            {
-                                if(!_V_char_lock)
-                                    (*_V_input_objetive)=(*_V_input_objetive)+'\n';
-                            }
-                            else if(event.keyboard.keycode==ALLEGRO_KEY_TAB)
-                            {
-                                if(!_V_char_lock)
-                                    (*_V_input_objetive)=(*_V_input_objetive)+'\t';
-                            }
-                            else if(event.keyboard.unichar>=32 and event.keyboard.keycode!=77)
-                                (*_V_input_objetive)=(*_V_input_objetive)+char(event.keyboard.unichar);
+                            _V_display_exit_status=true;
+                            return true;
                         }
                     }
-                    else if(event.type==ALLEGRO_EVENT_KEY_DOWN)
+                    if(_V_textlog_registered)
                     {
-                        int key_index=_F_find_key(event.keyboard.keycode);
-                        if(key_index!=-1)
-                            _V_key_control->get_key_down_status(key_index)=true;
-                    }
-                    else if(event.type==ALLEGRO_EVENT_KEY_UP)
-                    {
-                        int key_index=_F_find_key(event.keyboard.keycode);
-                        if(key_index!=-1)
-                            _V_key_control->get_key_down_status(key_index)=false;
-                    }
-                }
-                if(_V_mouse_status)
-                {
-                    if(_V_mouse_event_type)
-                    {
-                        if(event.type==ALLEGRO_EVENT_MOUSE_AXES)
+                        if(event.type==ALLEGRO_EVENT_NATIVE_DIALOG_CLOSE)
                         {
-                            _V_mouse_x=event.mouse.x;
-                            _V_mouse_y=event.mouse.y;
-                            _V_mouse_z=event.mouse.z;
+                            _V_textlog_exit_status=true;
+                            return true;
                         }
-                        else if(event.type==ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-                            _V_mouse_buttons[event.mouse.button-1]=true;
-                        else if(event.type==ALLEGRO_EVENT_MOUSE_BUTTON_UP)
-                            _V_mouse_buttons[event.mouse.button-1]=false;
                     }
-                    else
+                    if(_V_keyboard_status)
                     {
-                        ALLEGRO_MOUSE_STATE mouse_state;
-                        al_get_mouse_state(&mouse_state);
-                        for(unsigned int i=0;i<3;++i)
+                        if(_V_input_activated and event.type==ALLEGRO_EVENT_KEY_CHAR)
                         {
-                            bool actual_state=(mouse_state.buttons & 1<<i);
-                            if(_V_mouse_buttons_auxiliar[i]==_V_mouse_buttons[i])
-                                _V_mouse_buttons_auxiliar[i]=_V_mouse_buttons[i]=actual_state;
-                            else
+                            if(event.keyboard.keycode==ALLEGRO_KEY_BACKSPACE)
+                                (*_V_input_objetive)=_V_input_objetive->substr(0,_V_input_objetive->size()-1);
+                            else if(_V_input_objetive->size()<_V_max_input_size)
                             {
-                                if(_V_mouse_buttons[i]==actual_state)
-                                    _V_mouse_buttons_auxiliar[i]=actual_state;
+                                if(event.keyboard.keycode==ALLEGRO_KEY_ENTER)
+                                {
+                                    if(!_V_char_lock)
+                                        (*_V_input_objetive)=(*_V_input_objetive)+'\n';
+                                }
+                                else if(event.keyboard.keycode==ALLEGRO_KEY_TAB)
+                                {
+                                    if(!_V_char_lock)
+                                        (*_V_input_objetive)=(*_V_input_objetive)+'\t';
+                                }
+                                else if(event.keyboard.unichar>=32 and event.keyboard.keycode!=77)
+                                    (*_V_input_objetive)=(*_V_input_objetive)+char(event.keyboard.unichar);
                             }
                         }
-                        _V_mouse_x=mouse_state.x;
-                        _V_mouse_y=mouse_state.y;
-                        _V_mouse_z=mouse_state.z;
+                        else if(event.type==ALLEGRO_EVENT_KEY_DOWN)
+                        {
+                            int key_index=_F_find_key(event.keyboard.keycode);
+                            if(key_index!=-1)
+                                _V_key_control->get_key_down_status(key_index)=true;
+                            return true;
+                        }
+                        else if(event.type==ALLEGRO_EVENT_KEY_UP)
+                        {
+                            int key_index=_F_find_key(event.keyboard.keycode);
+                            if(key_index!=-1)
+                                _V_key_control->get_key_down_status(key_index)=false;
+                            return true;
+                        }
                     }
+                    if(_V_mouse_status)
+                    {
+                        if(_V_mouse_event_type)
+                        {
+                            if(event.type==ALLEGRO_EVENT_MOUSE_AXES)
+                            {
+                                _V_mouse_x=event.mouse.x;
+                                _V_mouse_y=event.mouse.y;
+                                _V_mouse_z=event.mouse.z;
+                                return true;
+                            }
+                            else if(event.type==ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+                            {
+                                _V_mouse_buttons[event.mouse.button-1]=true;
+                                return true;
+                            }
+                            else if(event.type==ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+                            {
+                                _V_mouse_buttons[event.mouse.button-1]=false;
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            ALLEGRO_MOUSE_STATE mouse_state;
+                            al_get_mouse_state(&mouse_state);
+                            for(unsigned int i=0;i<3;++i)
+                            {
+                                bool actual_state=(mouse_state.buttons & 1<<i);
+                                if(_V_mouse_buttons_auxiliar[i]==_V_mouse_buttons[i])
+                                    _V_mouse_buttons_auxiliar[i]=_V_mouse_buttons[i]=actual_state;
+                                else
+                                {
+                                    if(_V_mouse_buttons[i]==actual_state)
+                                        _V_mouse_buttons_auxiliar[i]=actual_state;
+                                }
+                            }
+                            _V_mouse_x=mouse_state.x;
+                            _V_mouse_y=mouse_state.y;
+                            _V_mouse_z=mouse_state.z;
+                        }
+                    }
+                    return true;
                 }
-                _V_timer_status=(event.type==ALLEGRO_EVENT_TIMER);
+                return false;
             }
             int get_keycode()
             {
@@ -486,16 +519,11 @@ namespace LL_AL5
             }
             ~Input()
             {
+                unregister_timer();
                 unregister_display();
                 unregister_textlog();
                 keyboard_off();
                 mouse_off();
-                if(_V_timer)
-                {
-                    al_unregister_event_source(_V_event_queue,al_get_timer_event_source(_V_timer));
-                    al_destroy_timer(_V_timer);
-                    _V_timer=nullptr;
-                }
                 if(_V_event_queue)
                 {
                     al_destroy_event_queue(_V_event_queue);

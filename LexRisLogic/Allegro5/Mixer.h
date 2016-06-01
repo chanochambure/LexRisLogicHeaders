@@ -3,7 +3,7 @@
 
 namespace LL_AL5
 {
-    class LL_Mixer
+    class Mixer
     {
         private:
             ALLEGRO_VOICE* _V_voice=nullptr;
@@ -53,7 +53,7 @@ namespace LL_AL5
             bool create()
             {
                 destroy();
-                _V_voice=al_create_voice(_V_frequency,_V_audio_depth,_V_chanel_conf);
+                _V_voice=al_create_voice(_V_frequency,ALLEGRO_AUDIO_DEPTH_INT16,_V_chanel_conf);
                 if(_V_voice)
                 {
                     _V_mixer=al_create_mixer(_V_frequency,_V_audio_depth,_V_chanel_conf);
@@ -106,7 +106,9 @@ namespace LL_AL5
             }
             bool set_default_mixer()
             {
-                return al_set_default_mixer(_V_mixer);
+                if(_V_mixer)
+                    return al_set_default_mixer(_V_mixer);
+                return false;
             }
             operator ALLEGRO_MIXER* ()
             {
@@ -116,7 +118,7 @@ namespace LL_AL5
             {
                 return _V_voice;
             }
-            ~LL_Mixer()
+            ~Mixer()
             {
                 destroy();
             }

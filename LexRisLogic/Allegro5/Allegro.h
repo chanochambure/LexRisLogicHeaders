@@ -73,6 +73,7 @@ namespace LL_AL5
 
 #include "Path.h"
 #include "Display.h"
+#include "Timer.h"
 #include "NativeDialog.h"
 #include "Input.h"
 #include "Color.h"
@@ -83,7 +84,7 @@ namespace LL_AL5
 #include "Audio.h"
 #include "Video.h"
 
-#include "Special/Lighting.h"
+#include "Special/Ilumination.h"
 #include "Special/Sprite.h"
 #include "Special/Interface.h"
 
