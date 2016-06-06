@@ -9,8 +9,8 @@ namespace LL
     class StringSplitter
     {
         private:
-            std::vector<std::string> _V_data;
             std::string _V_string;
+            std::vector<std::string> _V_data;
         public:
             void set_string(std::string new_string)
             {

@@ -102,7 +102,7 @@ namespace LL_ENet
             {
                 if(!_V_is_running)
                 {
-                    _V_client_host=enet_host_create(NULL, 1, 2, 57600/8, 14400/8);
+                    _V_client_host=enet_host_create(NULL,1,2,57600/8,14400/8);
                     _V_is_running=_V_client_host;
                     return _V_is_running;
                 }
@@ -111,7 +111,7 @@ namespace LL_ENet
             bool connect_to_server()
             {
                 _F_reset_connection();
-                _V_client_connection=enet_host_connect(_V_client_host, &_V_address, 2, 0);
+                _V_client_connection=enet_host_connect(_V_client_host,&_V_address,2,0);
                 if(!_V_client_connection)
                     return false;
                 return (_V_status_connected=_F_test_connection());

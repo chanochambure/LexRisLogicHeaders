@@ -275,8 +275,7 @@ namespace LL_AL5
             }
             bool input_on(std::string* input_objetive,unsigned int max_input_size,bool special_is_blocked=false)
             {
-                keyboard_on();
-                if(!_V_input_activated and max_input_size>0)
+                if(_V_keyboard_status and !_V_input_activated and max_input_size>0)
                 {
                     _V_char_lock=special_is_blocked;
                     _V_input_objetive=input_objetive;
@@ -385,7 +384,15 @@ namespace LL_AL5
                 if(al_wait_for_event_timed(_V_event_queue,&event,_V_time))
                 {
                     if(_V_timer_registered)
-                        _V_timer_event=(event.type==ALLEGRO_EVENT_TIMER);
+                    {
+                        if(event.type==ALLEGRO_EVENT_TIMER)
+                        {
+                            _V_timer_event=true;
+                            return true;
+                        }
+                        else
+                            _V_timer_event=false;
+                    }
                     if(_V_display_registered)
                     {
                         if(event.type==ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -483,6 +490,7 @@ namespace LL_AL5
                     }
                     return true;
                 }
+                _V_timer_event=false;
                 return false;
             }
             int get_keycode()

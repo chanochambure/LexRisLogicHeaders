@@ -22,7 +22,7 @@ namespace LL_AL5
             }
             bool set_size(float new_size)
             {
-                if(new_size>0)
+                if(new_size>0 and !_V_font)
                 {
                     _V_size=new_size;
                     return true;

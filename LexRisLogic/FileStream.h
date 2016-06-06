@@ -10,9 +10,9 @@ namespace LL
     class FileStream
     {
         private:
-            std::vector<std::string> _V_data;
-            std::string _V_file_path;
             bool _V_loaded=false;
+            std::string _V_file_path;
+            std::vector<std::string> _V_data;
             bool _F_read_file()
             {
                 _V_loaded=true;
@@ -67,6 +67,10 @@ namespace LL
             bool save()
             {
                 return _F_save_file();
+            }
+            bool is_loaded()
+            {
+                return _V_loaded;
             }
             void clear_file()
             {

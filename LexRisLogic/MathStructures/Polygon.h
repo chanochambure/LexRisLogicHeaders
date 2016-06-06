@@ -60,8 +60,9 @@ namespace LL_MathStructure
             for(unsigned int i=0;i<polygon.size();++i)
             {
                 unsigned int j=(i+1)%polygon.size();
-                count_intersection+=intersection_of_line_segments(LineSegment(point,create_point(max_pos_x+1,point[1])),
-                                                    LineSegment(polygon[i],polygon[j]));
+                count_intersection+=intersection_of_line_segments(LineSegment(point,
+                                                                              create_point(max_pos_x+1,point[1])),
+                                                                  LineSegment(polygon[i],polygon[j]));
             }
             return count_intersection%2;
         }
