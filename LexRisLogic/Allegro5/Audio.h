@@ -45,43 +45,43 @@ namespace LL_AL5
             {
                 if(_V_instance)
                     return al_set_sample_instance_speed(_V_instance,new_speed);
-                return 0;
+                return false;
             }
             float get_speed()
             {
                 if(_V_instance)
                     return al_get_sample_instance_speed(_V_instance);
-                return 0;
+                return 0.0;
             }
             bool set_pan(float new_pan)
             {
                 if(_V_instance)
                     return al_set_sample_instance_pan(_V_instance,new_pan);
-                return 0;
+                return false;
             }
             float get_pan()
             {
                 if(_V_instance)
                     return al_get_sample_instance_pan(_V_instance);
-                return 0;
+                return 0.0;
             }
             bool set_volume(float new_volume)
             {
                 if(_V_instance)
                     return al_set_sample_instance_gain(_V_instance,new_volume);
-                return 0;
+                return false;
             }
             float get_volume()
             {
                 if(_V_instance)
                     return al_get_sample_instance_gain(_V_instance);
-                return 0;
+                return 0.0;
             }
             bool set_playmode(ALLEGRO_PLAYMODE playmode)
             {
                 if(_V_instance)
                     return al_set_sample_instance_playmode(_V_instance,playmode);
-                return 0;
+                return false;
             }
             ALLEGRO_PLAYMODE get_playmode()
             {
@@ -124,7 +124,7 @@ namespace LL_AL5
             {
                 if(_V_instance)
                     return al_get_sample_instance_time(_V_instance);
-                return 0;
+                return 0.0;
             }
             bool set_audio_position(unsigned int new_position)
             {

@@ -35,8 +35,8 @@ namespace LL_AL5
             Type_display_size _V_real_size_y;
             Type_display_size _V_last_size_x=1;
             Type_display_size _V_last_size_y=1;
-            Type_pos _V_cam_pos_x=0;
-            Type_pos _V_cam_pos_y=0;
+            Type_pos _V_cam_pos_x=0.0;
+            Type_pos _V_cam_pos_y=0.0;
             int _V_display_mode=ALLEGRO_WINDOWED;
             void _F_destroy()
             {
@@ -62,8 +62,8 @@ namespace LL_AL5
                 bitmap_scale_x=float(_V_size_x)/_V_real_size_x;
                 bitmap_scale_y=float(_V_size_y)/_V_real_size_y;
                 text_scale=((bitmap_scale_x-bitmap_scale_y)/2)+bitmap_scale_y;
-                if(text_scale<1)
-                    primitives_scale=1;
+                if(text_scale<1.0)
+                    primitives_scale=1.0;
                 else
                     primitives_scale=text_scale;
             }

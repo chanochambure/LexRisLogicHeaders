@@ -28,7 +28,7 @@ namespace LL
     {
         private:
             clock_t _V_point;
-            double _V_time=0;
+            double _V_time=0.0;
             bool _V_in_pause=true;
             bool _V_stopped=true;
         public:
@@ -36,7 +36,7 @@ namespace LL
             {
                 if(_V_stopped)
                 {
-                    _V_time=0;
+                    _V_time=0.0;
                     _V_stopped=false;
                 }
                 if(_V_in_pause)
@@ -75,7 +75,7 @@ namespace LL
             }
             void clear()
             {
-                _V_time=0;
+                _V_time=0.0;
                 _V_point=clock();
             }
 };

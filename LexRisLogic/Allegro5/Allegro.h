@@ -35,12 +35,12 @@ namespace LL_AL5
     typedef float Type_pos;
     typedef unsigned int Type_display_size;
 
-    float bitmap_scale_x=1;
-    float bitmap_scale_y=1;
-    float text_scale=1;
-    float primitives_scale=1;
-    Type_display_size desktop_size_x=0;
-    Type_display_size desktop_size_y=0;
+    float bitmap_scale_x=1.0;
+    float bitmap_scale_y=1.0;
+    float text_scale=1.0;
+    float primitives_scale=1.0;
+    Type_display_size desktop_size_x=640;
+    Type_display_size desktop_size_y=480;
 
     void init_allegro()
     {

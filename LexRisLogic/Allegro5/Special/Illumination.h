@@ -68,17 +68,17 @@ namespace LL_AL5
         private:
             Color color;
             Color _V_figure_color;
-            float intensity=0;
+            float intensity=0.0;
         public:
             Light()
             {
                 this->_V_figure.set_filled_status(true);
-                this->_V_figure.set_thickness(0);
+                this->_V_figure.set_thickness(0.0);
                 color.alpha=_V_figure_color.alpha=0;
             }
             bool set_intensity(float new_intensity)
             {
-                if(new_intensity>1 or new_intensity<0)
+                if(new_intensity>1.0 or new_intensity<0.0)
                     return false;
                 intensity=new_intensity;
                 _V_figure_color.red=color.red*intensity;
@@ -88,7 +88,10 @@ namespace LL_AL5
                 this->_V_figure.set_color(_V_figure_color);
                 return true;
             }
-            float get_intensity(){return intensity;}
+            float get_intensity()
+            {
+                return intensity;
+            }
             void set_color(Color new_color)
             {
                 color=new_color;
@@ -98,7 +101,10 @@ namespace LL_AL5
                 color.alpha=_V_figure_color.alpha=0;
                 this->_V_figure.set_color(_V_figure_color);
             }
-            Color get_color(){return color;}
+            Color get_color()
+            {
+                return color;
+            }
     };
 
     template<typename FIGURE>
@@ -106,25 +112,28 @@ namespace LL_AL5
     {
         private:
             Color shadow;
-            float intensity=0;
+            float intensity=0.0;
         public:
             Shade()
             {
                 this->_V_figure.set_filled_status(true);
-                this->_V_figure.set_thickness(0);
+                this->_V_figure.set_thickness(0.0);
                 shadow.alpha=0;
                 this->_V_figure.set_color(shadow);
             }
             bool set_intensity(float new_intensity)
             {
-                if(new_intensity>1 or new_intensity<0)
+                if(new_intensity>1.0 or new_intensity<0.0)
                     return false;
                 intensity=new_intensity;
                 shadow.alpha=255*intensity;
                 this->_V_figure.set_color(shadow);
                 return true;
             }
-            float get_intensity(){return intensity;}
+            float get_intensity()
+            {
+                return intensity;
+            }
     };
 }
 

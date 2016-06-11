@@ -26,11 +26,11 @@ namespace LL_AL5
     {
         private:
             ALLEGRO_TIMER* _V_timer=nullptr;
-            double _V_speed_seconds=1;
+            double _V_speed_seconds=1.0;
         public:
             bool set_speed_seconds(double new_speed_seconds)
             {
-                if(!_V_timer and new_speed_seconds>0)
+                if(!_V_timer and new_speed_seconds>0.0)
                 {
                     _V_speed_seconds=new_speed_seconds;
                     return true;

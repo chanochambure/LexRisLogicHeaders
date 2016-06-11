@@ -25,8 +25,8 @@ namespace LL_AL5
     class Pixel
     {
         private:
-            Type_pos _V_pos_x=0;
-            Type_pos _V_pos_y=0;
+            Type_pos _V_pos_x=0.0;
+            Type_pos _V_pos_y=0.0;
             ALLEGRO_COLOR _V_color=al_map_rgb(0,0,0);
         public:
             Pixel(){}
@@ -77,14 +77,14 @@ namespace LL_AL5
     class Line
     {
         private:
-            Type_pos _V_cam_pos_x=0;
-            Type_pos _V_cam_pos_y=0;
-            Type_pos _V_pos_x1=0;
-            Type_pos _V_pos_y1=0;
-            Type_pos _V_pos_x2=0;
-            Type_pos _V_pos_y2=0;
+            Type_pos _V_cam_pos_x=0.0;
+            Type_pos _V_cam_pos_y=0.0;
+            Type_pos _V_pos_x1=0.0;
+            Type_pos _V_pos_y1=0.0;
+            Type_pos _V_pos_x2=0.0;
+            Type_pos _V_pos_y2=0.0;
             ALLEGRO_COLOR _V_color=al_map_rgb(0,0,0);
-            float _V_thickness=1;
+            float _V_thickness=1.0;
         public:
             Line(){}
             Line(Type_pos pos_x1,Type_pos pos_y1,Type_pos pos_x2,Type_pos pos_y2)
@@ -127,11 +127,11 @@ namespace LL_AL5
                 _V_pos_x1=new_pos_x1;
                 _V_pos_y1=new_pos_y1;
             }
-            Type_pos get_pos_x_1()
+            Type_pos get_pos_x1()
             {
                 return _V_pos_x1;
             }
-            Type_pos get_pos_y_1()
+            Type_pos get_pos_y1()
             {
                 return _V_pos_y1;
             }
@@ -140,11 +140,11 @@ namespace LL_AL5
                 _V_pos_x2=new_pos_x2;
                 _V_pos_y2=new_pos_y2;
             }
-            Type_pos get_pos_x_2()
+            Type_pos get_pos_x2()
             {
                 return _V_pos_x2;
             }
-            Type_pos get_pos_y_2()
+            Type_pos get_pos_y2()
             {
                 return _V_pos_y2;
             }
@@ -182,7 +182,7 @@ namespace LL_AL5
     {
         protected:
             bool _V_is_filled=false;
-            float _V_thickness=1;
+            float _V_thickness=1.0;
             ALLEGRO_COLOR _V_color=al_map_rgb(0,0,0);
         public:
             void set_thickness(float new_thickness)
@@ -214,8 +214,8 @@ namespace LL_AL5
     class Figure:public Primitive
     {
         protected:
-            Type_pos _V_pos_x=0;
-            Type_pos _V_pos_y=0;
+            Type_pos _V_pos_x=0.0;
+            Type_pos _V_pos_y=0.0;
         public:
             void set_pos(Type_pos new_pos_x,Type_pos new_pos_y)
             {
@@ -243,7 +243,7 @@ namespace LL_AL5
     class Circle:public Figure
     {
         private:
-            float _V_ratio=1;
+            float _V_ratio=1.0;
         public:
             Circle(){}
             Circle(Type_pos pos_x,Type_pos pos_y,float new_ratio)
@@ -277,8 +277,8 @@ namespace LL_AL5
     class Ellipse:public Figure
     {
         private:
-            float _V_ratio_x=1;
-            float _V_ratio_y=1;
+            float _V_ratio_x=1.0;
+            float _V_ratio_y=1.0;
         public:
             Ellipse(){}
             Ellipse(Type_pos pos_x,Type_pos pos_y,float ratio_x,float ratio_y)
@@ -322,8 +322,8 @@ namespace LL_AL5
     class Rectangle:public Figure
     {
         private:
-            float _V_size_x=0;
-            float _V_size_y=0;
+            float _V_size_x=0.0;
+            float _V_size_y=0.0;
         public:
             Rectangle(){}
             Rectangle(Type_pos pos_x,Type_pos pos_y,float size_x,float size_y)
@@ -367,14 +367,14 @@ namespace LL_AL5
     class Triangle:public Primitive
     {
         private:
-            Type_pos _V_cam_pos_x=0;
-            Type_pos _V_cam_pos_y=0;
-            Type_pos _V_pos_x1=0;
-            Type_pos _V_pos_x2=0;
-            Type_pos _V_pos_x3=0;
-            Type_pos _V_pos_y1=0;
-            Type_pos _V_pos_y2=0;
-            Type_pos _V_pos_y3=0;
+            Type_pos _V_cam_pos_x=0.0;
+            Type_pos _V_cam_pos_y=0.0;
+            Type_pos _V_pos_x1=0.0;
+            Type_pos _V_pos_x2=0.0;
+            Type_pos _V_pos_x3=0.0;
+            Type_pos _V_pos_y1=0.0;
+            Type_pos _V_pos_y2=0.0;
+            Type_pos _V_pos_y3=0.0;
         public:
             Triangle(){}
             Triangle(Type_pos pos_x1,Type_pos pos_y1,Type_pos pos_x2,Type_pos pos_y2,Type_pos pos_x3,Type_pos pos_y3)
@@ -423,11 +423,11 @@ namespace LL_AL5
                 _V_pos_x1=new_pos_x1;
                 _V_pos_y1=new_pos_y1;
             }
-            Type_pos get_pos_x_1()
+            Type_pos get_pos_x1()
             {
                 return _V_pos_x1;
             }
-            Type_pos get_pos_y_1()
+            Type_pos get_pos_y1()
             {
                 return _V_pos_y1;
             }
@@ -436,11 +436,11 @@ namespace LL_AL5
                 _V_pos_x2=new_pos_x2;
                 _V_pos_y2=new_pos_y2;
             }
-            Type_pos get_pos_x_2()
+            Type_pos get_pos_x2()
             {
                 return _V_pos_x2;
             }
-            Type_pos get_pos_y_2()
+            Type_pos get_pos_y2()
             {
                 return _V_pos_y2;
             }
@@ -449,11 +449,11 @@ namespace LL_AL5
                 _V_pos_x3=new_pos_x3;
                 _V_pos_y3=new_pos_y3;
             }
-            Type_pos get_pos_x_3()
+            Type_pos get_pos_x3()
             {
                 return _V_pos_x3;
             }
-            Type_pos get_pos_y_3()
+            Type_pos get_pos_y3()
             {
                 return _V_pos_y3;
             }
@@ -486,12 +486,12 @@ namespace LL_AL5
     class Function
     {
         private:
-            Type_pos _V_init_function=0;
-            Type_pos _V_final_function=1;
-            Type_pos _V_cam_pos_x=0;
-            Type_pos _V_cam_pos_y=0;
-            float _V_step_function=1;
-            float _V_thickness=1;
+            Type_pos _V_init_function=0.0;
+            Type_pos _V_final_function=1.0;
+            Type_pos _V_cam_pos_x=0.0;
+            Type_pos _V_cam_pos_y=0.0;
+            float _V_step_function=1.0;
+            float _V_thickness=1.0;
             ALLEGRO_COLOR _V_color=al_map_rgb(0,0,0);
             Type_pos (*_P_Function_fx)(Type_pos)=nullptr;
         public:

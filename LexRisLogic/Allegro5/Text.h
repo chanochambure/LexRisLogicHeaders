@@ -29,7 +29,7 @@ namespace LL_AL5
         private:
             ALLEGRO_FONT* _V_font=nullptr;
             std::string _V_font_path;
-            float _V_size=12;
+            float _V_size=12.0;
         public:
             void set_path(std::string new_font_path)
             {
@@ -41,7 +41,7 @@ namespace LL_AL5
             }
             bool set_size(float new_size)
             {
-                if(new_size>0 and !_V_font)
+                if(new_size>0.0 and !_V_font)
                 {
                     _V_size=new_size;
                     return true;
@@ -91,8 +91,8 @@ namespace LL_AL5
             int _V_flag=0;
             std::string _V_text;
             ALLEGRO_COLOR _V_color;
-            Type_pos _V_pos_x=0;
-            Type_pos _V_pos_y=0;
+            Type_pos _V_pos_x=0.0;
+            Type_pos _V_pos_y=0.0;
         public:
             void set_pos(Type_pos new_pos_x,Type_pos new_pos_y)
             {

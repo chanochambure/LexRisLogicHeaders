@@ -143,7 +143,7 @@ namespace LL_AL5
             KeyControl* _V_key_control=nullptr;
             bool _V_display_exit_status=false;
             bool _V_textlog_exit_status=false;
-            float _V_time=0;
+            float _V_time=0.0;
             bool _V_timer_event=false;
             bool _V_auxiliar_key=false;
             int _V_mouse_x=0;

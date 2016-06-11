@@ -28,7 +28,7 @@ namespace LL_irrKlang
     {
         private:
             unsigned int _V_position=0;
-            float _V_volume=1;
+            float _V_volume=1.0;
             std::string _V_audio_path;
             irrklang::ISound* _V_isound=nullptr;
             bool _V_loop_mode=false;
@@ -51,19 +51,19 @@ namespace LL_irrKlang
             {
                 if(_V_isound)
                     return _V_isound->getPlaybackSpeed();
-                return 0;
+                return 0.0;
             }
             bool set_pan(float new_pan)
             {
                 if(_V_isound)
                     _V_isound->setPan(new_pan*-1);
-                return _V_isound;
+                return false;
             }
             float get_pan()
             {
                 if(_V_isound)
                     return (_V_isound->getPan()*-1);
-                return 0;
+                return 0.0;
             }
             void set_volume(float new_volume)
             {

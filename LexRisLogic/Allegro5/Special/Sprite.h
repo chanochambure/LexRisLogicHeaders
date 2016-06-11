@@ -21,8 +21,8 @@
 #define INCLUDED_LL_AL5_SPRITE_H
 
 #include <string>
+#include <sstream>
 #include "../Bitmap.h"
-#include "../../Convert.h"
 
 namespace LL_AL5
 {
@@ -35,6 +35,12 @@ namespace LL_AL5
             unsigned int _V_index=0;
             unsigned int _V_size=1;
             bool _V_initialised=false;
+            std::string _F_int_to_string(unsigned int value)
+            {
+                std::stringstream string_stream;
+                string_stream<<value;
+                return string_stream.str();
+            }
         public:
             float get_size_x()
             {
@@ -79,8 +85,8 @@ namespace LL_AL5
                 _V_size_y=new float[_V_size];
                 for(unsigned int i=0;i<_V_size;++i)
                 {
-                    _V_size_x[i]=0;
-                    _V_size_y[i]=0;
+                    _V_size_x[i]=0.0;
+                    _V_size_y[i]=0.0;
                     _V_bitmap_set[i]=nullptr;
                 }
                 _V_initialised=true;
@@ -107,8 +113,8 @@ namespace LL_AL5
                 {
                     al_destroy_bitmap(_V_bitmap_set[_V_index]);
                     _V_bitmap_set[_V_index]=nullptr;
-                    _V_size_x[_V_index]=0;
-                    _V_size_y[_V_index]=0;
+                    _V_size_x[_V_index]=0.0;
+                    _V_size_y[_V_index]=0.0;
                     return true;
                 }
                 return false;
@@ -120,7 +126,7 @@ namespace LL_AL5
                     destroy_data();
                     for(unsigned int i=0;i<_V_size;++i)
                     {
-                        _V_bitmap_set[i]=al_load_bitmap((sprites_path+LL::to_string(i+1)+bitmap_format).c_str());
+                        _V_bitmap_set[i]=al_load_bitmap((sprites_path+_F_int_to_string(i+1)+bitmap_format).c_str());
                         if(!_V_bitmap_set[i])
                         {
                             destroy_data();
@@ -143,8 +149,8 @@ namespace LL_AL5
                         if(_V_bitmap_set[i])
                         {
                             return_value=true;
-                            _V_size_x[i]=0;
-                            _V_size_y[i]=0;
+                            _V_size_x[i]=0.0;
+                            _V_size_y[i]=0.0;
                             al_destroy_bitmap(_V_bitmap_set[i]);
                             _V_bitmap_set[i]=nullptr;
                         }

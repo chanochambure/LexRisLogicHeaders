@@ -49,9 +49,7 @@ namespace LL
 
     void random_generate_new_seed()
     {
-        uint32_t asm_a,asm_d;
-        __asm__ __volatile__("rdtsc":"=a"(asm_a),"=d"(asm_d));
-        srand(((uint64_t)asm_a | ((uint64_t)asm_d)<<32));
+        srand(time(nullptr));
     }
 
     int random(int min_value,int max_value,bool include_max_value=false)
@@ -68,7 +66,7 @@ namespace LL
 
     int max_integer(float number)
     {
-        return (int(number)-(number<0));
+        return (int(number)-(number<0.0));
     }
 }
 

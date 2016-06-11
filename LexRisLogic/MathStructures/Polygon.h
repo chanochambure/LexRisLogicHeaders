@@ -103,7 +103,8 @@ namespace LL_MathStructure
                         return true;
                 }
             }
-            return (point_into_polygon(first_polygon,second_polygon[0]) or point_into_polygon(second_polygon,first_polygon[0]));
+            return (point_into_polygon(first_polygon,second_polygon[0]) or
+                    point_into_polygon(second_polygon,first_polygon[0]));
         }
         return false;
     }

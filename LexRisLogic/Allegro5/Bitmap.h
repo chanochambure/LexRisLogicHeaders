@@ -33,11 +33,11 @@ namespace LL_AL5
     {
         protected:
             int _V_flag=0;
-            float _V_angle=0;
-            Type_pos _V_pos_x=0;
-            Type_pos _V_pos_y=0;
-            float _V_scale_x=1;
-            float _V_scale_y=1;
+            float _V_angle=0.0;
+            Type_pos _V_pos_x=0.0;
+            Type_pos _V_pos_y=0.0;
+            float _V_scale_x=1.0;
+            float _V_scale_y=1.0;
             bool _V_centering_option_x=false;
             bool _V_centering_option_y=false;
         public:
@@ -109,8 +109,8 @@ namespace LL_AL5
     {
         protected:
             ALLEGRO_BITMAP* _V_bitmap=nullptr;
-            float _V_size_x=0;
-            float _V_size_y=0;
+            float _V_size_x=0.0;
+            float _V_size_y=0.0;
         public:
             float get_size_x()
             {
@@ -192,10 +192,10 @@ namespace LL_AL5
         private:
             ALLEGRO_BITMAP* _V_parent_bitmap=nullptr;
             ALLEGRO_BITMAP* _V_bitmap=nullptr;
-            Type_pos _V_sub_x=0;
-            Type_pos _V_sub_y=0;
-            float _V_size_x=0;
-            float _V_size_y=0;
+            Type_pos _V_sub_x=0.0;
+            Type_pos _V_sub_y=0.0;
+            float _V_size_x=0.0;
+            float _V_size_y=0.0;
         public:
             void set_parent_bitmap(ALLEGRO_BITMAP* new_parent_bitmap)
             {
@@ -308,8 +308,8 @@ namespace LL_AL5
         private:
             ALLEGRO_BITMAP* _V_bitmap=nullptr;
             std::string _V_image_path;
-            float _V_size_x=0;
-            float _V_size_y=0;
+            float _V_size_x=0.0;
+            float _V_size_y=0.0;
         public:
             void set_path(std::string new_image_path)
             {

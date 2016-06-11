@@ -29,8 +29,8 @@ namespace LL_AL5
     {
         private:
             ALLEGRO_VIDEO* _V_video=nullptr;
-            float _V_size_x=0;
-            float _V_size_y=0;
+            float _V_size_x=0.0;
+            float _V_size_y=0.0;
             std::string _V_video_path;
         public:
             void set_path(std::string new_video_path)
@@ -88,7 +88,7 @@ namespace LL_AL5
             void stop()
             {
                 pause();
-                al_seek_video(_V_video,0);
+                al_seek_video(_V_video,0.0);
             }
             void pause()
             {

@@ -31,7 +31,7 @@ namespace LL_irrKlang
     class SoundEngine
     {
         private:
-            float _V_volume=1;
+            float _V_volume=1.0;
             irrklang::ISoundEngine* _V_engine=nullptr;
         public:
             bool create()

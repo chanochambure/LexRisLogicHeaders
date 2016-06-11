@@ -32,17 +32,17 @@ namespace LL_AL5
             const float _C_CONSTANT_SCALE_FONT_X=0.53125;
             const float _C_CONSTANT_SCALE_FONT_Y=1.25;
             unsigned int _V_font_size=1;
-            Type_pos _V_pos_x=0;
-            Type_pos _V_pos_y=0;
-            float _V_size_x=0;
-            float _V_size_y=0;
+            Type_pos _V_pos_x=0.0;
+            Type_pos _V_pos_y=0.0;
+            float _V_size_x=0.0;
+            float _V_size_y=0.0;
             Font* _V_font=nullptr;
             ALLEGRO_COLOR _V_text_color;
             ALLEGRO_COLOR _V_unclick_line_color;
             ALLEGRO_COLOR _V_unclick_fill_color;
             ALLEGRO_COLOR _V_click_line_color;
             ALLEGRO_COLOR _V_click_fill_color;
-            float _V_thickness=1;
+            float _V_thickness=1.0;
             bool _V_interface_status=false;
             Input* _V_input_pointer=nullptr;
             bool _F_in_focus()
@@ -141,7 +141,7 @@ namespace LL_AL5
     class Button:public Interface
     {
         private:
-            Type_pos _V_mid_x=0;
+            Type_pos _V_mid_x=0.0;
             std::string _V_button_text;
             bool _V_locked=false;
             bool _V_is_clicked=false;

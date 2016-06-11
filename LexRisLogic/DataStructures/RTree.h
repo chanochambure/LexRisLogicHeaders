@@ -42,7 +42,7 @@ namespace LL_DataStructure
     template<int DIMENSION>
     double mbb_distance(MBB<DIMENSION> first_mbb,MBB<DIMENSION> second_mbb)
     {
-        double acumulator=0;
+        double acumulator=0.0;
         for(int i=0;i<DIMENSION;++i)
         {
             double min_distance=std::max(first_mbb.first_point[i],second_mbb.first_point[i])-
@@ -248,7 +248,7 @@ namespace LL_DataStructure
                         for(unsigned int i=0;i<(*node)->size;++i)
                         {
                             node=&((*node)->sons[i]);
-                            if(mbb_distance((*node)->mbb,data_mbb)==0)
+                            if(mbb_distance((*node)->mbb,data_mbb)==0.0)
                             {
                                 selected_node=node;
                                 if(_F_find_data(data,data_mbb,node))
@@ -277,7 +277,7 @@ namespace LL_DataStructure
                 if(node->type)
                 {
                     std::vector<_T_Type_pair_dis_pos> sorted_data;
-                    sorted_data.push_back(_T_Type_pair_dis_pos(0,node->farthest_node_position()));
+                    sorted_data.push_back(_T_Type_pair_dis_pos(0.0,node->farthest_node_position()));
                     for(unsigned int i=0;i<node->size;++i)
                     {
                         if(i!=sorted_data[0].second)
@@ -307,7 +307,7 @@ namespace LL_DataStructure
                 else
                 {
                     std::vector<_T_Type_pair_dis_pos> sorted_data;
-                    sorted_data.push_back(_T_Type_pair_dis_pos(0,node->farthest_node_position()));
+                    sorted_data.push_back(_T_Type_pair_dis_pos(0.0,node->farthest_node_position()));
                     for(unsigned int i=0;i<node->size;++i)
                     {
                         if(i!=sorted_data[0].second)
@@ -466,7 +466,7 @@ namespace LL_DataStructure
                 {
                     for(unsigned int i=0;i<node->size;++i)
                     {
-                        if(mbb_distance(mbb,node->sons[i]->mbb)==0)
+                        if(mbb_distance(mbb,node->sons[i]->mbb)==0.0)
                             _F_range_query(data_list,node->sons[i],mbb);
                     }
                 }
@@ -474,7 +474,7 @@ namespace LL_DataStructure
                 {
                     for(unsigned int i=0;i<node->size;++i)
                     {
-                        if(mbb_distance(mbb,node->data[i]->mbb)==0)
+                        if(mbb_distance(mbb,node->data[i]->mbb)==0.0)
                             data_list->push_back(node->data[i]->data);
                     }
                 }

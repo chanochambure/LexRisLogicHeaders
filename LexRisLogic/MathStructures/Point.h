@@ -34,7 +34,7 @@ namespace LL_MathStructure
             Point()
             {
                 for(unsigned int i=0;i<DIMENSION;++i)
-                    _V_coordinates[i]=0;
+                    _V_coordinates[i]=0.0;
             }
             unsigned int get_dimension()
             {
