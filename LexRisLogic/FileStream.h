@@ -29,12 +29,10 @@ namespace LL
     class FileStream
     {
         private:
-            bool _V_loaded=false;
             std::string _V_file_path;
             std::vector<std::string> _V_data;
             bool _F_read_file()
             {
-                _V_loaded=true;
                 std::ifstream file(_V_file_path.c_str());
                 if(file.is_open())
                 {
@@ -68,7 +66,6 @@ namespace LL
             {
                 _V_data.clear();
                 _V_file_path=new_path;
-                _V_loaded=false;
             }
             std::string get_path()
             {
@@ -76,20 +73,12 @@ namespace LL
             }
             bool load()
             {
-                return ((!_V_loaded) and _F_read_file());
-            }
-            bool reload()
-            {
                 clear_file();
                 return _F_read_file();
             }
             bool save()
             {
                 return _F_save_file();
-            }
-            bool is_loaded()
-            {
-                return _V_loaded;
             }
             void clear_file()
             {
