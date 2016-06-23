@@ -59,6 +59,10 @@ namespace LL
             {
                 return _V_data.size();
             }
+            void clear()
+            {
+                _V_data.clear();
+            }
             std::string operator [] (unsigned int index)
             {
                 return _V_data[index];

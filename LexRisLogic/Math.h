@@ -21,6 +21,7 @@
 #define INCLUDED_LL_MATH_H
 
 #include <math.h>
+#include <time.h>
 #include <random>
 
 namespace LL

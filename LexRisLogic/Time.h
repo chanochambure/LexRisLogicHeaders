@@ -20,17 +20,23 @@
 #ifndef INCLUDED_LL_TIME_H
 #define INCLUDED_LL_TIME_H
 
-#include <time.h>
+#include <chrono>
 
 namespace LL
 {
     class Chronometer
     {
         private:
-            clock_t _V_point;
+            typedef std::chrono::high_resolution_clock::time_point _T_Type_clock;
+            typedef std::chrono::duration<double> _T_Type_duration;
+            _T_Type_clock _V_point;
             double _V_time=0.0;
             bool _V_in_pause=true;
             bool _V_stopped=true;
+            _T_Type_clock _F_get_clock()
+            {
+                return std::chrono::high_resolution_clock::now();
+            }
         public:
             bool play()
             {
@@ -41,7 +47,7 @@ namespace LL
                 }
                 if(_V_in_pause)
                 {
-                    _V_point=clock();
+                    _V_point=_F_get_clock();
                     _V_in_pause=false;
                     return true;
                 }
@@ -51,7 +57,7 @@ namespace LL
             {
                 if(!_V_in_pause)
                 {
-                    _V_time+=((double(clock()-_V_point))/CLOCKS_PER_SEC);
+                    _V_time+=std::chrono::duration_cast<_T_Type_duration>(_F_get_clock()-_V_point).count();
                     _V_in_pause=true;
                     return true;
                 }
@@ -70,15 +76,15 @@ namespace LL
             double get_time()
             {
                 if(!_V_in_pause)
-                    return _V_time+((double(clock()-_V_point))/CLOCKS_PER_SEC);
+                    return _V_time+std::chrono::duration_cast<_T_Type_duration>(_F_get_clock()-_V_point).count();
                 return _V_time;
             }
             void clear()
             {
                 _V_time=0.0;
-                _V_point=clock();
+                _V_point=_F_get_clock();
             }
-};
+    };
 }
 
 #endif // INCLUDED_LL_TIME_H
