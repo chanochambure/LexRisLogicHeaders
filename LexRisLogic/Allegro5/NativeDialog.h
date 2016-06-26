@@ -81,7 +81,7 @@ namespace LL_AL5
                 _V_mode=new_mode;
                 _V_file_exists=false;
             }
-            void start_filechooser()
+            bool start_filechooser()
             {
                 if(!_V_file_exists)
                 {
@@ -89,10 +89,13 @@ namespace LL_AL5
                         al_destroy_native_file_dialog(_V_filechooser);
                     _V_filechooser=al_create_native_file_dialog(_V_initial_path.c_str(),_V_title.c_str(),
                                                                 _V_patterns.c_str(),_V_mode);
+                    if(!_V_filechooser)
+                        return false;
                     _V_file_exists=true;
                 }
                 al_show_native_file_dialog(_V_display,_V_filechooser);
                 _V_number_of_selected_files=al_get_native_file_dialog_count(_V_filechooser);
+                return _V_number_of_selected_files;
             }
             unsigned int get_number_of_selected_files()
             {

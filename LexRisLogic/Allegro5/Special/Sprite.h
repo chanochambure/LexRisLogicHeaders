@@ -81,8 +81,24 @@ namespace LL_AL5
                 if(_V_initialised)
                     return false;
                 _V_bitmap_set=new ALLEGRO_BITMAP*[_V_size];
+                if(!_V_bitmap_set)
+                    return false;
                 _V_size_x=new float[_V_size];
+                if(!_V_size_x)
+                {
+                    delete(_V_bitmap_set);
+                    _V_bitmap_set=nullptr;
+                    return false;
+                }
                 _V_size_y=new float[_V_size];
+                if(!_V_size_y)
+                {
+                    delete(_V_size_x);
+                    delete(_V_bitmap_set);
+                    _V_size_x=nullptr;
+                    _V_bitmap_set=nullptr;
+                    return false;
+                }
                 for(unsigned int i=0;i<_V_size;++i)
                 {
                     _V_size_x[i]=0.0;

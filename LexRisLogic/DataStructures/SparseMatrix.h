@@ -138,16 +138,11 @@ namespace LL_DataStructure
             T get_null_value(){return _V_null_value;}
             void clear()
             {
-                if(_V_vector_x[0])
-                    delete(_V_vector_x[0]);
-                delete(_V_vector_x);
-                delete(_V_vector_y);
-                _V_vector_x=new _S_Structure_Node*[_V_size_x];
                 for(unsigned int i=0;i<_V_size_x;++i)
-                    _V_vector_x[i]=nullptr;
-                _V_vector_y=new _S_Structure_Node*[_V_size_y];
-                for(unsigned int i=0;i<_V_size_y;++i)
-                    _V_vector_y[i]=nullptr;
+                {
+                    for(unsigned int j=0;j<_V_size_y;++j)
+                        (*this)(i,j)=_V_null_value;
+                }
             }
             Class_Controller operator () (unsigned int pos_x,unsigned int pos_y)
             {

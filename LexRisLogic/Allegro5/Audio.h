@@ -94,10 +94,17 @@ namespace LL_AL5
                     return false;
                 _V_sample=al_load_sample(_V_audio_path.c_str());
                 if(_V_sample)
+                {
                     _V_instance=al_create_sample_instance(_V_sample);
-                if(_V_instance)
-                    al_attach_sample_instance_to_mixer(_V_instance,al_get_default_mixer());
-                return (_V_sample and _V_instance);
+                    if(_V_instance)
+                    {
+                        al_attach_sample_instance_to_mixer(_V_instance,al_get_default_mixer());
+                        return true;
+                    }
+                    al_destroy_sample(_V_sample);
+                    _V_sample=nullptr;
+                }
+                return false;
             }
             bool destroy()
             {
