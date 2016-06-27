@@ -133,9 +133,18 @@ namespace LL_DataStructure
                         return get_value();
                     }
             };
-            unsigned int get_size_x(){return _V_size_x;}
-            unsigned int get_size_y(){return _V_size_y;}
-            T get_null_value(){return _V_null_value;}
+            unsigned int get_size_x()
+            {
+                return _V_size_x;
+            }
+            unsigned int get_size_y()
+            {
+                return _V_size_y;
+            }
+            T get_null_value()
+            {
+                return _V_null_value;
+            }
             void clear()
             {
                 for(unsigned int i=0;i<_V_size_x;++i)
