@@ -488,8 +488,8 @@ namespace LL_DataStructure
             class iterator
             {
                 private:
-                    typedef std::pair<unsigned int,_S_Structure_Node*> _T_Type_stack_element;
-                    std::stack<_T_Type_stack_element> _V_stack;
+                    typedef std::pair<unsigned int,_S_Structure_Node*> _T_Type_item;
+                    std::stack<_T_Type_item> _V_stack;
                     void _F_get_next()
                     {
                         if(_V_stack.empty())
@@ -504,7 +504,7 @@ namespace LL_DataStructure
                         while((!_V_stack.empty()) and _V_stack.top().second->type)
                         {
                             if(_V_stack.top().first<(_V_stack.top().second->size))
-                                _V_stack.push(_T_Type_stack_element(0,_V_stack.top().second->sons[_V_stack.top().first++]));
+                                _V_stack.push(_T_Type_item(0,_V_stack.top().second->sons[_V_stack.top().first++]));
                             else
                                 _V_stack.pop();
                         }
@@ -515,7 +515,7 @@ namespace LL_DataStructure
                         if(root_node)
                         {
                             if(root_node->size)
-                                _V_stack.push(_T_Type_stack_element(0,root_node));
+                                _V_stack.push(_T_Type_item(0,root_node));
                             if(root_node->type)
                                 _F_get_next();
                         }

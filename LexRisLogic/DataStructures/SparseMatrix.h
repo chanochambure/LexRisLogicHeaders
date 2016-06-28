@@ -147,10 +147,52 @@ namespace LL_DataStructure
             }
             void clear()
             {
+                unsigned int ini_x=0;
+                unsigned int ini_y=0;
+                unsigned int fin_x=_V_size_x;
+                unsigned int fin_y=_V_size_y;
+                bool have_data=false;
                 for(unsigned int i=0;i<_V_size_x;++i)
                 {
-                    for(unsigned int j=0;j<_V_size_y;++j)
-                        (*this)(i,j)=_V_null_value;
+                    if(_V_vector_x[i])
+                    {
+                        have_data=true;
+                        ini_x=i;
+                        break;
+                    }
+                }
+                for(unsigned int i=0;i<_V_size_y;++i)
+                {
+                    if(_V_vector_y[i])
+                    {
+                        have_data=true;
+                        ini_y=i;
+                        break;
+                    }
+                }
+                if(have_data)
+                {
+                    for(unsigned int i=_V_size_x-1;i>=0;--i)
+                    {
+                        if(_V_vector_x[i])
+                        {
+                            fin_x=i+1;
+                            break;
+                        }
+                    }
+                    for(unsigned int i=_V_size_y-1;i>=0;--i)
+                    {
+                        if(_V_vector_y[i])
+                        {
+                            fin_y=i+1;
+                            break;
+                        }
+                    }
+                    for(unsigned int i=ini_x;i<fin_x;++i)
+                    {
+                        for(unsigned int j=ini_y;j<fin_y;++j)
+                            (*this)(i,j)=_V_null_value;
+                    }
                 }
             }
             Class_Controller operator () (unsigned int pos_x,unsigned int pos_y)

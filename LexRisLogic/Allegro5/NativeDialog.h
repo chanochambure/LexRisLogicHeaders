@@ -24,7 +24,8 @@
 
 namespace LL_AL5
 {
-    bool show_native_message(ALLEGRO_DISPLAY* display,std::string title,std::string header,std::string message,int flag)
+    bool show_native_message(ALLEGRO_DISPLAY* display,std::string title,
+                             std::string header,std::string message,int flag)
     {
         return (al_show_native_message_box(display,title.c_str(),header.c_str(),message.c_str(),nullptr,flag)==1);
     }
