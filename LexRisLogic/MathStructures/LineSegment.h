@@ -84,14 +84,12 @@ namespace LL_MathStructure
 
     bool intersection_of_lines(LineSegment first_segment,LineSegment second_segment,float* x=nullptr,float* y=nullptr)
     {
-        if((first_segment.get_pos_x_ini_point()==first_segment.get_pos_x_end_point()
-                and first_segment.get_pos_y_ini_point()==first_segment.get_pos_y_end_point())
-                or (second_segment.get_pos_x_ini_point()==second_segment.get_pos_x_end_point()
-                and second_segment.get_pos_y_ini_point()==second_segment.get_pos_y_end_point()))
+        if((first_segment.get_ini_point()==first_segment.get_end_point())
+           or (second_segment.get_ini_point()==second_segment.get_end_point()))
             return false;
         if(((first_segment.get_pos_x_end_point()-first_segment.get_pos_x_ini_point())
                 *(second_segment.get_pos_y_end_point()-second_segment.get_pos_y_ini_point()))
-                !=((first_segment.get_pos_y_end_point()-first_segment.get_pos_y_ini_point())
+           !=((first_segment.get_pos_y_end_point()-first_segment.get_pos_y_ini_point())
                 *(second_segment.get_pos_x_end_point()-second_segment.get_pos_x_ini_point())))
         {
             float intersection_point_x,intersection_point_y;
@@ -132,14 +130,22 @@ namespace LL_MathStructure
         return false;
     }
 
-    bool intersection_of_line_segments(LineSegment first_segment,LineSegment second_segment)
+    bool intersection_of_line_segments(LineSegment first_segment,LineSegment second_segment,
+                                       float* x=nullptr,float* y=nullptr)
     {
         float intersection_point_x,intersection_point_y;
         if(intersection_of_lines(first_segment,second_segment,&intersection_point_x,&intersection_point_y))
+        {
+            if(x and y)
+            {
+                *x=intersection_point_x;
+                *y=intersection_point_y;
+            }
             return ((first_segment.in_range_x(intersection_point_x)
                     and first_segment.in_range_y(intersection_point_y))
                     and (second_segment.in_range_x(intersection_point_x)
                     and second_segment.in_range_y(intersection_point_y)));
+        }
         return false;
     }
 }
