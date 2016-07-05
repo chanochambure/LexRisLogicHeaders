@@ -28,12 +28,10 @@ namespace LL_MathStructure
 {
     class Polygon
     {
-        public:
-            typedef Point<2> Type_point;
         private:
-            std::vector<Type_point> _V_points;
+            std::vector<Point<2>> _V_points;
         public:
-            void add_point(Type_point point)
+            void add_point(Point<2> point)
             {
                 _V_points.push_back(point);
             }
@@ -52,7 +50,7 @@ namespace LL_MathStructure
             {
                 _V_points.clear();
             }
-            Type_point& operator [] (unsigned int index)
+            Point<2>& operator [] (unsigned int index)
             {
                 return _V_points[index];
             }
@@ -65,7 +63,7 @@ namespace LL_MathStructure
             }
     };
 
-    bool point_into_polygon(Polygon polygon,Polygon::Type_point point)
+    bool point_into_polygon(Polygon polygon,Point<2> point)
     {
         if(polygon.size()>2)
         {
@@ -79,8 +77,9 @@ namespace LL_MathStructure
             for(unsigned int i=0;i<polygon.size();++i)
             {
                 unsigned int j=(i+1)%polygon.size();
-                count_intersection+=intersection_of_line_segments(LineSegment(point,create_point(max_pos_x+1,point[1]))
-                                                                  ,LineSegment(polygon[i],polygon[j]));
+                count_intersection+=intersection_of_line_segments_in_two_dimensions(
+                                                            LineSegment<2>(point,create_point(max_pos_x+1,point[1])),
+                                                            LineSegment<2>(polygon[i],polygon[j]));
             }
             return count_intersection%2;
         }
@@ -97,8 +96,9 @@ namespace LL_MathStructure
                 for(unsigned int k=0;k<second_polygon.size();++k)
                 {
                     unsigned int l=(k+1)%second_polygon.size();
-                    if(intersection_of_line_segments(LineSegment(first_polygon[i],first_polygon[j]),
-                                                     LineSegment(second_polygon[k],second_polygon[l])))
+                    if(intersection_of_line_segments_in_two_dimensions(
+                                                            LineSegment<2>(first_polygon[i],first_polygon[j]),
+                                                            LineSegment<2>(second_polygon[k],second_polygon[l])))
                         return true;
                 }
             }
