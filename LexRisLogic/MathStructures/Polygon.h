@@ -23,6 +23,7 @@
 #include "Point.h"
 #include "LineSegment.h"
 #include <vector>
+#include <list>
 
 namespace LL_MathStructure
 {
@@ -86,7 +87,7 @@ namespace LL_MathStructure
         return false;
     }
 
-    bool collision_of_polygons(Polygon first_polygon,Polygon second_polygon)
+    bool collision_of_polygons(Polygon first_polygon,Polygon second_polygon,std::list<Point<2>>* points=nullptr)
     {
         if(first_polygon.size()>2 and second_polygon.size()>2)
         {
@@ -96,17 +97,40 @@ namespace LL_MathStructure
                 for(unsigned int k=0;k<second_polygon.size();++k)
                 {
                     unsigned int l=(k+1)%second_polygon.size();
+                    float intersection_x;
+                    float intersection_y;
                     if(intersection_of_line_segments_in_two_dimensions(
                                                             LineSegment<2>(first_polygon[i],first_polygon[j]),
-                                                            LineSegment<2>(second_polygon[k],second_polygon[l])))
-                        return true;
+                                                            LineSegment<2>(second_polygon[k],second_polygon[l]),
+                                                            &intersection_x,&intersection_y))
+                    {
+                        if(points)
+                        {
+                            bool insertion=true;
+                            for(std::list<Point<2>>::iterator m=points->begin();m!=points->end();++m)
+                            {
+                                if((*m)[0]==intersection_x and (*m)[1]==intersection_y)
+                                {
+                                    insertion=false;
+                                    break;
+                                }
+                            }
+                            if(insertion)
+                                points->push_back(create_point(intersection_x,intersection_y));
+                        }
+                        else
+                            return true;
+                    }
                 }
             }
+            if(points and points->size())
+                return true;
             return (point_into_polygon(first_polygon,second_polygon[0]) or
                     point_into_polygon(second_polygon,first_polygon[0]));
         }
         return false;
     }
 }
+
 
 #endif // INCLUDED_LL_MATHSTRUCTURE_POLYGON_H
