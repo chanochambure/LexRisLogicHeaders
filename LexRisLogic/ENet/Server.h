@@ -105,33 +105,32 @@ namespace LL_ENet
                     switch(_V_event.type)
                     {
                         case ENET_EVENT_TYPE_CONNECT:
-                            {
-                                _V_event_new_connection=true;
-                                _V_event_disconnection=false;
-                            }
+                        {
+                            _V_event_new_connection=true;
+                            _V_event_disconnection=false;
                             break;
+                        }
                         case ENET_EVENT_TYPE_RECEIVE:
-                            {
-                                _V_event_new_connection=false;
-                                _V_event_disconnection=false;
-                                _V_message_queue.push(_T_Type_enet_client(_V_event.peer,
-                                                                          (const char*)(_V_event.packet->data)));
-                            }
+                        {
+                            _V_event_new_connection=false;
+                            _V_event_disconnection=false;
+                            _V_message_queue.push(_T_Type_enet_client(_V_event.peer,
+                                                                    (const char*)(_V_event.packet->data)));
                             break;
+                        }
                         case ENET_EVENT_TYPE_DISCONNECT:
-                            {
-                                _V_event_new_connection=false;
-                                _V_event_disconnection=true;
-                                _V_event.peer->data=NULL;
-                            }
+                        {
+                            _V_event_new_connection=false;
+                            _V_event_disconnection=true;
+                            _V_event.peer->data=NULL;
                             break;
+                        }
                         case ENET_EVENT_TYPE_NONE:
-                            {
-                                _V_event_new_connection=false;
-                                _V_event_disconnection=false;
-                                return false;
-                            }
-                            break;
+                        {
+                            _V_event_new_connection=false;
+                            _V_event_disconnection=false;
+                            return false;
+                        }
                     }
                     return true;
                 }

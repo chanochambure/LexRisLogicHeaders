@@ -145,8 +145,10 @@ namespace LL_ENet
                         switch (_V_event.type)
                         {
                             case ENET_EVENT_TYPE_RECEIVE:
+                            {
                                 enet_packet_destroy(_V_event.packet);
                                 break;
+                            }
                             case ENET_EVENT_TYPE_DISCONNECT:
                                 return true;
                             default:
@@ -169,15 +171,21 @@ namespace LL_ENet
                     switch(_V_event.type)
                     {
                         case ENET_EVENT_TYPE_CONNECT:
+                        {
                             _V_status_connected=true;
                             break;
+                        }
                         case ENET_EVENT_TYPE_RECEIVE:
+                        {
                             _V_message_queue.push((const char*)(_V_event.packet->data));
                             break;
+                        }
                         case ENET_EVENT_TYPE_DISCONNECT:
+                        {
                             _V_status_connected=false;
                             _V_event.peer->data=NULL;
                             break;
+                        }
                         case ENET_EVENT_TYPE_NONE:
                             return false;
                     }
