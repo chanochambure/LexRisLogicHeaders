@@ -91,9 +91,9 @@ namespace LL_AL5
 }
 
 #include "Path.h"
+#include "NativeDialog.h"
 #include "Display.h"
 #include "Timer.h"
-#include "NativeDialog.h"
 #include "Input.h"
 #include "Color.h"
 #include "Primitives.h"

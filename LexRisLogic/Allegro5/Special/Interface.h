@@ -29,7 +29,7 @@ namespace LL_AL5
     class Interface
     {
         protected:
-            const float _C_CONSTANT_SCALE_FONT_X=0.53125;
+            const float _C_CONSTANT_SCALE_FONT_X=0.75;
             const float _C_CONSTANT_SCALE_FONT_Y=1.25;
             unsigned int _V_font_size=1;
             Type_pos _V_pos_x=0.0;
