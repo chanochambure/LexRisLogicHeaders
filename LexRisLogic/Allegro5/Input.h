@@ -20,7 +20,7 @@
 #ifndef INCLUDED_LL_AL5_INPUT_H
 #define INCLUDED_LL_AL5_INPUT_H
 
-#include <vector>
+#include <map>
 #include <string>
 
 namespace LL_AL5
@@ -30,75 +30,78 @@ namespace LL_AL5
         private:
             struct _S_Structure_Key
             {
-                std::string key_name;
                 int keycode;
                 bool key_down=false;
-                _S_Structure_Key(std::string new_key_name,int new_keycode)
+                _S_Structure_Key(){}
+                _S_Structure_Key(int new_keycode)
                 {
-                    key_name=new_key_name;
                     keycode=new_keycode;
                 }
             };
-            std::vector<_S_Structure_Key> _V_keys;
+            bool _V_auxiliar_key=false;
+            std::map<std::string,_S_Structure_Key> _V_keys;
         public:
             bool add_key(std::string key_name,int keycode)
             {
-                if((find_key(key_name)!=-1) or (find_key(keycode)!=-1))
+                if(find_key(key_name) or find_key(keycode))
                     return false;
-                _V_keys.push_back(_S_Structure_Key(key_name,keycode));
+                _V_keys.insert(std::pair<std::string,_S_Structure_Key>(key_name,_S_Structure_Key(keycode)));
                 return true;
             }
-            int find_key(std::string key_name)
+            bool find_key(std::string key_name)
             {
-                for(unsigned int i=0;i<_V_keys.size();++i)
-                {
-                    if(_V_keys[i].key_name==key_name)
-                        return i;
-                }
-                return -1;
+                return _V_keys.find(key_name)!=_V_keys.end();
             }
-            int find_key(int keycode)
+            bool find_key(int keycode,std::string* key_name=nullptr)
             {
-                for(unsigned int i=0;i<_V_keys.size();++i)
+                for(std::map<std::string,_S_Structure_Key>::iterator i=_V_keys.begin();i!=_V_keys.end();++i)
                 {
-                    if(_V_keys[i].keycode==keycode)
-                        return i;
+                    if((*i).second.keycode==keycode)
+                    {
+                        if(key_name)
+                            (*key_name)=(*i).first;
+                        return true;
+                    }
                 }
-                return -1;
+                return false;
             }
-            bool mod_key(unsigned int index,std::string new_key_name)
+            bool mod_key(std::string last_key_name,std::string new_key_name)
             {
-                if((index<_V_keys.size()) and (find_key(new_key_name)==-1))
+                if(find_key(last_key_name) and !find_key(new_key_name))
                 {
-                    _V_keys[index].key_name=new_key_name;
+                    _V_keys[new_key_name]=_V_keys[last_key_name];
+                    _V_keys.erase(last_key_name);
                     return true;
                 }
                 return false;
             }
-            bool mod_key(unsigned int index,int new_keycode)
+            bool mod_key(std::string key_name,int new_keycode)
             {
-                if((index<_V_keys.size()) and (find_key(new_keycode)==-1))
+                if(find_key(key_name) and !find_key(new_keycode))
                 {
-                    _V_keys[index].keycode=new_keycode;
+                    _V_keys[key_name].keycode=new_keycode;
                     return true;
                 }
                 return false;
             }
             bool remove_key(std::string key_name)
             {
-                int key_index=find_key(key_name);
-                if(key_index==-1)
-                    return false;
-                _V_keys.erase((_V_keys.begin())+key_index);
-                return true;
+                if(find_key(key_name))
+                {
+                    _V_keys.erase(key_name);
+                    return true;
+                }
+                return false;
             }
             bool remove_key(int keycode)
             {
-                int key_index=find_key(keycode);
-                if(key_index==-1)
-                    return false;
-                _V_keys.erase((_V_keys.begin())+key_index);
-                return true;
+                std::string key_name;
+                if(find_key(keycode,&key_name))
+                {
+                    _V_keys.erase(key_name);
+                    return true;
+                }
+                return false;
             }
             unsigned int size()
             {
@@ -106,24 +109,25 @@ namespace LL_AL5
             }
             void clear_key_status()
             {
-                for(unsigned int i=0;i<_V_keys.size();++i)
-                    _V_keys[i].key_down=false;
+                for(std::map<std::string,_S_Structure_Key>::iterator i=_V_keys.begin();i!=_V_keys.end();++i)
+                    (*i).second.key_down=false;
             }
             void clear()
             {
                 _V_keys.clear();
             }
-            bool& get_key_down_status(unsigned int index)
+            bool& get_key_down_status(std::string key_name)
             {
-                return _V_keys[index].key_down;
+                _V_auxiliar_key=false;
+                if(find_key(key_name))
+                    return _V_keys[key_name].key_down;
+                return _V_auxiliar_key;
             }
-            std::string get_key_name(unsigned int index)
+            int get_keycode(std::string key_name)
             {
-                return _V_keys[index].key_name;
-            }
-            int get_keycode(unsigned int index)
-            {
-                return _V_keys[index].keycode;
+                if(find_key(key_name))
+                    return _V_keys[key_name].keycode;
+                return -1;
             }
             ~KeyControl()
             {
@@ -141,11 +145,11 @@ namespace LL_AL5
             unsigned int _V_max_input_size;
             ALLEGRO_EVENT_QUEUE* _V_event_queue;
             KeyControl* _V_key_control=nullptr;
+            bool _V_auxiliar_key=false;
             bool _V_display_exit_status=false;
             bool _V_textlog_exit_status=false;
             float _V_time=0.0;
             bool _V_timer_event=false;
-            bool _V_auxiliar_key=false;
             int _V_mouse_x=0;
             int _V_mouse_y=0;
             int _V_mouse_z=0;
@@ -159,17 +163,17 @@ namespace LL_AL5
             bool _V_display_registered=false;
             bool _V_textlog_registered=false;
             bool _V_char_lock=false;
-            int _F_find_key(std::string key_name)
+            bool _F_find_key(std::string key_name)
             {
                 if(_V_key_control)
                     return _V_key_control->find_key(key_name);
-                return -1;
+                return false;
             }
-            int _F_find_key(int keycode)
+            bool _F_find_key(int keycode,std::string* key_name=nullptr)
             {
                 if(_V_key_control)
-                    return _V_key_control->find_key(keycode);
-                return -1;
+                    return _V_key_control->find_key(keycode,key_name);
+                return false;
             }
         public:
             Input()
@@ -452,16 +456,16 @@ namespace LL_AL5
                         }
                         else if(event.type==ALLEGRO_EVENT_KEY_DOWN)
                         {
-                            int key_index=_F_find_key(event.keyboard.keycode);
-                            if(key_index!=-1)
-                                _V_key_control->get_key_down_status(key_index)=true;
+                            std::string key_name;
+                            if(_F_find_key(event.keyboard.keycode,&key_name))
+                                _V_key_control->get_key_down_status(key_name)=true;
                             return true;
                         }
                         else if(event.type==ALLEGRO_EVENT_KEY_UP)
                         {
-                            int key_index=_F_find_key(event.keyboard.keycode);
-                            if(key_index!=-1)
-                                _V_key_control->get_key_down_status(key_index)=false;
+                            std::string key_name;
+                            if(_F_find_key(event.keyboard.keycode,&key_name))
+                                _V_key_control->get_key_down_status(key_name)=false;
                             return true;
                         }
                     }
@@ -535,10 +539,9 @@ namespace LL_AL5
             bool& operator [](std::string key_name)
             {
                 _V_auxiliar_key=false;
-                int key_index=_F_find_key(key_name);
-                if(key_index==-1)
-                    return _V_auxiliar_key;
-                return _V_key_control->get_key_down_status(key_index);
+                if(_V_key_control)
+                    return _V_key_control->get_key_down_status(key_name);
+                return _V_auxiliar_key;
             }
             operator ALLEGRO_EVENT_QUEUE* ()
             {
