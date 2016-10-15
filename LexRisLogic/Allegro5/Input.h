@@ -30,7 +30,7 @@ namespace LL_AL5
         private:
             struct _S_Structure_Key
             {
-                int keycode;
+                int keycode=-1;
                 bool key_down=false;
                 _S_Structure_Key(){}
                 _S_Structure_Key(int new_keycode)
@@ -348,7 +348,7 @@ namespace LL_AL5
             }
             bool set_mouse_xy(int new_mouse_x,int new_mouse_y)
             {
-                if(al_set_mouse_xy(_V_display,new_mouse_x,new_mouse_y))
+                if(_V_display_registered and al_set_mouse_xy(_V_display,new_mouse_x,new_mouse_y))
                 {
                     _V_mouse_x=new_mouse_x;
                     _V_mouse_y=new_mouse_y;
