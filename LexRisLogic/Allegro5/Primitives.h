@@ -243,79 +243,80 @@ namespace LL_AL5
     class Circle:public Figure
     {
         private:
-            float _V_ratio=1.0;
+            float _V_radius=1.0;
         public:
             Circle(){}
-            Circle(Type_pos pos_x,Type_pos pos_y,float new_ratio)
+            Circle(Type_pos pos_x,Type_pos pos_y,float radius)
             {
                 set_pos(pos_x,pos_y);
-                _V_ratio=new_ratio;
+                _V_radius=radius;
             }
-            void set_ratio(float new_ratio)
+            void set_radius(float new_radius)
             {
-                _V_ratio=new_ratio;
+                _V_radius=new_radius;
             }
-            float get_ratio()
+            float get_radius()
             {
-                return _V_ratio;
+                return _V_radius;
             }
             void draw()
             {
                 if(get_filled_status())
-                    al_draw_filled_ellipse(_V_pos_x,_V_pos_y,_V_ratio*bitmap_scale_x,_V_ratio*bitmap_scale_y,_V_color);
-                al_draw_ellipse(_V_pos_x,_V_pos_y,_V_ratio*bitmap_scale_x,_V_ratio*bitmap_scale_y,_V_color,
+                    al_draw_filled_ellipse(_V_pos_x,_V_pos_y,_V_radius*bitmap_scale_x,_V_radius*bitmap_scale_y,
+                                           _V_color);
+                al_draw_ellipse(_V_pos_x,_V_pos_y,_V_radius*bitmap_scale_x,_V_radius*bitmap_scale_y,_V_color,
                                 _V_thickness*primitives_scale);
             }
             void draw_in_another_target()
             {
                 if(get_filled_status())
-                    al_draw_filled_circle(_V_pos_x,_V_pos_y,_V_ratio,_V_color);
-                al_draw_circle(_V_pos_x,_V_pos_y,_V_ratio,_V_color,_V_thickness);
+                    al_draw_filled_circle(_V_pos_x,_V_pos_y,_V_radius,_V_color);
+                al_draw_circle(_V_pos_x,_V_pos_y,_V_radius,_V_color,_V_thickness);
             }
     };
 
     class Ellipse:public Figure
     {
         private:
-            float _V_ratio_x=1.0;
-            float _V_ratio_y=1.0;
+            float _V_radius_x=1.0;
+            float _V_radius_y=1.0;
         public:
             Ellipse(){}
-            Ellipse(Type_pos pos_x,Type_pos pos_y,float ratio_x,float ratio_y)
+            Ellipse(Type_pos pos_x,Type_pos pos_y,float radius_x,float radius_y)
             {
                 set_pos(pos_x,pos_y);
-                _V_ratio_x=ratio_x;
-                _V_ratio_y=ratio_y;
+                _V_radius_x=radius_x;
+                _V_radius_y=radius_y;
             }
-            void set_ratio_x(float new_ratio_x)
+            void set_radius_x(float new_radius_x)
             {
-                _V_ratio_x=new_ratio_x;
+                _V_radius_x=new_radius_x;
             }
-            float get_ratio_x()
+            float get_radius_x()
             {
-                return _V_ratio_x;
+                return _V_radius_x;
             }
-            void set_ratio_y(float new_ratio_y)
+            void set_radius_y(float new_radius_y)
             {
-                _V_ratio_y=new_ratio_y;
+                _V_radius_y=new_radius_y;
             }
-            float get_ratio_y()
+            float get_radius_y()
             {
-                return _V_ratio_y;
+                return _V_radius_y;
             }
             void draw()
             {
                 if(get_filled_status())
-                    al_draw_filled_ellipse(_V_pos_x,_V_pos_y,_V_ratio_x*bitmap_scale_x,_V_ratio_y*bitmap_scale_y,
+                    al_draw_filled_ellipse(_V_pos_x,_V_pos_y,_V_radius_x*bitmap_scale_x,_V_radius_y*bitmap_scale_y,
                                            _V_color);
-                al_draw_ellipse(_V_pos_x,_V_pos_y,_V_ratio_x*bitmap_scale_x,_V_ratio_y*bitmap_scale_y,_V_color,
+                al_draw_ellipse(_V_pos_x,_V_pos_y,_V_radius_x*bitmap_scale_x,_V_radius_y*bitmap_scale_y,_V_color,
                                 _V_thickness*primitives_scale);
             }
             void draw_in_another_target()
             {
                 if(get_filled_status())
-                    al_draw_filled_ellipse(_V_pos_x,_V_pos_y,_V_ratio_x,_V_ratio_y,_V_color);
-                al_draw_ellipse(_V_pos_x,_V_pos_y,_V_ratio_x,_V_ratio_y,_V_color,_V_thickness);
+                    al_draw_filled_ellipse(_V_pos_x,_V_pos_y,_V_radius_x,_V_radius_y,_V_color);
+                al_draw_ellipse(_V_pos_x,_V_pos_y,_V_radius_x,_V_radius_y,_V_color,_V_thickness);
             }
     };
 
