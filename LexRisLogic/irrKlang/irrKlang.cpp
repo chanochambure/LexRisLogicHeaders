@@ -1,4 +1,4 @@
-/* irrKlang.h -- irrKlang Header - LexRis Logic Headers
+/* irrKlang.cpp -- irrKlang Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,31 +17,43 @@
     SOFTWARE.
 */
 
-#ifndef INCLUDED_LL_IRRKLANG_H
-#define INCLUDED_LL_IRRKLANG_H
-
-#include <irrKlang.h>
+#include "irrKlang.h"
 
 namespace LL_irrKlang
 {
-    class SoundEngine;
+    SoundEngine* default_engine=nullptr;
 
-    extern SoundEngine* default_engine;
-
-    class SoundEngine
+    bool SoundEngine::create()
     {
-        private:
-            float _V_volume=1.0;
-            irrklang::ISoundEngine* _V_engine=nullptr;
-        public:
-            bool create();
-            void set_default_engine();
-            void set_volume(float new_volume);
-            float get_volume();
-            bool destroy();
-            operator irrklang::ISoundEngine* ();
-            ~SoundEngine();
-    };
+        destroy();
+        return (_V_engine=irrklang::createIrrKlangDevice());
+    }
+    void SoundEngine::set_default_engine()
+    {
+        default_engine=this;
+    }
+    void SoundEngine::set_volume(float new_volume)
+    {
+        _V_volume=new_volume;
+    }
+    float SoundEngine::get_volume()
+    {
+        return _V_volume;
+    }
+    bool SoundEngine::destroy()
+    {
+        if(!_V_engine)
+            return false;
+        _V_engine->drop();
+        _V_engine=nullptr;
+        return true;
+    }
+    SoundEngine::operator irrklang::ISoundEngine* ()
+    {
+        return _V_engine;
+    }
+    SoundEngine::~SoundEngine()
+    {
+        destroy();
+    }
 }
-
-#endif // INCLUDED_LL_IRRKLANG_H
