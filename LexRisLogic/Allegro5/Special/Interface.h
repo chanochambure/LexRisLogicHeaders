@@ -59,13 +59,13 @@ namespace LL_AL5
                 _V_pos_x=new_pos_x;
                 _V_pos_y=new_pos_y;
             }
-            Type_pos get_pos_x()
-            {
-                return _V_pos_x;
-            }
             void set_pos_x(Type_pos new_pos_x)
             {
                 _V_pos_x=new_pos_x;
+            }
+            Type_pos get_pos_x()
+            {
+                return _V_pos_x;
             }
             void set_pos_y(Type_pos new_pos_y)
             {
@@ -272,6 +272,10 @@ namespace LL_AL5
                 _V_text_length=new_text_length;
                 _V_size_x=(_V_text_length+1)*_V_font_size*_C_CONSTANT_SCALE_FONT_X;
             }
+            unsigned int get_text_length()
+            {
+                return _V_text_length;
+            }
             void set_font(Font* new_font)
             {
                 _V_font=new_font;
@@ -333,7 +337,7 @@ namespace LL_AL5
                                  _V_pos_x+(_V_font->get_size()*text_scale),_V_pos_y,
                                  ALLEGRO_ALIGN_LEFT,_V_value.c_str());
             }
-            bool is_selected()
+            bool is_clicked()
             {
                 return _V_selected_status;
             }

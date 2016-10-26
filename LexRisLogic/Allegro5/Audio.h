@@ -80,7 +80,7 @@ namespace LL_AL5
             bool set_playmode(ALLEGRO_PLAYMODE playmode)
             {
                 if(_V_instance)
-                    return al_set_sample_instance_playmode(_V_instance,playmode);
+                    return al_set_sample_instance_playmode(_V_instance,_V_playmode=playmode);
                 return false;
             }
             ALLEGRO_PLAYMODE get_playmode()

@@ -109,7 +109,9 @@ namespace LL_AL5
             }
             ALLEGRO_MIXER_QUALITY get_quality()
             {
-                return al_get_mixer_quality(_V_mixer);
+                if(_V_mixer)
+                    return al_get_mixer_quality(_V_mixer);
+                return ALLEGRO_MIXER_QUALITY_LINEAR;
             }
             bool set_volume(float new_volume)
             {

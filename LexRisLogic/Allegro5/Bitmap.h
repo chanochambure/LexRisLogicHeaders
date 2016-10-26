@@ -149,7 +149,7 @@ namespace LL_AL5
             }
             bool lock()
             {
-                return al_lock_bitmap(_V_bitmap,ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);
+                return al_lock_bitmap(_V_bitmap,ALLEGRO_PIXEL_FORMAT_ANY,ALLEGRO_LOCK_READWRITE);
             }
             void unlock()
             {
@@ -192,8 +192,8 @@ namespace LL_AL5
         private:
             ALLEGRO_BITMAP* _V_parent_bitmap=nullptr;
             ALLEGRO_BITMAP* _V_bitmap=nullptr;
-            Type_pos _V_sub_x=0.0;
-            Type_pos _V_sub_y=0.0;
+            int _V_sub_x=0.0;
+            int _V_sub_y=0.0;
             float _V_size_x=0.0;
             float _V_size_y=0.0;
         public:
@@ -206,23 +206,23 @@ namespace LL_AL5
             {
                 return _V_parent_bitmap;
             }
-            void set_sub_x(Type_pos new_sub_x)
+            void set_sub_x(int new_sub_x)
             {
                 _V_sub_x=new_sub_x;
             }
-            Type_pos get_sub_x()
+            int get_sub_x()
             {
                 return _V_sub_x;
             }
-            void set_sub_y(Type_pos new_sub_y)
+            void set_sub_y(int new_sub_y)
             {
                 _V_sub_y=new_sub_y;
             }
-            Type_pos get_sub_y()
+            int get_sub_y()
             {
                 return _V_sub_y;
             }
-            void set_size_x(int new_size_x)
+            void set_size_x(float new_size_x)
             {
                 _V_size_x=new_size_x;
             }
@@ -230,7 +230,7 @@ namespace LL_AL5
             {
                 return _V_size_x;
             }
-            void set_size_y(int new_size_y)
+            void set_size_y(float new_size_y)
             {
                 _V_size_y=new_size_y;
             }
@@ -265,7 +265,7 @@ namespace LL_AL5
             }
             bool lock()
             {
-                return al_lock_bitmap(_V_bitmap,ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);
+                return al_lock_bitmap(_V_bitmap,ALLEGRO_PIXEL_FORMAT_ANY,ALLEGRO_LOCK_READWRITE);
             }
             void unlock()
             {
@@ -362,7 +362,7 @@ namespace LL_AL5
             }
             bool lock()
             {
-                return al_lock_bitmap(_V_bitmap,ALLEGRO_LOCK_READWRITE,ALLEGRO_PIXEL_FORMAT_ANY);
+                return al_lock_bitmap(_V_bitmap,ALLEGRO_PIXEL_FORMAT_ANY,ALLEGRO_LOCK_READWRITE);
             }
             void unlock()
             {

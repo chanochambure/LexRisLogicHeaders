@@ -28,21 +28,21 @@ namespace LL_AL5
         protected:
             FIGURE _V_figure;
         public:
-            void set_pos(Type_pos pos_x,Type_pos pos_y)
+            void set_pos(Type_pos new_pos_x,Type_pos new_pos_y)
             {
-                _V_figure.set_pos(pos_x,pos_y);
+                _V_figure.set_pos(new_pos_x,new_pos_y);
             }
-            void set_pos_x(Type_pos pos_x)
+            void set_pos_x(Type_pos new_pos_x)
             {
-                _V_figure.set_pos_x(pos_x);
-            }
-            void set_pos_y(Type_pos pos_y)
-            {
-                _V_figure.set_pos_y(pos_y);
+                _V_figure.set_pos_x(new_pos_x);
             }
             Type_pos get_pos_x()
             {
                 return _V_figure.get_pos_x();
+            }
+            void set_pos_y(Type_pos new_pos_y)
+            {
+                _V_figure.set_pos_y(new_pos_y);
             }
             Type_pos get_pos_y()
             {
@@ -66,44 +66,45 @@ namespace LL_AL5
     class Light:public Illumination<FIGURE>
     {
         private:
-            Color color;
+            Color _V_color;
             Color _V_figure_color;
-            float intensity=0.0;
+            float _V_intensity=0.0;
         public:
             Light()
             {
                 this->_V_figure.set_filled_status(true);
                 this->_V_figure.set_thickness(0.0);
-                color.alpha=_V_figure_color.alpha=0;
+                _V_figure_color.alpha=_V_color.alpha=0;
+                this->_V_figure.set_color(_V_figure_color);
             }
             bool set_intensity(float new_intensity)
             {
                 if(new_intensity>1.0 or new_intensity<0.0)
                     return false;
-                intensity=new_intensity;
-                _V_figure_color.red=color.red*intensity;
-                _V_figure_color.green=color.green*intensity;
-                _V_figure_color.blue=color.blue*intensity;
+                _V_intensity=new_intensity;
+                _V_figure_color.red=_V_color.red*_V_intensity;
+                _V_figure_color.green=_V_color.green*_V_intensity;
+                _V_figure_color.blue=_V_color.blue*_V_intensity;
                 _V_figure_color.alpha=0;
                 this->_V_figure.set_color(_V_figure_color);
                 return true;
             }
             float get_intensity()
             {
-                return intensity;
+                return _V_intensity;
             }
             void set_color(Color new_color)
             {
-                color=new_color;
-                _V_figure_color.red=color.red*intensity;
-                _V_figure_color.green=color.green*intensity;
-                _V_figure_color.blue=color.blue*intensity;
-                color.alpha=_V_figure_color.alpha=0;
+                _V_color=new_color;
+                _V_figure_color.red=_V_color.red*_V_intensity;
+                _V_figure_color.green=_V_color.green*_V_intensity;
+                _V_figure_color.blue=_V_color.blue*_V_intensity;
+                _V_figure_color.alpha=_V_color.alpha=0;
                 this->_V_figure.set_color(_V_figure_color);
             }
             Color get_color()
             {
-                return color;
+                return _V_color;
             }
     };
 
@@ -111,28 +112,28 @@ namespace LL_AL5
     class Shade:public Illumination<FIGURE>
     {
         private:
-            Color shadow;
-            float intensity=0.0;
+            Color _V_shadow;
+            float _V_intensity=0.0;
         public:
             Shade()
             {
                 this->_V_figure.set_filled_status(true);
                 this->_V_figure.set_thickness(0.0);
-                shadow.alpha=0;
-                this->_V_figure.set_color(shadow);
+                _V_shadow.alpha=0;
+                this->_V_figure.set_color(_V_shadow);
             }
             bool set_intensity(float new_intensity)
             {
                 if(new_intensity>1.0 or new_intensity<0.0)
                     return false;
-                intensity=new_intensity;
-                shadow.alpha=255*intensity;
-                this->_V_figure.set_color(shadow);
+                _V_intensity=new_intensity;
+                _V_shadow.alpha=255*_V_intensity;
+                this->_V_figure.set_color(_V_shadow);
                 return true;
             }
             float get_intensity()
             {
-                return intensity;
+                return _V_intensity;
             }
     };
 }

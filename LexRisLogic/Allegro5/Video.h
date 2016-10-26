@@ -77,9 +77,14 @@ namespace LL_AL5
             {
                 return al_get_video_position(_V_video,reference_position);
             }
-            void start()
+            bool start()
             {
-                al_start_video(_V_video,al_get_default_mixer());
+                if(_V_video)
+                {
+                    al_start_video(_V_video,al_get_default_mixer());
+                    return true;
+                }
+                return false;
             }
             bool is_playing()
             {

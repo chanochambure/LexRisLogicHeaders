@@ -104,7 +104,7 @@ namespace LL_AL5
 #include "Video.h"
 
 #include "Special/Illumination.h"
-#include "Special/Sprite.h"
 #include "Special/Interface.h"
+#include "Special/Sprite.h"
 
 #endif // INCLUDED_LL_AL5_H
