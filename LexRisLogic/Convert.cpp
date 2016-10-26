@@ -1,4 +1,4 @@
-/* Time.h -- Time Header - LexRis Logic Headers
+/* Convert.cpp -- Convert Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,30 +17,22 @@
     SOFTWARE.
 */
 
-#ifndef INCLUDED_LL_TIME_H
-#define INCLUDED_LL_TIME_H
-
-#include <chrono>
+#include "Convert.h"
 
 namespace LL
 {
-    class Chronometer
+    int to_int(std::string data)
     {
-        private:
-            typedef std::chrono::high_resolution_clock::time_point _T_Type_clock;
-            typedef std::chrono::duration<double> _T_Type_duration;
-            _T_Type_clock _V_point;
-            double _V_time=0.0;
-            bool _V_in_pause=true;
-            bool _V_stopped=true;
-            _T_Type_clock _F_get_clock();
-        public:
-            bool play();
-            bool pause();
-            bool stop();
-            double get_time();
-            void clear();
-    };
-}
+        return atoi(data.c_str());
+    }
 
-#endif // INCLUDED_LL_TIME_H
+    float to_float(std::string data)
+    {
+        return strtof(data.c_str(),NULL);
+    }
+
+    double to_double(std::string data)
+    {
+        return strtod(data.c_str(),NULL);
+    }
+}

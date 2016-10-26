@@ -31,46 +31,13 @@ namespace LL
             std::string _V_string;
             std::vector<std::string> _V_data;
         public:
-            void set_string(std::string new_string)
-            {
-                _V_data.clear();
-                _V_string=new_string;
-            }
-            std::string get_string()
-            {
-                return _V_string;
-            }
-            bool split(char character='\n')
-            {
-                _V_data.clear();
-                std::string data=_V_string;
-                if(!data.size())
-                    return false;
-                for(unsigned int position=data.find(character);position<data.size();position=data.find(character))
-                {
-                    _V_data.push_back(data.substr(0,position));
-                    data=data.substr(position+1,data.size()-(position+1));
-                }
-                if(data.size())
-                    _V_data.push_back(data);
-                return true;
-            }
-            unsigned int size()
-            {
-                return _V_data.size();
-            }
-            void clear()
-            {
-                _V_data.clear();
-            }
-            std::string operator [] (unsigned int index)
-            {
-                return _V_data[index];
-            }
-            ~StringSplitter()
-            {
-                _V_data.clear();
-            }
+            void set_string(std::string new_string);
+            std::string get_string();
+            bool split(char character='\n');
+            unsigned int size();
+            void clear();
+            std::string operator [] (unsigned int index);
+            ~StringSplitter();
     };
 }
 
