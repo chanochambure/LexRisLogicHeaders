@@ -1,4 +1,4 @@
-/* ENet.h -- ENet Header - LexRis Logic Headers
+/* ENet.cpp -- ENet Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,15 +17,16 @@
     SOFTWARE.
 */
 
-#ifndef INCLUDED_LL_ENET_H
-#define INCLUDED_LL_ENET_H
-
-#include <enet/enet.h>
+#include "ENet.h"
 
 namespace LL_ENet
 {
-    bool install_enet();
-    void uninstall_enet();
+    bool install_enet()
+    {
+        return !(enet_initialize());
+    }
+    void uninstall_enet()
+    {
+        enet_deinitialize();
+    }
 }
-
-#endif // INCLUDED_LL_ENET_H
