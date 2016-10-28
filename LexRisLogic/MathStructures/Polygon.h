@@ -30,11 +30,16 @@ namespace LL_MathStructure
     class Polygon
     {
         private:
-            std::vector<Point<2>> _V_points;
+            std::vector<Point> _V_points;
         public:
-            void add_point(Point<2> point)
+            bool add_point(Point point)
             {
-                _V_points.push_back(point);
+                if(point.get_dimension()==2)
+                {
+                    _V_points.push_back(point);
+                    return true;
+                }
+                return false;
             }
             bool remove_point(unsigned int index)
             {
@@ -51,7 +56,7 @@ namespace LL_MathStructure
             {
                 _V_points.clear();
             }
-            Point<2>& operator [] (unsigned int index)
+            Point& operator [] (unsigned int index)
             {
                 return _V_points[index];
             }
@@ -64,9 +69,9 @@ namespace LL_MathStructure
             }
     };
 
-    bool point_into_polygon(Polygon polygon,Point<2> point)
+    bool point_into_polygon(Polygon polygon,Point point)
     {
-        if(polygon.size()>2)
+        if(point.get_dimension()==2 and polygon.size()>2)
         {
             float max_pos_x=polygon[0][0];
             for(unsigned int i=1;i<polygon.size();++i)
@@ -87,7 +92,7 @@ namespace LL_MathStructure
         return false;
     }
 
-    bool collision_of_polygons(Polygon first_polygon,Polygon second_polygon,std::list<Point<2>>* points=nullptr)
+    bool collision_of_polygons(Polygon first_polygon,Polygon second_polygon,std::list<Point>* points=nullptr)
     {
         if(first_polygon.size()>2 and second_polygon.size()>2)
         {
@@ -107,7 +112,7 @@ namespace LL_MathStructure
                         if(points)
                         {
                             bool insertion=true;
-                            for(std::list<Point<2>>::iterator m=points->begin();m!=points->end();++m)
+                            for(std::list<Point>::iterator m=points->begin();m!=points->end();++m)
                             {
                                 if((*m)[0]==intersection_x and (*m)[1]==intersection_y)
                                 {

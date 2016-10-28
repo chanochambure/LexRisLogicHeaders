@@ -28,12 +28,18 @@ namespace LL_MathStructure
     class LineSegment
     {
         private:
-            Point<DIMENSION> _V_ini_point;
-            Point<DIMENSION> _V_end_point;
+            Point _V_ini_point;
+            Point _V_end_point;
         public:
-            LineSegment(){}
-            LineSegment(Point<DIMENSION> ini_point,Point<DIMENSION> end_point)
+            LineSegment()
             {
+                _V_ini_point.set_dimension(DIMENSION);
+                _V_end_point.set_dimension(DIMENSION);
+            }
+            LineSegment(Point ini_point,Point end_point)
+            {
+                _V_ini_point.set_dimension(DIMENSION);
+                _V_end_point.set_dimension(DIMENSION);
                 _V_ini_point=ini_point;
                 _V_end_point=end_point;
             }
@@ -41,11 +47,11 @@ namespace LL_MathStructure
             {
                 return DIMENSION;
             }
-            Point<DIMENSION>& ini_point()
+            Point& ini_point()
             {
                 return _V_ini_point;
             }
-            Point<DIMENSION>& end_point()
+            Point& end_point()
             {
                 return _V_end_point;
             }

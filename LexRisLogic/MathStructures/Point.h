@@ -25,77 +25,33 @@
 
 namespace LL_MathStructure
 {
-    template<unsigned int DIMENSION>
     class Point
     {
         private:
-            float _V_coordinates[DIMENSION];
+            unsigned int _V_dimension=0;
+            float* _V_coordinates=nullptr;
+            void _F_delete_coordinates();
+            void _F_create_coordinates();
+            void _F_set_data(const Point& another_point);
         public:
-            Point()
-            {
-                for(unsigned int i=0;i<DIMENSION;++i)
-                    _V_coordinates[i]=0.0;
-            }
-            unsigned int get_dimension()
-            {
-                return DIMENSION;
-            }
-            float& operator [](unsigned int index)
-            {
-                return _V_coordinates[index];
-            }
-            Point<DIMENSION>& operator = (Point<DIMENSION> another_point)
-            {
-                for(unsigned int i=0;i<DIMENSION;++i)
-                    (*this)[i]=another_point[i];
-                return (*this);
-            }
-            bool operator == (Point<DIMENSION> another_point)
-            {
-                for(unsigned int i=0;i<DIMENSION;++i)
-                {
-                    if((*this)[i]!=another_point[i])
-                        return false;
-                }
-                return true;
-            }
+            Point();
+            Point(unsigned int dimension);
+            Point(const Point& another_point);
+            bool set_dimension(unsigned int new_dimension);
+            unsigned int get_dimension() const;
+            float& operator [](unsigned int index) const;
+            Point& operator = (const Point& another_point);
+            bool operator == (const Point& another_point);
+            ~Point();
     };
 
-    template<unsigned int DIMENSION>
-    std::ostream& operator << (std::ostream& output_streamer,Point<DIMENSION> point)
-    {
-        output_streamer<<"[";
-        for(unsigned int i=0;i<DIMENSION-1;++i)
-            output_streamer<<point[i]<<" ";
-        output_streamer<<point[DIMENSION-1]<<"]";
-        return output_streamer;
-    }
+    std::ostream& operator << (std::ostream& output_streamer,Point point);
 
-    template<unsigned int DIMENSION>
-    double euclidean_distance(Point<DIMENSION> first_point,Point<DIMENSION> second_point)
-    {
-        double acumulator=0;;
-        for(unsigned int i=0;i<DIMENSION;++i)
-            acumulator+=pow(first_point[i]-second_point[i],2);
-        return sqrt(acumulator);
-    }
+    double euclidean_distance(Point first_point,Point second_point);
 
-    Point<2> create_point(float x,float y)
-    {
-        Point<2> point;
-        point[0]=x;
-        point[1]=y;
-        return point;
-    }
+    Point create_point(float x,float y);
 
-    Point<3> create_point(float x,float y,float z)
-    {
-        Point<3> point;
-        point[0]=x;
-        point[1]=y;
-        point[2]=z;
-        return point;
-    }
+    Point create_point(float x,float y,float z);
 }
 
 #endif // INCLUDED_LL_MATHSTRUCTURE_POINT_H

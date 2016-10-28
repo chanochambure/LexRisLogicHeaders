@@ -31,8 +31,13 @@ namespace LL_DataStructure
     template<int DIMENSION>
     struct MBB
     {
-        LL_MathStructure::Point<DIMENSION> first_point;
-        LL_MathStructure::Point<DIMENSION> second_point;
+        MBB()
+        {
+            first_point.set_dimension(DIMENSION);
+            second_point.set_dimension(DIMENSION);
+        }
+        LL_MathStructure::Point first_point;
+        LL_MathStructure::Point second_point;
         bool operator == (MBB<DIMENSION> other_mbb)
         {
             return ((first_point==other_mbb.first_point) and (second_point==other_mbb.second_point));
