@@ -71,6 +71,7 @@ namespace LL_MathStructure
     }
     Point& Point::operator = (const Point& another_point)
     {
+        this->set_dimension(another_point.get_dimension());
         this->_F_set_data(another_point);
         return (*this);
     }
