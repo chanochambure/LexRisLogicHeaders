@@ -53,7 +53,7 @@ namespace LL
     {
         _V_data.clear();
     }
-    std::string StringSplitter::operator [] (unsigned int index)
+    const std::string StringSplitter::operator [] (unsigned int index)
     {
         return _V_data[index];
     }

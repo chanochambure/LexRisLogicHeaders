@@ -38,7 +38,7 @@ namespace LL
             bool play();
             bool pause();
             bool stop();
-            double get_time();
+            const double get_time();
             void clear();
     };
 }

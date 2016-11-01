@@ -36,7 +36,7 @@ namespace LL_DataStructure
         LL_MathStructure::Point first_point;
         LL_MathStructure::Point second_point;
         bool set_dimension(unsigned int new_dimension);
-        bool operator == (MBB other_mbb);
+        bool operator == (MBB another_mbb);
     };
 
     double mbb_distance(MBB first_mbb,MBB second_mbb);
@@ -137,7 +137,7 @@ namespace LL_DataStructure
                         _V_void_iterator.get_next_element();
                         return (*this);
                     }
-                    T operator * ()
+                    const T operator * ()
                     {
                         return (T&)(_V_void_iterator.get_value());
                     }

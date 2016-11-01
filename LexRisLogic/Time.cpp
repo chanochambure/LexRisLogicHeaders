@@ -60,7 +60,7 @@ namespace LL
         }
         return false;
     }
-    double Chronometer::get_time()
+    const double Chronometer::get_time()
     {
         if(!_V_in_pause)
             return _V_time+std::chrono::duration_cast<_T_Type_duration>(_F_get_clock()-_V_point).count();

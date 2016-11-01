@@ -39,9 +39,9 @@ namespace LL_DataStructure
         }
         return false;
     }
-    bool MBB::operator == (MBB other_mbb)
+    bool MBB::operator == (MBB another_mbb)
     {
-        return ((first_point==other_mbb.first_point) and (second_point==other_mbb.second_point));
+        return ((first_point==another_mbb.first_point) and (second_point==another_mbb.second_point));
     }
 
     double mbb_distance(MBB first_mbb,MBB second_mbb)

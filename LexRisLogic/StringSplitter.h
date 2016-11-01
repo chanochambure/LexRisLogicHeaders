@@ -36,7 +36,7 @@ namespace LL
             bool split(char character='\n');
             unsigned int size();
             void clear();
-            std::string operator [] (unsigned int index);
+            const std::string operator [] (unsigned int index);
             ~StringSplitter();
     };
 }
