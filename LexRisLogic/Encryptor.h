@@ -25,7 +25,7 @@
 
 namespace LL
 {
-    static const char* DEFAULT_DICTIONARY=" 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const char* const DEFAULT_DICTIONARY=" 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     class Encryptor
     {
         private:
