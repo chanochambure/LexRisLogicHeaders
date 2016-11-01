@@ -24,112 +24,29 @@
 
 namespace LL_MathStructure
 {
-    template<unsigned int DIMENSION>
     class LineSegment
     {
         private:
             Point _V_ini_point;
             Point _V_end_point;
+            unsigned int _V_dimension=0;
         public:
-            LineSegment()
-            {
-                _V_ini_point.set_dimension(DIMENSION);
-                _V_end_point.set_dimension(DIMENSION);
-            }
-            LineSegment(Point ini_point,Point end_point)
-            {
-                _V_ini_point.set_dimension(DIMENSION);
-                _V_end_point.set_dimension(DIMENSION);
-                _V_ini_point=ini_point;
-                _V_end_point=end_point;
-            }
-            unsigned int get_dimension()
-            {
-                return DIMENSION;
-            }
-            Point& ini_point()
-            {
-                return _V_ini_point;
-            }
-            Point& end_point()
-            {
-                return _V_end_point;
-            }
-            bool in_range(unsigned int dimension,float number)
-            {
-                return ((std::min(_V_ini_point[dimension],_V_end_point[dimension])<=number)
-                        and (number<=std::max(_V_ini_point[dimension],_V_end_point[dimension])));
-            }
+            LineSegment();
+            LineSegment(unsigned int dimension);
+            bool set_dimension(unsigned int new_dimension);
+            unsigned int get_dimension();
+            bool set_ini_point(Point new_ini_point);
+            const Point get_ini_point();
+            bool set_end_point(Point new_end_point);
+            const Point get_end_point();
+            bool in_range(unsigned int dimension,float number);
     };
 
-    bool intersection_of_lines_in_two_dimensions(LineSegment<2> first_line,LineSegment<2> second_line,
-                                                 float* x=nullptr,float* y=nullptr)
-    {
-        if((first_line.ini_point()==first_line.end_point())
-           or (second_line.ini_point()==second_line.end_point()))
-            return false;
-        if(((first_line.end_point()[0]-first_line.ini_point()[0])
-                *(second_line.end_point()[1]-second_line.ini_point()[1]))
-           !=((first_line.end_point()[1]-first_line.ini_point()[1])
-                *(second_line.end_point()[0]-second_line.ini_point()[0])))
-        {
-            float intersection_point_x,intersection_point_y;
-            if(first_line.end_point()[0]==first_line.ini_point()[0])
-            {
-                float m2=((second_line.end_point()[1]-second_line.ini_point()[1])/
-                          (second_line.end_point()[0]-second_line.ini_point()[0]));
-                float b2=second_line.ini_point()[1]-m2*second_line.ini_point()[0];
-                intersection_point_x=first_line.ini_point()[0];
-                intersection_point_y=m2*intersection_point_x+b2;
-            }
-            else if(second_line.end_point()[0]==second_line.ini_point()[0])
-            {
-                float m1=((first_line.end_point()[1]-first_line.ini_point()[1])/
-                          (first_line.end_point()[0]-first_line.ini_point()[0]));
-                float b1=first_line.ini_point()[1]-m1*first_line.ini_point()[0];
-                intersection_point_x=second_line.ini_point()[0];
-                intersection_point_y=m1*intersection_point_x+b1;
-            }
-            else
-            {
-                float m1=((first_line.end_point()[1]-first_line.ini_point()[1])/
-                          (first_line.end_point()[0]-first_line.ini_point()[0]));
-                float b1=first_line.ini_point()[1]-m1*first_line.ini_point()[0];
-                float m2=((second_line.end_point()[1]-second_line.ini_point()[1])/
-                          (second_line.end_point()[0]-second_line.ini_point()[0]));
-                float b2=second_line.ini_point()[1]-m2*second_line.ini_point()[0];
-                intersection_point_x=(b2-b1)/(m1-m2);
-                intersection_point_y=m1*intersection_point_x+b1;
-            }
-            if(x and y)
-            {
-                *x=intersection_point_x;
-                *y=intersection_point_y;
-            }
-            return true;
-        }
-        return false;
-    }
+    bool intersection_of_lines_in_two_dimensions(LineSegment first_line,LineSegment second_line,
+                                                 float* x=nullptr,float* y=nullptr);
 
-    bool intersection_of_line_segments_in_two_dimensions(LineSegment<2> first_segment,LineSegment<2> second_segment,
-                                                         float* x=nullptr,float* y=nullptr)
-    {
-        float intersection_point_x,intersection_point_y;
-        if(intersection_of_lines_in_two_dimensions(first_segment,second_segment,
-                                                   &intersection_point_x,&intersection_point_y))
-        {
-            if(x and y)
-            {
-                *x=intersection_point_x;
-                *y=intersection_point_y;
-            }
-            return ((first_segment.in_range(0,intersection_point_x)
-                    and first_segment.in_range(1,intersection_point_y))
-                    and (second_segment.in_range(0,intersection_point_x)
-                    and second_segment.in_range(1,intersection_point_y)));
-        }
-        return false;
-    }
+    bool intersection_of_line_segments_in_two_dimensions(LineSegment first_segment,LineSegment second_segment,
+                                                         float* x=nullptr,float* y=nullptr);
 }
 
 #endif // INCLUDED_LL_MATHSTRUCTURE_LINESEGMENT_H

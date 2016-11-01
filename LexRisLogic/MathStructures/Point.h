@@ -39,9 +39,10 @@ namespace LL_MathStructure
             Point(const Point& another_point);
             bool set_dimension(unsigned int new_dimension);
             unsigned int get_dimension() const;
-            float& operator [](unsigned int index) const;
+            float& operator [](unsigned int index);
+            const float operator [](unsigned int index) const;
             Point& operator = (const Point& another_point);
-            bool operator == (const Point& another_point);
+            bool operator == (const Point& another_point) const;
             ~Point();
     };
 

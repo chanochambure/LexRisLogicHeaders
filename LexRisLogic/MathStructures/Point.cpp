@@ -65,7 +65,11 @@ namespace LL_MathStructure
     {
         return _V_dimension;
     }
-    float& Point::operator [](unsigned int index) const
+    float& Point::operator [](unsigned int index)
+    {
+        return _V_coordinates[index];
+    }
+    const float Point::operator [](unsigned int index) const
     {
         return _V_coordinates[index];
     }
@@ -75,7 +79,7 @@ namespace LL_MathStructure
         this->_F_set_data(another_point);
         return (*this);
     }
-    bool Point::operator == (const Point& another_point)
+    bool Point::operator == (const Point& another_point) const
     {
         if(_V_dimension!=another_point.get_dimension())
             return false;

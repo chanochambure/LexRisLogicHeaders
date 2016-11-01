@@ -32,109 +32,17 @@ namespace LL_MathStructure
         private:
             std::vector<Point> _V_points;
         public:
-            bool add_point(Point point)
-            {
-                if(point.get_dimension()==2)
-                {
-                    _V_points.push_back(point);
-                    return true;
-                }
-                return false;
-            }
-            bool remove_point(unsigned int index)
-            {
-                if(index>=_V_points.size())
-                    return false;
-                _V_points.erase(_V_points.begin()+index);
-                return true;
-            }
-            unsigned int size()
-            {
-                return _V_points.size();
-            }
-            void clear()
-            {
-                _V_points.clear();
-            }
-            Point& operator [] (unsigned int index)
-            {
-                return _V_points[index];
-            }
-            Polygon& operator = (Polygon another_polygon)
-            {
-                _V_points.clear();
-                for(unsigned int i=0;i<another_polygon.size();++i)
-                    add_point(another_polygon[i]);
-                return (*this);
-            }
+            bool add_point(Point point);
+            bool remove_point(unsigned int index);
+            unsigned int size();
+            void clear();
+            bool set_point(unsigned int index,Point new_point);
+            const Point operator [] (unsigned int index);
     };
 
-    bool point_into_polygon(Polygon polygon,Point point)
-    {
-        if(point.get_dimension()==2 and polygon.size()>2)
-        {
-            float max_pos_x=polygon[0][0];
-            for(unsigned int i=1;i<polygon.size();++i)
-            {
-                if(polygon[i][0]>max_pos_x)
-                    max_pos_x=polygon[i][0];
-            }
-            unsigned int count_intersection=0;
-            for(unsigned int i=0;i<polygon.size();++i)
-            {
-                unsigned int j=(i+1)%polygon.size();
-                count_intersection+=intersection_of_line_segments_in_two_dimensions(
-                                                            LineSegment<2>(point,create_point(max_pos_x+1,point[1])),
-                                                            LineSegment<2>(polygon[i],polygon[j]));
-            }
-            return count_intersection%2;
-        }
-        return false;
-    }
+    bool point_into_polygon(Polygon polygon,Point point);
 
-    bool collision_of_polygons(Polygon first_polygon,Polygon second_polygon,std::list<Point>* points=nullptr)
-    {
-        if(first_polygon.size()>2 and second_polygon.size()>2)
-        {
-            for(unsigned int i=0;i<first_polygon.size();++i)
-            {
-                unsigned int j=(i+1)%first_polygon.size();
-                for(unsigned int k=0;k<second_polygon.size();++k)
-                {
-                    unsigned int l=(k+1)%second_polygon.size();
-                    float intersection_x;
-                    float intersection_y;
-                    if(intersection_of_line_segments_in_two_dimensions(
-                                                            LineSegment<2>(first_polygon[i],first_polygon[j]),
-                                                            LineSegment<2>(second_polygon[k],second_polygon[l]),
-                                                            &intersection_x,&intersection_y))
-                    {
-                        if(points)
-                        {
-                            bool insertion=true;
-                            for(std::list<Point>::iterator m=points->begin();m!=points->end();++m)
-                            {
-                                if((*m)[0]==intersection_x and (*m)[1]==intersection_y)
-                                {
-                                    insertion=false;
-                                    break;
-                                }
-                            }
-                            if(insertion)
-                                points->push_back(create_point(intersection_x,intersection_y));
-                        }
-                        else
-                            return true;
-                    }
-                }
-            }
-            if(points and points->size())
-                return true;
-            return (point_into_polygon(first_polygon,second_polygon[0]) or
-                    point_into_polygon(second_polygon,first_polygon[0]));
-        }
-        return false;
-    }
+    bool collision_of_polygons(Polygon first_polygon,Polygon second_polygon,std::list<Point>* points=nullptr);
 }
 
 
