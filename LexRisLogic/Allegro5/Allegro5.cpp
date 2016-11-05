@@ -1,4 +1,4 @@
-/* Allegro5.h -- Allegro 5 Header - LexRis Logic Headers
+/* Allegro5.cpp -- Allegro 5 Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,25 +17,29 @@
     SOFTWARE.
 */
 
-#ifndef INCLUDED_LL_AL5_H
-#define INCLUDED_LL_AL5_H
-
-#include <allegro5/allegro5.h>
+#include "Allegro5.h"
 
 namespace LL_AL5
 {
-    typedef float Type_pos;
-    typedef unsigned int Type_display_size;
+    float bitmap_scale_x=1.0;
+    float bitmap_scale_y=1.0;
+    float text_scale=1.0;
+    float primitives_scale=1.0;
+    Type_display_size desktop_size_x=640;
+    Type_display_size desktop_size_y=480;
 
-    extern float bitmap_scale_x;
-    extern float bitmap_scale_y;
-    extern float text_scale;
-    extern float primitives_scale;
-    extern Type_display_size desktop_size_x;
-    extern Type_display_size desktop_size_y;
-
-    void init_allegro();
-    void sleep(float sleep_time);
+    void init_allegro()
+    {
+        al_init();
+        ALLEGRO_MONITOR_INFO monitor_info;
+        if(al_get_monitor_info(0,&monitor_info))
+        {
+            desktop_size_x=monitor_info.x2-monitor_info.x1;
+            desktop_size_y=monitor_info.y2-monitor_info.y1;
+        }
+    }
+    void sleep(float sleep_time)
+    {
+        al_rest(sleep_time);
+    }
 }
-
-#endif // INCLUDED_LL_AL5_H
