@@ -21,6 +21,7 @@
 #define INCLUDED_LL_AL5_DISPLAY_H
 
 #include <string>
+#include "Allegro5.h"
 
 namespace LL_AL5
 {

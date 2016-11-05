@@ -1,4 +1,4 @@
-/* Allegro.h -- Allegro 5 Header - LexRis Logic Headers
+/* Allegro5.h -- Allegro 5 Header - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -21,14 +21,6 @@
 #define INCLUDED_LL_AL5_H
 
 #include <allegro5/allegro5.h>
-#include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_image.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_acodec.h>
-#include <allegro5/allegro_video.h>
-#include <allegro5/allegro_native_dialog.h>
 
 namespace LL_AL5
 {
@@ -56,55 +48,6 @@ namespace LL_AL5
     {
         al_rest(sleep_time);
     }
-    bool native_dialog_addon()
-    {
-        return al_init_native_dialog_addon();
-    }
-    bool primitives_addon()
-    {
-        return al_init_primitives_addon();
-    }
-    bool image_addon()
-    {
-        return al_init_image_addon();
-    }
-    bool text_addon()
-    {
-        return al_init_font_addon()and al_init_ttf_addon();
-    }
-    bool audio_addon()
-    {
-        return (al_install_audio() and al_init_acodec_addon());
-    }
-    bool video_addon()
-    {
-        return al_init_video_addon();
-    }
-    void uninstall_audio()
-    {
-        al_uninstall_audio();
-    }
-    void uninstall_primitives()
-    {
-        al_shutdown_primitives_addon();
-    }
 }
-
-#include "Path.h"
-#include "NativeDialog.h"
-#include "Display.h"
-#include "Timer.h"
-#include "Input.h"
-#include "Color.h"
-#include "Primitives.h"
-#include "Bitmap.h"
-#include "Text.h"
-#include "Mixer.h"
-#include "Audio.h"
-#include "Video.h"
-
-#include "Special/Illumination.h"
-#include "Special/Interface.h"
-#include "Special/Sprite.h"
 
 #endif // INCLUDED_LL_AL5_H

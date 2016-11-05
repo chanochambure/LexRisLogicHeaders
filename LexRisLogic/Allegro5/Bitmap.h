@@ -20,10 +20,16 @@
 #ifndef INCLUDED_LL_AL5_BITMAP_H
 #define INCLUDED_LL_AL5_BITMAP_H
 
+#include <allegro5/allegro_image.h>
 #include <string>
+#include "Allegro5.h"
 
 namespace LL_AL5
 {
+    bool image_addon()
+    {
+        return al_init_image_addon();
+    }
     bool save_bitmap(std::string bitmap_file_name,ALLEGRO_BITMAP* bitmap)
     {
         return al_save_bitmap(bitmap_file_name.c_str(),bitmap);

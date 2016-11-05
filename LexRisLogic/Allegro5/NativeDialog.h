@@ -20,10 +20,16 @@
 #ifndef INCLUDED_LL_AL5_NATIVEDIALOG_H
 #define INCLUDED_LL_AL5_NATIVEDIALOG_H
 
+#include <allegro5/allegro_native_dialog.h>
 #include <string>
+#include "Allegro5.h"
 
 namespace LL_AL5
 {
+    bool native_dialog_addon()
+    {
+        return al_init_native_dialog_addon();
+    }
     bool show_native_message(ALLEGRO_DISPLAY* display,std::string title,
                              std::string header,std::string message,int flag)
     {

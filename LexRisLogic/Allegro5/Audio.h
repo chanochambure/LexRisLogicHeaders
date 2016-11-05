@@ -21,6 +21,8 @@
 #define INCLUDED_LL_AL5_AUDIO_H
 
 #include <string>
+#include "Allegro5.h"
+#include "Mixer.h"
 
 namespace LL_AL5
 {

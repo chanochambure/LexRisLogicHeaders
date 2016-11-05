@@ -20,10 +20,18 @@
 #ifndef INCLUDED_LL_AL5_TEXT_H
 #define INCLUDED_LL_AL5_TEXT_H
 
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <string>
+#include "Allegro5.h"
 
 namespace LL_AL5
 {
+    bool text_addon()
+    {
+        return al_init_font_addon()and al_init_ttf_addon();
+    }
+
     class Font
     {
         private:

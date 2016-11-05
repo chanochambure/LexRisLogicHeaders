@@ -20,8 +20,21 @@
 #ifndef INCLUDED_LL_AL5_MIXER_H
 #define INCLUDED_LL_AL5_MIXER_H
 
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+#include "Allegro5.h"
+
 namespace LL_AL5
 {
+    bool audio_addon()
+    {
+        return (al_install_audio() and al_init_acodec_addon());
+    }
+    void uninstall_audio()
+    {
+        al_uninstall_audio();
+    }
+
     class Mixer
     {
         private:

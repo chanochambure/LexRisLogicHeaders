@@ -20,8 +20,20 @@
 #ifndef INCLUDED_LL_AL5_PRIMITIVES_H
 #define INCLUDED_LL_AL5_PRIMITIVES_H
 
+#include <allegro5/allegro_primitives.h>
+#include "Allegro5.h"
+
 namespace LL_AL5
 {
+    bool primitives_addon()
+    {
+        return al_init_primitives_addon();
+    }
+    void uninstall_primitives()
+    {
+        al_shutdown_primitives_addon();
+    }
+
     class Pixel
     {
         private:

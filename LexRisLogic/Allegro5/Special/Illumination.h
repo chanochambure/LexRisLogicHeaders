@@ -20,6 +20,9 @@
 #ifndef INCLUDED_LL_AL5_ILLUMINATION_H
 #define INCLUDED_LL_AL5_ILLUMINATION_H
 
+#include "../Allegro5.h"
+#include "../Color.h"
+
 namespace LL_AL5
 {
     template<typename FIGURE>

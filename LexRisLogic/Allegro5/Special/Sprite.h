@@ -22,6 +22,7 @@
 
 #include <string>
 #include <sstream>
+#include "../Allegro5.h"
 #include "../Bitmap.h"
 
 namespace LL_AL5

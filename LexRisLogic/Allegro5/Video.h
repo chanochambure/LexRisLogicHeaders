@@ -20,11 +20,19 @@
 #ifndef INCLUDED_LL_AL5_VIDEO_H
 #define INCLUDED_LL_AL5_VIDEO_H
 
+#include <allegro5/allegro_video.h>
 #include <string>
+#include "Allegro5.h"
 #include "Bitmap.h"
+#include "Mixer.h"
 
 namespace LL_AL5
 {
+    bool video_addon()
+    {
+        return al_init_video_addon();
+    }
+
     class Video:public BitmapBase
     {
         private:

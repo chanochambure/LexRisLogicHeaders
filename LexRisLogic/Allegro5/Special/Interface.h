@@ -21,6 +21,8 @@
 #define INCLUDED_LL_AL5_INTERFACE_H
 
 #include <string>
+#include "../Allegro5.h"
+#include "../Primitives.h"
 #include "../Input.h"
 #include "../Text.h"
 
