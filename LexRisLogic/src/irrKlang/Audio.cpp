@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "Audio.h"
+#include "../../include/irrKlang/Audio.h"
 
 namespace LL_irrKlang
 {

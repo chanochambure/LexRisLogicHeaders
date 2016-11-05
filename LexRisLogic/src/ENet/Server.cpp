@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "Server.h"
+#include "../../include/ENet/Server.h"
 
 namespace LL_ENet
 {

@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "LineSegment.h"
+#include "../../include/MathStructures/LineSegment.h"
 
 namespace LL_MathStructure
 {

@@ -1,4 +1,4 @@
-/* Convert.cpp -- Convert Source - LexRis Logic Headers
+/* Allegro5.cpp -- Allegro 5 Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,22 +17,29 @@
     SOFTWARE.
 */
 
-#include "Convert.h"
+#include "../../include/Allegro5/Allegro5.h"
 
-namespace LL
+namespace LL_AL5
 {
-    int to_int(std::string data)
-    {
-        return atoi(data.c_str());
-    }
+    float bitmap_scale_x=1.0;
+    float bitmap_scale_y=1.0;
+    float text_scale=1.0;
+    float primitives_scale=1.0;
+    Type_display_size desktop_size_x=640;
+    Type_display_size desktop_size_y=480;
 
-    float to_float(std::string data)
+    void init_allegro()
     {
-        return strtof(data.c_str(),NULL);
+        al_init();
+        ALLEGRO_MONITOR_INFO monitor_info;
+        if(al_get_monitor_info(0,&monitor_info))
+        {
+            desktop_size_x=monitor_info.x2-monitor_info.x1;
+            desktop_size_y=monitor_info.y2-monitor_info.y1;
+        }
     }
-
-    double to_double(std::string data)
+    void sleep(float sleep_time)
     {
-        return strtod(data.c_str(),NULL);
+        al_rest(sleep_time);
     }
 }

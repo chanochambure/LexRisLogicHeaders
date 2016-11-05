@@ -1,4 +1,4 @@
-/* Time.cpp -- Time Source - LexRis Logic Headers
+/* StringSplitter.cpp -- String Splitter Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,58 +17,48 @@
     SOFTWARE.
 */
 
-#include "Time.h"
+#include "../include/StringSplitter.h"
 
 namespace LL
 {
-    Chronometer::_T_Type_clock Chronometer::_F_get_clock()
+    void StringSplitter::set_string(std::string new_string)
     {
-        return std::chrono::high_resolution_clock::now();
+        _V_data.clear();
+        _V_string=new_string;
     }
-    bool Chronometer::play()
+    std::string StringSplitter::get_string()
     {
-        if(_V_stopped)
+        return _V_string;
+    }
+    bool StringSplitter::split(char character)
+    {
+        _V_data.clear();
+        std::string data=_V_string;
+        if(!data.size())
+            return false;
+        for(unsigned int position=data.find(character);position<data.size();position=data.find(character))
         {
-            _V_time=0.0;
-            _V_stopped=false;
+            _V_data.push_back(data.substr(0,position));
+            data=data.substr(position+1,data.size()-(position+1));
         }
-        if(_V_in_pause)
-        {
-            _V_point=_F_get_clock();
-            _V_in_pause=false;
-            return true;
-        }
-        return false;
+        if(data.size())
+            _V_data.push_back(data);
+        return true;
     }
-    bool Chronometer::pause()
+    unsigned int StringSplitter::size()
     {
-        if(!_V_in_pause)
-        {
-            _V_time+=std::chrono::duration_cast<_T_Type_duration>(_F_get_clock()-_V_point).count();
-            _V_in_pause=true;
-            return true;
-        }
-        return false;
+        return _V_data.size();
     }
-    bool Chronometer::stop()
+    void StringSplitter::clear()
     {
-        if(!_V_stopped)
-        {
-            _V_stopped=true;
-            pause();
-            return true;
-        }
-        return false;
+        _V_data.clear();
     }
-    const double Chronometer::get_time()
+    const std::string StringSplitter::operator [] (unsigned int index)
     {
-        if(!_V_in_pause)
-            return _V_time+std::chrono::duration_cast<_T_Type_duration>(_F_get_clock()-_V_point).count();
-        return _V_time;
+        return _V_data[index];
     }
-    void Chronometer::clear()
+    StringSplitter::~StringSplitter()
     {
-        _V_time=0.0;
-        _V_point=_F_get_clock();
+        _V_data.clear();
     }
 }

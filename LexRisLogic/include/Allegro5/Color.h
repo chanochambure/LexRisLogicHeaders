@@ -26,50 +26,17 @@ namespace LL_AL5
 {
     struct Color
     {
-        Color(unsigned char new_red=0,unsigned char new_green=0,unsigned char new_blue=0,unsigned char new_alpha=255)
-        {
-            red=new_red;
-            green=new_green;
-            blue=new_blue;
-            alpha=new_alpha;
-        }
-        Color(ALLEGRO_COLOR color)
-        {
-            red=(color.r*255);
-            green=(color.g*255);
-            blue=(color.b*255);
-            alpha=(color.a*255);
-        }
+        Color(unsigned char new_red=0,unsigned char new_green=0,unsigned char new_blue=0,unsigned char new_alpha=255);
+        Color(ALLEGRO_COLOR color);
         unsigned char red=0;
         unsigned char green=0;
         unsigned char blue=0;
         unsigned char alpha=255;
-        Color operator ! ()
-        {
-            return Color(255-red,255-green,255-blue,alpha);
-        }
-        Color operator = (ALLEGRO_COLOR another_color)
-        {
-            red=(another_color.r*255);
-            green=(another_color.g*255);
-            blue=(another_color.b*255);
-            alpha=(another_color.a*255);
-            return (*this);
-        }
-        bool operator == (Color another_color)
-        {
-            return (another_color.red==red and another_color.green==green and
-                    another_color.blue==blue and another_color.alpha==alpha);
-        }
-        bool operator != (Color another_color)
-        {
-            return (another_color.red!=red or another_color.green!=green or
-                    another_color.blue!=blue or another_color.alpha!=alpha);
-        }
-        operator ALLEGRO_COLOR()
-        {
-            return al_map_rgba(red,green,blue,alpha);
-        }
+        Color operator ! ();
+        Color operator = (ALLEGRO_COLOR another_color);
+        bool operator == (Color another_color);
+        bool operator != (Color another_color);
+        operator ALLEGRO_COLOR();
     };
 }
 

@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "Client.h"
+#include "../../include/ENet/Client.h"
 
 namespace LL_ENet
 {

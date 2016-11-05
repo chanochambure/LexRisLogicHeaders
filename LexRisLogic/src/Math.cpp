@@ -1,4 +1,4 @@
-/* irrKlang.cpp -- irrKlang Source - LexRis Logic Headers
+/* Math.cpp -- Math Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,43 +17,49 @@
     SOFTWARE.
 */
 
-#include "irrKlang.h"
+#include "../include/Math.h"
 
-namespace LL_irrKlang
+namespace LL
 {
-    SoundEngine* default_engine=nullptr;
+    int mod(int dividend,int divisor)
+    {
+        return ((dividend%divisor)+divisor)%divisor;
+    }
 
-    bool SoundEngine::create()
+    double range_mod(double dividend,double divisor)
     {
-        destroy();
-        return (_V_engine=irrklang::createIrrKlangDevice());
+        return fmod(fmod(dividend,divisor)+divisor,divisor);
     }
-    void SoundEngine::set_default_engine()
+
+    float sexagesimal_to_radian(float sexagesimal)
     {
-        default_engine=this;
+        return (sexagesimal*MATH_PI)/180;
     }
-    void SoundEngine::set_volume(float new_volume)
+
+    float radian_to_sexagesimal(float radian)
     {
-        _V_volume=new_volume;
+        return (radian*180)/MATH_PI;
     }
-    float SoundEngine::get_volume()
+
+    void random_generate_new_seed()
     {
-        return _V_volume;
+        srand(time(nullptr));
     }
-    bool SoundEngine::destroy()
+
+    int random(int min_value,int max_value,bool include_max_value)
     {
-        if(!_V_engine)
-            return false;
-        _V_engine->drop();
-        _V_engine=nullptr;
-        return true;
+        return mod(rand(),(max_value-min_value+include_max_value))+min_value;
     }
-    SoundEngine::operator irrklang::ISoundEngine* ()
+
+    bool segment_collision(float ini_segment_1,float fin_segment_1,float ini_segment_2,float fin_segment_2)
     {
-        return _V_engine;
+        int ini_segment=std::max(ini_segment_1,ini_segment_2);
+        int fin_segment=std::min(fin_segment_1,fin_segment_2);
+        return (ini_segment<=fin_segment);
     }
-    SoundEngine::~SoundEngine()
+
+    int max_integer(float number)
     {
-        destroy();
+        return (int(number)-(number<0.0));
     }
 }

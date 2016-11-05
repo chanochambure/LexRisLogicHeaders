@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "Point.h"
+#include "../../include/MathStructures/Point.h"
 
 namespace LL_MathStructure
 {

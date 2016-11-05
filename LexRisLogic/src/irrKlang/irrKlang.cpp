@@ -1,4 +1,4 @@
-/* ENet.cpp -- ENet Source - LexRis Logic Headers
+/* irrKlang.cpp -- irrKlang Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,16 +17,43 @@
     SOFTWARE.
 */
 
-#include "ENet.h"
+#include "../../include/irrKlang/irrKlang.h"
 
-namespace LL_ENet
+namespace LL_irrKlang
 {
-    bool install_enet()
+    SoundEngine* default_engine=nullptr;
+
+    bool SoundEngine::create()
     {
-        return !(enet_initialize());
+        destroy();
+        return (_V_engine=irrklang::createIrrKlangDevice());
     }
-    void uninstall_enet()
+    void SoundEngine::set_default_engine()
     {
-        enet_deinitialize();
+        default_engine=this;
+    }
+    void SoundEngine::set_volume(float new_volume)
+    {
+        _V_volume=new_volume;
+    }
+    float SoundEngine::get_volume()
+    {
+        return _V_volume;
+    }
+    bool SoundEngine::destroy()
+    {
+        if(!_V_engine)
+            return false;
+        _V_engine->drop();
+        _V_engine=nullptr;
+        return true;
+    }
+    SoundEngine::operator irrklang::ISoundEngine* ()
+    {
+        return _V_engine;
+    }
+    SoundEngine::~SoundEngine()
+    {
+        destroy();
     }
 }

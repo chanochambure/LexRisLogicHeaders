@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "Encryptor.h"
+#include "../include/Encryptor.h"
 
 namespace LL
 {

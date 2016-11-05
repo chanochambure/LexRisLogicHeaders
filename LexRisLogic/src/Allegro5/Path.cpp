@@ -1,4 +1,4 @@
-/* StringSplitter.cpp -- String Splitter Source - LexRis Logic Headers
+/* Path.cpp -- Path Allegro 5 Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,48 +17,39 @@
     SOFTWARE.
 */
 
-#include "StringSplitter.h"
+#include "../../include/Allegro5/Path.h"
 
-namespace LL
+namespace LL_AL5
 {
-    void StringSplitter::set_string(std::string new_string)
+    std::string get_current_directory()
     {
-        _V_data.clear();
-        _V_string=new_string;
-    }
-    std::string StringSplitter::get_string()
-    {
-        return _V_string;
-    }
-    bool StringSplitter::split(char character)
-    {
-        _V_data.clear();
-        std::string data=_V_string;
-        if(!data.size())
-            return false;
-        for(unsigned int position=data.find(character);position<data.size();position=data.find(character))
+        char* actual_dir=al_get_current_directory();
+        std::string return_dir;
+        if(actual_dir)
         {
-            _V_data.push_back(data.substr(0,position));
-            data=data.substr(position+1,data.size()-(position+1));
+            return_dir=actual_dir;
+            al_free(actual_dir);
         }
-        if(data.size())
-            _V_data.push_back(data);
-        return true;
+        return return_dir;
     }
-    unsigned int StringSplitter::size()
+
+    bool change_directory(std::string new_path)
     {
-        return _V_data.size();
+        return al_change_directory(new_path.c_str());
     }
-    void StringSplitter::clear()
+
+    bool make_directory(std::string new_dir)
     {
-        _V_data.clear();
+        return al_make_directory(new_dir.c_str());
     }
-    const std::string StringSplitter::operator [] (unsigned int index)
+
+    bool path_exists(std::string path)
     {
-        return _V_data[index];
+        return al_filename_exists(path.c_str());
     }
-    StringSplitter::~StringSplitter()
+
+    bool remove_path(std::string path)
     {
-        _V_data.clear();
+        return al_remove_filename(path.c_str());
     }
 }

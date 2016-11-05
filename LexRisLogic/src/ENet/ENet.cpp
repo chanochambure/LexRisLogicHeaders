@@ -1,4 +1,4 @@
-/* Allegro5.cpp -- Allegro 5 Source - LexRis Logic Headers
+/* ENet.cpp -- ENet Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
@@ -17,29 +17,16 @@
     SOFTWARE.
 */
 
-#include "Allegro5.h"
+#include "../../include/ENet/ENet.h"
 
-namespace LL_AL5
+namespace LL_ENet
 {
-    float bitmap_scale_x=1.0;
-    float bitmap_scale_y=1.0;
-    float text_scale=1.0;
-    float primitives_scale=1.0;
-    Type_display_size desktop_size_x=640;
-    Type_display_size desktop_size_y=480;
-
-    void init_allegro()
+    bool install_enet()
     {
-        al_init();
-        ALLEGRO_MONITOR_INFO monitor_info;
-        if(al_get_monitor_info(0,&monitor_info))
-        {
-            desktop_size_x=monitor_info.x2-monitor_info.x1;
-            desktop_size_y=monitor_info.y2-monitor_info.y1;
-        }
+        return !(enet_initialize());
     }
-    void sleep(float sleep_time)
+    void uninstall_enet()
     {
-        al_rest(sleep_time);
+        enet_deinitialize();
     }
 }
