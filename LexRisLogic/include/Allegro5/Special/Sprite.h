@@ -20,10 +20,11 @@
 #ifndef INCLUDED_LL_AL5_SPRITE_H
 #define INCLUDED_LL_AL5_SPRITE_H
 
-#include <string>
-#include <sstream>
 #include "../Allegro5.h"
 #include "../Bitmap.h"
+
+#include <string>
+#include <sstream>
 
 namespace LL_AL5
 {

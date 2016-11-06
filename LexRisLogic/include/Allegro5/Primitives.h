@@ -20,8 +20,9 @@
 #ifndef INCLUDED_LL_AL5_PRIMITIVES_H
 #define INCLUDED_LL_AL5_PRIMITIVES_H
 
-#include <allegro5/allegro_primitives.h>
 #include "Allegro5.h"
+
+#include <allegro5/allegro_primitives.h>
 
 namespace LL_AL5
 {

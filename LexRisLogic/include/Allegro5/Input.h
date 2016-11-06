@@ -20,10 +20,11 @@
 #ifndef INCLUDED_LL_AL5_INPUT_H
 #define INCLUDED_LL_AL5_INPUT_H
 
+#include "Allegro5.h"
+
 #include <allegro5/allegro_native_dialog.h>
 #include <map>
 #include <string>
-#include "Allegro5.h"
 
 namespace LL_AL5
 {

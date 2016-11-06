@@ -20,10 +20,11 @@
 #ifndef INCLUDED_LL_AL5_TEXT_H
 #define INCLUDED_LL_AL5_TEXT_H
 
+#include "Allegro5.h"
+
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <string>
-#include "Allegro5.h"
 
 namespace LL_AL5
 {

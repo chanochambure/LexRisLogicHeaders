@@ -20,9 +20,10 @@
 #ifndef INCLUDED_LL_AL5_NATIVEDIALOG_H
 #define INCLUDED_LL_AL5_NATIVEDIALOG_H
 
+#include "Allegro5.h"
+
 #include <allegro5/allegro_native_dialog.h>
 #include <string>
-#include "Allegro5.h"
 
 namespace LL_AL5
 {

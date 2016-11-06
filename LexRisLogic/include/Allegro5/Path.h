@@ -20,8 +20,9 @@
 #ifndef INCLUDED_LL_AL5_PATH_H
 #define INCLUDED_LL_AL5_PATH_H
 
-#include <string>
 #include "Allegro5.h"
+
+#include <string>
 
 namespace LL_AL5
 {
