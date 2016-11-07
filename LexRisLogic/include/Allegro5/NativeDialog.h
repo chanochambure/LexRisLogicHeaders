@@ -27,15 +27,9 @@
 
 namespace LL_AL5
 {
-    bool native_dialog_addon()
-    {
-        return al_init_native_dialog_addon();
-    }
+    bool native_dialog_addon();
     bool show_native_message(ALLEGRO_DISPLAY* display,std::string title,
-                             std::string header,std::string message,int flag)
-    {
-        return (al_show_native_message_box(display,title.c_str(),header.c_str(),message.c_str(),nullptr,flag)==1);
-    }
+                             std::string header,std::string message,int flag);
 
     class FileChooser
     {
@@ -49,78 +43,19 @@ namespace LL_AL5
             ALLEGRO_FILECHOOSER* _V_filechooser=nullptr;
             ALLEGRO_DISPLAY* _V_display=nullptr;
         public:
-            void set_display(ALLEGRO_DISPLAY* display)
-            {
-                _V_display=display;
-            }
-            ALLEGRO_DISPLAY* get_display()
-            {
-                return _V_display;
-            }
-            void set_initial_path(std::string new_search_path)
-            {
-                _V_initial_path=new_search_path;
-                _V_file_exists=false;
-            }
-            std::string get_initial_path()
-            {
-                return _V_initial_path;
-            }
-            void set_title(std::string new_title)
-            {
-                _V_title=new_title;
-                _V_file_exists=false;
-            }
-            std::string get_title()
-            {
-                return _V_title;
-            }
-            void set_patterns(std::string new_patterns)
-            {
-                _V_patterns=new_patterns;
-                _V_file_exists=false;
-            }
-            std::string get_patterns()
-            {
-                return _V_patterns;
-            }
-            void set_mode(int new_mode)
-            {
-                _V_mode=new_mode;
-                _V_file_exists=false;
-            }
-            bool start_filechooser()
-            {
-                if(!_V_file_exists)
-                {
-                    if(_V_filechooser)
-                        al_destroy_native_file_dialog(_V_filechooser);
-                    _V_filechooser=al_create_native_file_dialog(_V_initial_path.c_str(),_V_title.c_str(),
-                                                                _V_patterns.c_str(),_V_mode);
-                    if(!_V_filechooser)
-                        return false;
-                    _V_file_exists=true;
-                }
-                al_show_native_file_dialog(_V_display,_V_filechooser);
-                _V_number_of_selected_files=al_get_native_file_dialog_count(_V_filechooser);
-                return _V_number_of_selected_files;
-            }
-            unsigned int get_number_of_selected_files()
-            {
-                return _V_number_of_selected_files;
-            }
-            std::string operator [] (unsigned int index)
-            {
-                const char* file_path=al_get_native_file_dialog_path(_V_filechooser,index);
-                if(file_path)
-                    return file_path;
-                return std::string();
-            }
-            ~FileChooser()
-            {
-                if(_V_filechooser)
-                    al_destroy_native_file_dialog(_V_filechooser);
-            }
+            void set_display(ALLEGRO_DISPLAY* display);
+            ALLEGRO_DISPLAY* get_display();
+            void set_initial_path(std::string new_search_path);
+            std::string get_initial_path();
+            void set_title(std::string new_title);
+            std::string get_title();
+            void set_patterns(std::string new_patterns);
+            std::string get_patterns();
+            void set_mode(int new_mode);
+            bool start_filechooser();
+            unsigned int get_number_of_selected_files();
+            std::string operator [] (unsigned int index);
+            ~FileChooser();
     };
 
     class TextLog
@@ -130,62 +65,16 @@ namespace LL_AL5
             std::string _V_title;
             ALLEGRO_TEXTLOG* _V_textlog=nullptr;
         public:
-            void set_title(std::string new_title)
-            {
-                _V_title=new_title;
-            }
-            std::string get_title()
-            {
-                return _V_title;
-            }
-            void set_mode(int new_mode)
-            {
-                _V_mode=new_mode;
-            }
-            bool open_textlog()
-            {
-                if(!_V_textlog)
-                {
-                    _V_textlog=al_open_native_text_log(_V_title.c_str(),_V_mode);
-                    return _V_textlog;
-                }
-                return false;
-            }
-            bool write_text(std::string text)
-            {
-                if(_V_textlog)
-                {
-                    al_append_native_text_log(_V_textlog,text.c_str());
-                    return true;
-                }
-                return false;
-            }
-            bool write_endl()
-            {
-                return write_text("\n");
-            }
-            bool close_textlog()
-            {
-                if(_V_textlog)
-                {
-                    al_close_native_text_log(_V_textlog);
-                    _V_textlog=nullptr;
-                    return true;
-                }
-                return false;
-            }
-            bool is_open()
-            {
-                return _V_textlog;
-            }
-            operator ALLEGRO_TEXTLOG* ()
-            {
-                return _V_textlog;
-            }
-            ~TextLog()
-            {
-                close_textlog();
-            }
+            void set_title(std::string new_title);
+            std::string get_title();
+            void set_mode(int new_mode);
+            bool open_textlog();
+            bool write_text(std::string text);
+            bool write_endl();
+            bool close_textlog();
+            bool is_open();
+            operator ALLEGRO_TEXTLOG* ();
+            ~TextLog();
     };
 }
 
