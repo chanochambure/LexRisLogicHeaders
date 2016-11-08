@@ -1,4 +1,4 @@
-/* Bitmap.h -- Bitmap Allegro 5 Header - LexRis Logic Headers
+/* Bitmap.cpp -- Bitmap Allegro 5 Source - LexRis Logic Headers
 
     Copyright (c) 2016 LexRisLogic
 
