@@ -99,7 +99,7 @@ namespace LL_AL5
             void clear_events();
             void clear_key_status();
             bool set_wait_time(float wait_time);
-            unsigned int get_wait_time();
+            float get_wait_time();
             bool keyboard_on();
             bool keyboard_off();
             bool input_on(std::string* input_objetive,unsigned int max_input_size,bool special_is_blocked=false);

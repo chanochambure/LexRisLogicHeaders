@@ -229,7 +229,7 @@ namespace LL_AL5
         _V_time=wait_time;
         return true;
     }
-    unsigned int Input::get_wait_time()
+    float Input::get_wait_time()
     {
         return _V_time;
     }

@@ -95,13 +95,13 @@ namespace LL_MathStructure
         _F_delete_coordinates();
     }
 
-    std::ostream& operator << (std::ostream& output_streamer,Point point)
+    std::ostream& operator << (std::ostream& output_stream,Point point)
     {
-        output_streamer<<"[";
+        output_stream<<"[";
         for(unsigned int i=0;i<point.get_dimension()-1;++i)
-            output_streamer<<point[i]<<" ";
-        output_streamer<<point[point.get_dimension()-1]<<"]";
-        return output_streamer;
+            output_stream<<point[i]<<" ";
+        output_stream<<point[point.get_dimension()-1]<<"]";
+        return output_stream;
     }
 
     double euclidean_distance(Point first_point,Point second_point)

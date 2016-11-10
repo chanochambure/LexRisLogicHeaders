@@ -46,7 +46,7 @@ namespace LL_MathStructure
             ~Point();
     };
 
-    std::ostream& operator << (std::ostream& output_streamer,Point point);
+    std::ostream& operator << (std::ostream& output_stream,Point point);
 
     double euclidean_distance(Point first_point,Point second_point);
 
