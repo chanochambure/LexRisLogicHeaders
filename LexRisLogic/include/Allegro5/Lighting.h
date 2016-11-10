@@ -47,7 +47,7 @@ namespace LL_AL5
             bool create(int size_x,int size_y);
             bool destroy();
             void set_target();
-            void clear();
+            void clear(float intensity=0.0);
             template<typename T>
             void add(T* object_shape,float intensity)
             {

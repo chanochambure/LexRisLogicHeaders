@@ -81,10 +81,9 @@ namespace LL_AL5
         if(_V_lighting_buffer)
             al_set_target_bitmap(_V_lighting_buffer);
     }
-    void Lighting::clear()
+    void Lighting::clear(float intensity)
     {
         al_set_blender(ALLEGRO_SRC_MINUS_DEST, ALLEGRO_ONE, ALLEGRO_ZERO);
-        al_clear_to_color(al_map_rgba(0,0,0,0));
         al_set_blender(_V_blend_mode, _V_blend_source_value, _V_blend_destination_value);
     }
     float Lighting::get_pixel_intensity(Type_pos pos_x,Type_pos pos_y)
