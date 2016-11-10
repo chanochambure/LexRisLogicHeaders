@@ -36,72 +36,18 @@ namespace LL_AL5
             float _V_size_x=0.0;
             float _V_size_y=0.0;
         public:
-            Lighting()
-            {
-                al_get_blender(&_V_blend_mode,&_V_blend_source_value,&_V_blend_destination_value);
-            }
-            void set_pos(Type_pos new_pos_x,Type_pos new_pos_y)
-            {
-                _V_pos_x=new_pos_x;
-                _V_pos_y=new_pos_y;
-            }
-            void set_pos_x(Type_pos new_pos_x)
-            {
-                _V_pos_x=new_pos_x;
-            }
-            Type_pos get_pos_x()
-            {
-                return _V_pos_x;
-            }
-            void set_pos_y(Type_pos new_pos_y)
-            {
-                _V_pos_y=new_pos_y;
-            }
-            Type_pos get_pos_y()
-            {
-                return _V_pos_y;
-            }
-            float get_size_x()
-            {
-                return _V_size_x;
-            }
-            float get_size_y()
-            {
-                return _V_size_y;
-            }
-            bool create(int size_x,int size_y)
-            {
-                destroy();
-                _V_lighting_buffer=al_create_bitmap(size_x,size_y);
-                if(_V_lighting_buffer)
-                {
-                    _V_size_x=size_x;
-                    _V_size_y=size_y;
-                    return true;
-                }
-                return false;
-            }
-            bool destroy()
-            {
-                if(_V_lighting_buffer)
-                {
-                    al_destroy_bitmap(_V_lighting_buffer);
-                    _V_lighting_buffer=nullptr;
-                    return true;
-                }
-                return false;
-            }
-            void set_target()
-            {
-                if(_V_lighting_buffer)
-                    al_set_target_bitmap(_V_lighting_buffer);
-            }
-            void clear()
-            {
-                al_set_blender(ALLEGRO_SRC_MINUS_DEST, ALLEGRO_ONE, ALLEGRO_ZERO);
-                al_clear_to_color(al_map_rgba(0,0,0,0));
-                al_set_blender(_V_blend_mode, _V_blend_source_value, _V_blend_destination_value);
-            }
+            Lighting();
+            void set_pos(Type_pos new_pos_x,Type_pos new_pos_y);
+            void set_pos_x(Type_pos new_pos_x);
+            Type_pos get_pos_x();
+            void set_pos_y(Type_pos new_pos_y);
+            Type_pos get_pos_y();
+            float get_size_x();
+            float get_size_y();
+            bool create(int size_x,int size_y);
+            bool destroy();
+            void set_target();
+            void clear();
             template<typename T>
             void add(T* object_shape,float intensity)
             {
@@ -112,31 +58,11 @@ namespace LL_AL5
                 al_set_blender(_V_blend_mode, _V_blend_source_value, _V_blend_destination_value);
                 object_shape->set_color(data_color);
             }
-            float get_pixel_intensity(Type_pos pos_x,Type_pos pos_y)
-            {
-                return al_get_pixel(_V_lighting_buffer,pos_x,pos_y).a;
-            }
-            void draw()
-            {
-                al_set_blender(ALLEGRO_ADD, ALLEGRO_ZERO, ALLEGRO_ALPHA);
-                al_draw_scaled_bitmap(_V_lighting_buffer,0,0,_V_size_x,_V_size_y,_V_pos_x,_V_pos_y,
-                                      _V_size_x*bitmap_scale_x,_V_size_y*bitmap_scale_y,0);
-                al_set_blender(_V_blend_mode, _V_blend_source_value, _V_blend_destination_value);
-            }
-            void draw_in_another_target()
-            {
-                al_set_blender(ALLEGRO_ADD, ALLEGRO_ZERO, ALLEGRO_ALPHA);
-                al_draw_bitmap(_V_lighting_buffer,_V_pos_x,_V_pos_y,0);
-                al_set_blender(_V_blend_mode, _V_blend_source_value, _V_blend_destination_value);
-            }
-            operator ALLEGRO_BITMAP* ()
-            {
-                return _V_lighting_buffer;
-            }
-            ~Lighting()
-            {
-                destroy();
-            }
+            float get_pixel_intensity(Type_pos pos_x,Type_pos pos_y);
+            void draw();
+            void draw_in_another_target();
+            operator ALLEGRO_BITMAP* ();
+            ~Lighting();
     };
 }
 
