@@ -37,419 +37,77 @@ namespace LL_DataStructure
         LL_MathStructure::Point second_point;
         bool set_dimension(unsigned int new_dimension);
         bool operator == (MBB another_mbb);
+        bool operator != (MBB another_mbb);
     };
 
     double mbb_distance(MBB first_mbb,MBB second_mbb);
 
-    template<typename T,int DIMENSION,unsigned int NODE_SIZE>
-    class RTree
+    struct __RTreeDataNodeBase__
+    {
+        MBB mbb;
+        virtual ~__RTreeDataNodeBase__();
+    };
+
+    struct __RTreeNodeBase__
+    {
+        __RTreeNodeBase__(unsigned int new_dimension,unsigned int new_node_size,bool node_type=false);
+        MBB mbb;
+        bool type=false;
+        unsigned int node_size;
+        unsigned int dimension;
+        unsigned int size=0;
+        unsigned int pos_in_parent=0;
+        __RTreeNodeBase__* parent=nullptr;
+        __RTreeNodeBase__** sons=nullptr;
+        __RTreeDataNodeBase__** data=nullptr;
+        void set_mbb();
+        void set_metadata();
+        unsigned int farthest_node_position();
+        void clear();
+        virtual ~__RTreeNodeBase__();
+    };
+
+    class __RTreeIteratorBase__
+    {
+        protected:
+            typedef std::pair<unsigned int,__RTreeNodeBase__*> _T_Type_item;
+            std::stack<_T_Type_item> _V_stack;
+            void _F_get_next();
+            void _F_set_data(__RTreeNodeBase__* root_node);
+    };
+
+    class __RTreeBase__
+    {
+        protected:
+            typedef std::pair<double,unsigned int> _T_Type_pair_dis_pos;
+            unsigned int _V_dimension;
+            unsigned int _V_node_size;
+            unsigned int _V_min_node_size;
+            __RTreeNodeBase__* _V_root=nullptr;
+            unsigned int _V_size=0;
+            void _F_target_node(MBB new_mbb,__RTreeNodeBase__**& target_node);
+            bool _F_find_data(MBB data_mbb,__RTreeNodeBase__**& node);
+            void _F_refresh_data(__RTreeNodeBase__** node);
+            bool _F_remove_data(MBB mbb);
+            void _F_split_node(__RTreeNodeBase__* node);
+            void _F_merge_node(__RTreeNodeBase__* node);
+    };
+
+    template<typename T,unsigned int DIMENSION,unsigned int NODE_SIZE>
+    class RTree:public __RTreeBase__
     {
         private:
-            typedef std::pair<double,unsigned int> _T_Type_pair_dis_pos;
-            const unsigned int _C_CONSTANT_MIN_NODE_SIZE=(NODE_SIZE+1)/2;
-            struct _S_Structure_DataNode
+            struct _S_Structure_DataNode:public __RTreeDataNodeBase__
             {
                 _S_Structure_DataNode(T new_data,MBB new_mbb)
                 {
                     data=new_data;
                     mbb=new_mbb;
                 }
-                MBB mbb;
                 T data;
             };
-            struct _S_Structure_Node
-            {
-                _S_Structure_Node(bool node_type=false)
-                {
-                    mbb.set_dimension(DIMENSION);
-                    type=node_type;
-                    for(unsigned int i=0;i<(NODE_SIZE+1);++i)
-                    {
-                        data[i]=nullptr;
-                        sons[i]=nullptr;
-                    }
-                    sons[NODE_SIZE+1]=nullptr;
-                }
-                MBB mbb;
-                bool type=false;
-                unsigned int size=0;
-                unsigned int pos_in_parent=0;
-                _S_Structure_Node* parent=nullptr;
-                _S_Structure_Node* sons[NODE_SIZE+2];
-                _S_Structure_DataNode* data[NODE_SIZE+1];
-                void set_mbb()
-                {
-                    if(size)
-                    {
-                        if(type)
-                        {
-                            mbb=sons[0]->mbb;
-                            for(unsigned int i=1;i<size;++i)
-                            {
-                                for(unsigned int j=0;j<DIMENSION;++j)
-                                {
-                                    if(sons[i]->mbb.first_point[j]<mbb.first_point[j])
-                                        mbb.first_point[j]=sons[i]->mbb.first_point[j];
-                                    if(sons[i]->mbb.second_point[j]>mbb.second_point[j])
-                                        mbb.second_point[j]=sons[i]->mbb.second_point[j];
-                                }
-                            }
-                        }
-                        else
-                        {
-                            mbb=data[0]->mbb;
-                            for(unsigned int i=1;i<size;++i)
-                            {
-                                for(unsigned int j=0;j<DIMENSION;++j)
-                                {
-                                    if(data[i]->mbb.first_point[j]<mbb.first_point[j])
-                                        mbb.first_point[j]=data[i]->mbb.first_point[j];
-                                    if(data[i]->mbb.second_point[j]>mbb.second_point[j])
-                                        mbb.second_point[j]=data[i]->mbb.second_point[j];
-                                }
-                            }
-                        }
-                    }
-                }
-                void set_metadata()
-                {
-                    if(size)
-                    {
-                        if(type)
-                        {
-                            sons[0]->pos_in_parent=0;
-                            sons[0]->set_metadata();
-                            mbb=sons[0]->mbb;
-                            for(unsigned int i=1;i<size;++i)
-                            {
-                                sons[i]->pos_in_parent=i;
-                                sons[i]->set_metadata();
-                                for(unsigned int j=0;j<DIMENSION;++j)
-                                {
-                                    if(sons[i]->mbb.first_point[j]<mbb.first_point[j])
-                                        mbb.first_point[j]=sons[i]->mbb.first_point[j];
-                                    if(sons[i]->mbb.second_point[j]>mbb.second_point[j])
-                                        mbb.second_point[j]=sons[i]->mbb.second_point[j];
-                                }
-                            }
-                        }
-                        else
-                        {
-                            mbb=data[0]->mbb;
-                            for(unsigned int i=1;i<size;++i)
-                            {
-                                for(unsigned int j=0;j<DIMENSION;++j)
-                                {
-                                    if(data[i]->mbb.first_point[j]<mbb.first_point[j])
-                                        mbb.first_point[j]=data[i]->mbb.first_point[j];
-                                    if(data[i]->mbb.second_point[j]>mbb.second_point[j])
-                                        mbb.second_point[j]=data[i]->mbb.second_point[j];
-                                }
-                            }
-                        }
-                    }
-                }
-                unsigned int farthest_node_position()
-                {
-                    unsigned int farthest_node=0;
-                    if(type)
-                    {
-                        for(unsigned int i=1;i<size;++i)
-                        {
-                            for(unsigned int j=0;j<DIMENSION;++j)
-                            {
-                                if(sons[farthest_node]->mbb.first_point[j]>sons[i]->mbb.first_point[j])
-                                {
-                                    farthest_node=i;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for(unsigned int i=1;i<size;++i)
-                        {
-                            for(unsigned int j=0;j<DIMENSION;++j)
-                            {
-                                if(data[farthest_node]->mbb.first_point[j]>data[i]->mbb.first_point[j])
-                                {
-                                    farthest_node=i;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    return farthest_node;
-                }
-                void clear()
-                {
-                    size=0;
-                    for(unsigned int i=0;i<(NODE_SIZE+1);++i)
-                    {
-                        data[i]=nullptr;
-                        sons[i]=nullptr;
-                    }
-                }
-                ~_S_Structure_Node()
-                {
-                    if(type)
-                    {
-                        for(unsigned int i=0;i<size;++i)
-                            delete(sons[i]);
-                    }
-                    else
-                    {
-                        for(unsigned int i=0;i<size;++i)
-                            delete(data[i]);
-                    }
-                }
-            };
-            _S_Structure_Node* _V_root=nullptr;
-            unsigned int _V_size=0;
             MBB (*_P_Function_to_mbb)(T)=nullptr;
-            void _F_target_node(MBB new_mbb,_S_Structure_Node**& target_node)
-            {
-                while((*target_node)->type)
-                {
-                    unsigned int target_son=0;
-                    double actual_distance=mbb_distance(new_mbb,(*target_node)->sons[0]->mbb);
-                    for(unsigned int i=1;i<(*target_node)->size;++i)
-                    {
-                        double new_distance=mbb_distance(new_mbb,(*target_node)->sons[i]->mbb);
-                        if(new_distance<actual_distance)
-                        {
-                            actual_distance=new_distance;
-                            target_son=i;
-                        }
-                    }
-                    target_node=&((*target_node)->sons[target_son]);
-                }
-            }
-            bool _F_find_data(T data,MBB data_mbb,_S_Structure_Node**& node)
-            {
-                if(*node)
-                {
-                    if((*node)->type)
-                    {
-                        _S_Structure_Node** temp_node=node;
-                        _S_Structure_Node** selected_node=node;
-                        for(unsigned int i=0;i<(*node)->size;++i)
-                        {
-                            node=&((*node)->sons[i]);
-                            if(mbb_distance((*node)->mbb,data_mbb)==0.0)
-                            {
-                                selected_node=node;
-                                if(_F_find_data(data,data_mbb,node))
-                                    return true;
-                                selected_node=node;
-                            }
-                            node=temp_node;
-                        }
-                        node=selected_node;
-                    }
-                    else
-                    {
-                        for(unsigned int i=0;i<(*node)->size;++i)
-                        {
-                            if(((*node)->data[i]->data)==data)
-                                return true;
-                        }
-                    }
-                }
-                return false;
-            }
-            void _F_split_node(_S_Structure_Node* node)
-            {
-                _S_Structure_Node* new_node_1=new _S_Structure_Node(node->type);
-                _S_Structure_Node* new_node_2=new _S_Structure_Node(node->type);
-                if(node->type)
-                {
-                    std::vector<_T_Type_pair_dis_pos> sorted_data;
-                    sorted_data.push_back(_T_Type_pair_dis_pos(0.0,node->farthest_node_position()));
-                    for(unsigned int i=0;i<node->size;++i)
-                    {
-                        if(i!=sorted_data[0].second)
-                        {
-                            _T_Type_pair_dis_pos new_data(
-                                        mbb_distance(node->sons[sorted_data[0].second]->mbb,node->sons[i]->mbb),i);
-                            sorted_data.push_back(new_data);
-                        }
-                    }
-                    std::sort(sorted_data.begin(),sorted_data.end());
-                    unsigned int MID=(node->size)>>1;
-                    for(unsigned int i=0;i<MID;++i)
-                    {
-                        new_node_1->sons[new_node_1->size]=node->sons[sorted_data[i].second];
-                        new_node_1->sons[new_node_1->size]->parent=new_node_1;
-                        new_node_1->sons[new_node_1->size]->pos_in_parent=new_node_1->size;
-                        ++(new_node_1->size);
-                    }
-                    for(unsigned int i=MID;i<node->size;++i)
-                    {
-                        new_node_2->sons[new_node_2->size]=node->sons[sorted_data[i].second];
-                        new_node_2->sons[new_node_2->size]->parent=new_node_2;
-                        new_node_2->sons[new_node_2->size]->pos_in_parent=new_node_2->size;
-                        ++(new_node_2->size);
-                    }
-                }
-                else
-                {
-                    std::vector<_T_Type_pair_dis_pos> sorted_data;
-                    sorted_data.push_back(_T_Type_pair_dis_pos(0.0,node->farthest_node_position()));
-                    for(unsigned int i=0;i<node->size;++i)
-                    {
-                        if(i!=sorted_data[0].second)
-                        {
-                            _T_Type_pair_dis_pos new_data(
-                                        mbb_distance(node->data[sorted_data[0].second]->mbb,node->data[i]->mbb),i);
-                            sorted_data.push_back(new_data);
-                        }
-                    }
-                    std::sort(sorted_data.begin(),sorted_data.end());
-                    unsigned int MID=(node->size)>>1;
-                    for(unsigned int i=0;i<MID;++i)
-                        new_node_1->data[new_node_1->size++]=node->data[sorted_data[i].second];
-                    for(unsigned int i=MID;i<node->size;++i)
-                        new_node_2->data[new_node_2->size++]=node->data[sorted_data[i].second];
-                }
-                new_node_1->set_mbb();
-                new_node_2->set_mbb();
-                node->clear();
-                if(node->parent)
-                {
-                    _S_Structure_Node* temp_node=node;
-                    unsigned int split_pos=temp_node->pos_in_parent;
-                    node=node->parent;
-                    new_node_1->parent=node;
-                    new_node_2->parent=node;
-                    node->sons[split_pos]=new_node_1;
-                    node->sons[node->size]=new_node_2;
-                    new_node_1->pos_in_parent=split_pos;
-                    new_node_2->pos_in_parent=node->size;
-                    ++(node->size);
-                    delete(temp_node);
-                    if(node->size==(NODE_SIZE+2))
-                        _F_split_node(node);
-                }
-                else
-                {
-                    node->type=1;
-                    new_node_1->parent=node;
-                    new_node_2->parent=node;
-                    new_node_1->pos_in_parent=0;
-                    new_node_2->pos_in_parent=1;
-                    node->sons[0]=new_node_1;
-                    node->sons[1]=new_node_2;
-                    node->size=2;
-                }
-            }
-            void _F_merge_node(_S_Structure_Node* node)
-            {
-                bool node_type=node->type;
-                unsigned int son_in_underflow=node->pos_in_parent;
-                node=node->parent;
-                std::vector<_T_Type_pair_dis_pos> sorted_data;
-                std::vector<_T_Type_pair_dis_pos> sorted_distance;
-                for(unsigned int i=0;i<node->size;++i)
-                {
-                    if(i!=son_in_underflow)
-                    {
-                        double son_distance=mbb_distance(node->sons[son_in_underflow]->mbb,node->sons[i]->mbb);
-                        if(node->sons[i]->size>_C_CONSTANT_MIN_NODE_SIZE)
-                            sorted_data.push_back(_T_Type_pair_dis_pos(son_distance,i));
-                        sorted_distance.push_back(_T_Type_pair_dis_pos(son_distance,i));
-                    }
-                }
-                if(sorted_data.size())
-                {
-                    sorted_distance.clear();
-                    std::sort(sorted_data.begin(),sorted_data.end());
-                    _S_Structure_Node* donator_son=node->sons[sorted_data[0].second];
-                    sorted_data.clear();
-                    if(node_type)
-                    {
-                        for(unsigned int i=0;i<donator_son->size;++i)
-                        {
-                            _T_Type_pair_dis_pos new_data(
-                                        mbb_distance(donator_son->sons[i]->mbb,node->sons[son_in_underflow]->mbb),i);
-                            sorted_data.push_back(new_data);
-                        }
-                        std::sort(sorted_data.begin(),sorted_data.end());
-                        unsigned int new_owner=sorted_data[0].second;
-                        sorted_data.clear();
-                        donator_son->sons[new_owner]->pos_in_parent=node->sons[son_in_underflow]->size;
-                        donator_son->sons[new_owner]->parent=node->sons[son_in_underflow];
-                        unsigned int temp_size=node->sons[son_in_underflow]->size++;
-                        node->sons[son_in_underflow]->sons[temp_size]=donator_son->sons[new_owner];
-                        donator_son->sons[--(donator_son->size)]->pos_in_parent=new_owner;
-                        donator_son->sons[new_owner]=donator_son->sons[donator_son->size];
-                        donator_son->sons[donator_son->size]=nullptr;
-                    }
-                    else
-                    {
-                        for(unsigned int i=0;i<donator_son->size;++i)
-                        {
-                            _T_Type_pair_dis_pos new_data(
-                                        mbb_distance(donator_son->data[i]->mbb,node->sons[son_in_underflow]->mbb),i);
-                            sorted_data.push_back(new_data);
-                        }
-                        std::sort(sorted_data.begin(),sorted_data.end());
-                        unsigned int new_owner=sorted_data[0].second;
-                        sorted_data.clear();
-                        unsigned int temp_size=node->sons[son_in_underflow]->size++;
-                        node->sons[son_in_underflow]->data[temp_size]=donator_son->data[new_owner];
-                        donator_son->data[new_owner]=donator_son->data[--(donator_son->size)];
-                        donator_son->data[donator_son->size]=nullptr;
-                    }
-                }
-                else
-                {
-                    sorted_data.clear();
-                    sort(sorted_distance.begin(),sorted_distance.end());
-                    _S_Structure_Node* owner_son=node->sons[sorted_distance[0].second];
-                    _S_Structure_Node* node_to_remove=node->sons[son_in_underflow];
-                    sorted_distance.clear();
-                    --(node->size);
-                    node->sons[son_in_underflow]=node->sons[node->size];
-                    node->sons[son_in_underflow]->pos_in_parent=son_in_underflow;
-                    node->sons[node->size]=nullptr;
-                    if(node_type)
-                    {
-                        for(unsigned int k=0;k<node_to_remove->size;++k)
-                        {
-                            owner_son->sons[owner_son->size]=node_to_remove->sons[k];
-                            owner_son->sons[owner_son->size]->pos_in_parent=owner_son->size;
-                            owner_son->sons[owner_son->size++]->parent=owner_son;
-                        }
-                    }
-                    else
-                    {
-                        for(unsigned int k=0;k<node_to_remove->size;++k)
-                            owner_son->data[owner_son->size++]=node_to_remove->data[k];
-                    }
-                    node_to_remove->clear();
-                    delete(node_to_remove);
-                    if(node->parent)
-                    {
-                        if(node->size<_C_CONSTANT_MIN_NODE_SIZE)
-                            _F_merge_node(node);
-                    }
-                    else
-                    {
-                        if(node->size==1)
-                        {
-                            _S_Structure_Node* new_root=node->sons[0];
-                            node->clear();
-                            _V_root=new_root;
-                            _V_root->parent=nullptr;
-                            delete(node);
-                            node=_V_root;
-                        }
-                    }
-                }
-            }
-            void _F_range_query(std::list<T>* data_list,_S_Structure_Node* node,MBB mbb)
+            void _F_range_query(std::list<T>* data_list,__RTreeNodeBase__* node,MBB mbb)
             {
                 if(node->type)
                 {
@@ -463,56 +121,27 @@ namespace LL_DataStructure
                 {
                     for(unsigned int i=0;i<node->size;++i)
                     {
+                        _S_Structure_DataNode* pointer=static_cast<_S_Structure_DataNode*>(node->data[i]);
                         if(mbb_distance(mbb,node->data[i]->mbb)==0.0)
-                            data_list->push_back(node->data[i]->data);
+                            data_list->push_back(pointer->data);
                     }
                 }
             }
         public:
             RTree(MBB (*Function_to_mbb)(T))
             {
+                _V_dimension=DIMENSION;
+                _V_node_size=NODE_SIZE;
+                _V_min_node_size=(_V_node_size+1)/2;
                 _P_Function_to_mbb=Function_to_mbb;
-                _V_root=new _S_Structure_Node;
+                _V_root=new __RTreeNodeBase__(_V_dimension,_V_node_size);
             }
-            class iterator
+            class iterator:public __RTreeIteratorBase__
             {
-                private:
-                    typedef std::pair<unsigned int,_S_Structure_Node*> _T_Type_item;
-                    std::stack<_T_Type_item> _V_stack;
-                    void _F_get_next()
-                    {
-                        if(_V_stack.empty())
-                            return;
-                        if(!(_V_stack.top().second->type))
-                        {
-                            if((_V_stack.top().first++)<(_V_stack.top().second->size-1))
-                                return;
-                            else
-                                _V_stack.pop();
-                        }
-                        while((!_V_stack.empty()) and _V_stack.top().second->type)
-                        {
-                            if(_V_stack.top().first<(_V_stack.top().second->size))
-                                _V_stack.push(_T_Type_item(0,_V_stack.top().second->sons[_V_stack.top().first++]));
-                            else
-                                _V_stack.pop();
-                        }
-                    }
                 public:
-                    iterator(_S_Structure_Node* root_node=nullptr)
+                    iterator(__RTreeNodeBase__* root_node=nullptr)
                     {
-                        if(root_node)
-                        {
-                            if(root_node->size)
-                                _V_stack.push(_T_Type_item(0,root_node));
-                            if(root_node->type)
-                                _F_get_next();
-                        }
-                    }
-                    iterator operator = (iterator another_iterator)
-                    {
-                        _V_stack=another_iterator._V_stack;
-                        return (*this);
+                        _F_set_data(root_node);
                     }
                     iterator operator ++ (int)
                     {
@@ -525,9 +154,11 @@ namespace LL_DataStructure
                         _F_get_next();
                         return (*this);
                     }
-                    T operator * ()
+                    const T operator * ()
                     {
-                        return ((_V_stack.top().second)->data[_V_stack.top().first])->data;
+                        _S_Structure_DataNode* pointer=static_cast<_S_Structure_DataNode*>
+                                                        ((_V_stack.top().second)->data[_V_stack.top().first]);
+                        return pointer->data;
                     }
                     bool operator != (iterator another_iterator)
                     {
@@ -549,65 +180,39 @@ namespace LL_DataStructure
             void clear()
             {
                 delete(_V_root);
-                _V_root=new _S_Structure_Node;
+                _V_root=new __RTreeNodeBase__(_V_dimension,_V_node_size);
                 _V_size=0;
             }
             bool find(T data)
             {
-                _S_Structure_Node** leaf=&(_V_root);
-                return _F_find_data(data,_P_Function_to_mbb(data),leaf);
+                __RTreeNodeBase__** leaf=&(_V_root);
+                MBB mbb=_P_Function_to_mbb(data);
+                if(mbb.dimension==_V_dimension)
+                    return _F_find_data(mbb,leaf);
+                return false;
             }
             bool insert(T new_data)
             {
                 MBB mbb=_P_Function_to_mbb(new_data);
-                _S_Structure_Node** leaf=&(_V_root);
-                if(_F_find_data(new_data,mbb,leaf))
+                __RTreeNodeBase__** leaf=&(_V_root);
+                if(_F_find_data(mbb,leaf) or (mbb.dimension!=_V_dimension))
                     return false;
                 _F_target_node(mbb,leaf);
                 (*leaf)->data[(*leaf)->size++]=new _S_Structure_DataNode(new_data,mbb);
-                _V_root->set_metadata();
-                if((*leaf)->size==(NODE_SIZE+1))
-                {
-                    _F_split_node(*leaf);
-                    _V_root->set_metadata();
-                }
-                ++_V_size;
+                _F_refresh_data(leaf);
                 return true;
             }
             bool remove(T data_to_remove)
             {
                 MBB mbb=_P_Function_to_mbb(data_to_remove);
-                _S_Structure_Node** leaf=&(_V_root);
-                if(_F_find_data(data_to_remove,mbb,leaf))
-                {
-                    unsigned int i=0;
-                    while(i<(*leaf)->size)
-                    {
-                        if(data_to_remove==((*leaf)->data[i]->data))
-                            break;
-                        ++i;
-                    }
-                    delete((*leaf)->data[i]);
-                    (*leaf)->data[i]=(*leaf)->data[--((*leaf)->size)];
-                    (*leaf)->data[(*leaf)->size]=nullptr;
-                    _V_root->set_metadata();
-                    if((*leaf)!=_V_root)
-                    {
-                        if((*leaf)->size==((NODE_SIZE-1)/2))
-                        {
-                            _F_merge_node(*leaf);
-                            _V_root->set_metadata();
-                        }
-                    }
-                    --_V_size;
-                    return true;
-                }
+                if(mbb.dimension==_V_dimension)
+                    return _F_remove_data(mbb);
                 return false;
             }
             std::list<T> range_query(MBB mbb)
             {
                 std::list<T> data_list;
-                if(mbb.dimension==DIMENSION)
+                if(mbb.dimension==_V_dimension)
                     _F_range_query(&data_list,_V_root,mbb);
                 return data_list;
             }

@@ -43,6 +43,7 @@ namespace LL_MathStructure
             const float operator [](unsigned int index) const;
             Point& operator = (const Point& another_point);
             bool operator == (const Point& another_point) const;
+            bool operator != (const Point& another_point) const;
             ~Point();
     };
 

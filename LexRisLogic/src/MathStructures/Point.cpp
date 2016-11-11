@@ -90,6 +90,17 @@ namespace LL_MathStructure
         }
         return true;
     }
+    bool Point::operator != (const Point& another_point) const
+    {
+        if(_V_dimension==another_point.get_dimension())
+            return false;
+        for(unsigned int i=0;i<_V_dimension;++i)
+        {
+            if((*this)[i]!=another_point[i])
+                return true;
+        }
+        return false;
+    }
     Point::~Point()
     {
         _F_delete_coordinates();
