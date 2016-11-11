@@ -22,86 +22,103 @@
 
 namespace LL_DataStructure
 {
-    struct __SparseMatrixNode__
+    struct __SparseMatrixNodeBase__
     {
-        __SparseMatrixNode__(unsigned int new_pos_x,unsigned int new_pos_y,void* new_data);
         unsigned int pos_x;
         unsigned int pos_y;
-        void* data;
-        __SparseMatrixNode__* next_x=nullptr;
-        __SparseMatrixNode__* next_y=nullptr;
+        __SparseMatrixNodeBase__* next_x=nullptr;
+        __SparseMatrixNodeBase__* next_y=nullptr;
+        void set_data(unsigned int new_pos_x,unsigned int new_pos_y);
         void delete_y_node();
-        ~__SparseMatrixNode__();
+        virtual ~__SparseMatrixNodeBase__();
     };
 
-    class __SparseMatrixController__
+    class __SparseMatrixControllerBase__
     {
-        private:
-            void* _V_null_value;
-            __SparseMatrixNode__** _V_pointer_x=nullptr;
-            __SparseMatrixNode__** _V_pointer_y=nullptr;
+        protected:
+            __SparseMatrixNodeBase__** _V_pointer_x=nullptr;
+            __SparseMatrixNodeBase__** _V_pointer_y=nullptr;
             unsigned int _V_pos_x;
             unsigned int _V_pos_y;
-            void _F_create_node(void* new_data);
             void _F_remove_node();
-        public:
-            __SparseMatrixController__();
-            __SparseMatrixController__(__SparseMatrixNode__** pointer_x,__SparseMatrixNode__** pointer_y,
-                            unsigned int pos_x,unsigned int pos_y,void* null_value);
-            void construct(__SparseMatrixNode__** pointer_x,__SparseMatrixNode__** pointer_y,
-                            unsigned int pos_x,unsigned int pos_y,void* null_value);
-            void* get_value();
-            void* get_null_value();
-            void set_value(void* new_data,bool difference_null_value);
+            void _F_set_data(__SparseMatrixNodeBase__** pointer_x,
+                             __SparseMatrixNodeBase__** pointer_y,
+                             unsigned int pos_x,unsigned int pos_y);
     };
 
-    class __SparseMatrix__
+    class __SparseMatrixBase__
     {
-        private:
+        protected:
+            __SparseMatrixNodeBase__** _V_vector_x=nullptr;
+            __SparseMatrixNodeBase__** _V_vector_y=nullptr;
             unsigned int _V_size_x;
             unsigned int _V_size_y;
-            void* _V_null_value;
-            __SparseMatrixNode__** _V_vector_x=nullptr;
-            __SparseMatrixNode__** _V_vector_y=nullptr;
-        public:
-            __SparseMatrix__(unsigned int size_x,unsigned int size_y,void* null_value);
-            unsigned int get_size_x();
-            unsigned int get_size_y();
-            void* get_null_value();
-            void clear();
-            void get_data_to_create_controller(unsigned int pos_x,unsigned int pos_y,
-                                               __SparseMatrixNode__**& root_x,__SparseMatrixNode__**& root_y);
-            ~__SparseMatrix__();
+            void _F_construct_matrix(unsigned int size_x,unsigned int size_y);
+            void _F_get_nodes_to_position(unsigned int pos_x,unsigned int pos_y,
+                                          __SparseMatrixNodeBase__**& root_x,
+                                          __SparseMatrixNodeBase__**& root_y);
+            bool _F_can_clear(unsigned int& ini_x,unsigned int& ini_y,unsigned int& fin_x,unsigned int& fin_y);
+            void _F_delete_matrix();
     };
 
     template<typename T>
-    class SparseMatrix
+    class SparseMatrix:public __SparseMatrixBase__
     {
         private:
-            __SparseMatrix__* _V_void_sparse_matrix=nullptr;
+            struct _S_Structure_Node:public __SparseMatrixNodeBase__
+            {
+                _S_Structure_Node(unsigned int new_pos_x,unsigned int new_pos_y,T new_data)
+                {
+                    data=new_data;
+                    set_data(new_pos_x,new_pos_y);
+                }
+                T data;
+            };
+            T _V_null_value;
         public:
             SparseMatrix(unsigned int size_x,unsigned int size_y,T null_value)
             {
-                _V_void_sparse_matrix=new __SparseMatrix__(size_x,size_y,(void*)null_value);
+                _V_null_value=null_value;
+                _F_construct_matrix(size_x,size_y);
             }
-            class Class_Controller
+            class Class_Controller:public __SparseMatrixControllerBase__
             {
                 private:
-                     __SparseMatrixController__ _V_void_class_controller;
-                public:
-                    Class_Controller(__SparseMatrixNode__** pointer_x,__SparseMatrixNode__** pointer_y,
-                                     unsigned int pos_x,unsigned int pos_y,void* null_value)
+                    T _V_null_value;
+                    void _F_create_node(T new_data)
                     {
-                        _V_void_class_controller.construct(pointer_x,pointer_y,pos_x,pos_y,null_value);
+                        _S_Structure_Node* new_node=new _S_Structure_Node(_V_pos_x,_V_pos_y,new_data);
+                        new_node->next_x=*_V_pointer_x;
+                        new_node->next_y=*_V_pointer_y;
+                        *_V_pointer_x=new_node;
+                        *_V_pointer_y=new_node;
+                    }
+                public:
+                    Class_Controller(__SparseMatrixNodeBase__** pointer_x,__SparseMatrixNodeBase__** pointer_y,
+                                     unsigned int pos_x,unsigned int pos_y,T null_value)
+                    {
+                        _V_null_value=null_value;
+                        _F_set_data(pointer_x,pointer_y,pos_x,pos_y);
                     }
                     T get_value()
                     {
-                        return (T)(_V_void_class_controller.get_value());
+                        _S_Structure_Node* pointer=static_cast<_S_Structure_Node*>(*_V_pointer_x);
+                        if(((*_V_pointer_x) and (*_V_pointer_y)) and ((*_V_pointer_x)==(*_V_pointer_y)))
+                            return pointer->data;
+                        return _V_null_value;
                     }
                     T operator = (T new_data)
                     {
-                        _V_void_class_controller.set_value((void*)new_data,
-                                                            new_data!=(T)(_V_void_class_controller.get_null_value()));
+                        if(((*_V_pointer_x) and (*_V_pointer_y)) and ((*_V_pointer_x)==(*_V_pointer_y)))
+                        {
+                            _S_Structure_Node* pointer=static_cast<_S_Structure_Node*>(*_V_pointer_x);
+                            if(new_data!=_V_null_value)
+                                pointer->data=new_data;
+                            else
+                                _F_remove_node();
+                        }
+                        else if(new_data!=_V_null_value)
+                            _F_create_node(new_data);
                         return new_data;
                     }
                     operator T()
@@ -111,31 +128,42 @@ namespace LL_DataStructure
             };
             unsigned int get_size_x()
             {
-                return _V_void_sparse_matrix->get_size_x();
+                return _V_size_x;
             }
             unsigned int get_size_y()
             {
-                return _V_void_sparse_matrix->get_size_y();
+                return _V_size_y;
             }
             T get_null_value()
             {
-                return (T)(_V_void_sparse_matrix->get_null_value());
+                return _V_null_value;
             }
             void clear()
             {
-                _V_void_sparse_matrix->clear();
+                unsigned int ini_x;
+                unsigned int ini_y;
+                unsigned int fin_x;
+                unsigned int fin_y;
+                if(_F_can_clear(ini_x,ini_y,fin_x,fin_y))
+                {
+                    for(unsigned int i=ini_x;i<fin_x;++i)
+                    {
+                        for(unsigned int j=ini_y;j<fin_y;++j)
+                            (*this)(i,j)=_V_null_value;
+                    }
+                }
             }
             Class_Controller operator () (unsigned int pos_x,unsigned int pos_y)
             {
-                __SparseMatrixNode__** root_x;
-                __SparseMatrixNode__** root_y;
-                _V_void_sparse_matrix->get_data_to_create_controller(pos_x,pos_y,root_x,root_y);
-                return Class_Controller(root_x,root_y,pos_x,pos_y,_V_void_sparse_matrix->get_null_value());
+                __SparseMatrixNodeBase__** root_x;
+                __SparseMatrixNodeBase__** root_y;
+                _F_get_nodes_to_position(pos_x,pos_y,root_x,root_y);
+                return Class_Controller(root_x,root_y,pos_x,pos_y,_V_null_value);
             }
             ~SparseMatrix()
             {
-                delete(_V_void_sparse_matrix);
-                _V_void_sparse_matrix=nullptr;
+                clear();
+                _F_delete_matrix();
             }
     };
 }
