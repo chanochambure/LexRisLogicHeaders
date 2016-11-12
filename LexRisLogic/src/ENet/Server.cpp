@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/ENet/Server.h"
+#include "../../include/LexRisLogic/ENet/Server.h"
 
 namespace LL_ENet
 {

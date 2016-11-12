@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Text.h"
+#include "../../include/LexRisLogic/Allegro5/Text.h"
 
 namespace LL_AL5
 {

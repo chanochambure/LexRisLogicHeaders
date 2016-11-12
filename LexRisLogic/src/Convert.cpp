@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../include/Convert.h"
+#include "../include/LexRisLogic/Convert.h"
 
 namespace LL
 {

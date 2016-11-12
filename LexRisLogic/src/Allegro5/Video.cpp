@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Video.h"
+#include "../../include/LexRisLogic/Allegro5/Video.h"
 
 namespace LL_AL5
 {

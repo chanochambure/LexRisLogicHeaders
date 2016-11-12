@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/DataStructures/SparseMatrix.h"
+#include "../../include/LexRisLogic/DataStructures/SparseMatrix.h"
 
 namespace LL_DataStructure
 {

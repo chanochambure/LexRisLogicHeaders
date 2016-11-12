@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Color.h"
+#include "../../include/LexRisLogic/Allegro5/Color.h"
 
 namespace LL_AL5
 {

@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../include/FileStream.h"
+#include "../include/LexRisLogic/FileStream.h"
 
 namespace LL
 {

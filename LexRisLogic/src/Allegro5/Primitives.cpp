@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Primitives.h"
+#include "../../include/LexRisLogic/Allegro5/Primitives.h"
 
 namespace LL_AL5
 {

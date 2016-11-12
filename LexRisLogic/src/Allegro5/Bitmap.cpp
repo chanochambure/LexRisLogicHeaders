@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Bitmap.h"
+#include "../../include/LexRisLogic/Allegro5/Bitmap.h"
 
 namespace LL_AL5
 {

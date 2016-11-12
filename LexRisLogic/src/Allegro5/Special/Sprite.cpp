@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../../include/Allegro5/Special/Sprite.h"
+#include "../../../include/LexRisLogic/Allegro5/Special/Sprite.h"
 
 namespace LL_AL5
 {

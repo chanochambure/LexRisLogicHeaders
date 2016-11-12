@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/DataStructures/RTree.h"
+#include "../../include/LexRisLogic/DataStructures/RTree.h"
 
 namespace LL_DataStructure
 {

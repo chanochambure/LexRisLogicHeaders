@@ -18,7 +18,7 @@
 */
 
 
-#include "../../include/MathStructures/Polygon.h"
+#include "../../include/LexRisLogic/MathStructures/Polygon.h"
 
 namespace LL_MathStructure
 {

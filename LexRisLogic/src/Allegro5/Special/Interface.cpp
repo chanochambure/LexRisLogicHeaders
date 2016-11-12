@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../../include/Allegro5/Special/Interface.h"
+#include "../../../include/LexRisLogic/Allegro5/Special/Interface.h"
 
 namespace LL_AL5
 {

@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../include/Time.h"
+#include "../include/LexRisLogic/Time.h"
 
 namespace LL
 {

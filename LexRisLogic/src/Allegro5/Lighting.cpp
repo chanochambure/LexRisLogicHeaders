@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Lighting.h"
+#include "../../include/LexRisLogic/Allegro5/Lighting.h"
 
 namespace LL_AL5
 {

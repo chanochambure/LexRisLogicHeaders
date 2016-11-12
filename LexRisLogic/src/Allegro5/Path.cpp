@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Path.h"
+#include "../../include/LexRisLogic/Allegro5/Path.h"
 
 namespace LL_AL5
 {

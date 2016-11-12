@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../include/StringSplitter.h"
+#include "../include/LexRisLogic/StringSplitter.h"
 
 namespace LL
 {

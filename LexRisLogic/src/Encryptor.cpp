@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../include/Encryptor.h"
+#include "../include/LexRisLogic/Encryptor.h"
 
 namespace LL
 {

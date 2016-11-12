@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Mixer.h"
+#include "../../include/LexRisLogic/Allegro5/Mixer.h"
 
 namespace LL_AL5
 {

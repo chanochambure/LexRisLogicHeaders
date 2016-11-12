@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../include/Math.h"
+#include "../include/LexRisLogic/Math.h"
 
 namespace LL
 {

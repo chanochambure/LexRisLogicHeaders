@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Display.h"
+#include "../../include/LexRisLogic/Allegro5/Display.h"
 
 namespace LL_AL5
 {

@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/NativeDialog.h"
+#include "../../include/LexRisLogic/Allegro5/NativeDialog.h"
 
 namespace LL_AL5
 {

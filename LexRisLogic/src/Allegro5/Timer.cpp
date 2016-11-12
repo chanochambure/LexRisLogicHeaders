@@ -17,7 +17,7 @@
     SOFTWARE.
 */
 
-#include "../../include/Allegro5/Timer.h"
+#include "../../include/LexRisLogic/Allegro5/Timer.h"
 
 namespace LL_AL5
 {
