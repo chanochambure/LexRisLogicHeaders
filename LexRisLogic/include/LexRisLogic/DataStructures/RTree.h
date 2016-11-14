@@ -165,6 +165,44 @@ namespace LL_DataStructure
                         return (_V_stack!=another_iterator._V_stack);
                     }
             };
+            class Class_NodeIterator
+            {
+                private:
+                    __RTreeNodeBase__* _V_node=nullptr;
+                public:
+                    Class_NodeIterator(__RTreeNodeBase__* node=nullptr)
+                    {
+                        _V_node=node;
+                    }
+                    unsigned int size()
+                    {
+                        return _V_node->size;
+                    }
+                    bool get_type()
+                    {
+                        return _V_node->type;
+                    }
+                    MBB get_mbb()
+                    {
+                        return _V_node->mbb;
+                    }
+                    T get_data(unsigned int index)
+                    {
+                        return (static_cast<_S_Structure_DataNode*>(_V_node->data[index]))->data;
+                    }
+                    Class_NodeIterator get_son(unsigned int index)
+                    {
+                        return Class_NodeIterator(_V_node->sons[index]);
+                    }
+                    Class_NodeIterator get_parent()
+                    {
+                        return Class_NodeIterator(_V_node->parent);
+                    }
+                    bool is_valid()
+                    {
+                        return _V_node;
+                    }
+            };
             iterator begin()
             {
                 return iterator(_V_root);
@@ -172,6 +210,10 @@ namespace LL_DataStructure
             iterator end()
             {
                 return iterator();
+            }
+            Class_NodeIterator get_node_iterator()
+            {
+                return Class_NodeIterator(_V_root);
             }
             unsigned int size()
             {
