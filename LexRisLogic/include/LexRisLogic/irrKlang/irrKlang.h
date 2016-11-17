@@ -20,15 +20,17 @@
 #ifndef INCLUDED_LL_IRRKLANG_H
 #define INCLUDED_LL_IRRKLANG_H
 
+#include "../LL_Shared.h"
+
 #include <irrKlang.h>
 
 namespace LL_irrKlang
 {
-    class SoundEngine;
+    class LL_SHARED SoundEngine;
 
-    extern SoundEngine* default_engine;
+    extern LL_SHARED SoundEngine* default_engine;
 
-    class SoundEngine
+    class LL_SHARED SoundEngine
     {
         private:
             float _V_volume=1.0;

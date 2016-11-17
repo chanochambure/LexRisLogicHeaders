@@ -21,11 +21,11 @@
 
 namespace LL_ENet
 {
-    bool install_enet()
+    bool LL_SHARED install_enet()
     {
         return !(enet_initialize());
     }
-    void uninstall_enet()
+    void LL_SHARED uninstall_enet()
     {
         enet_deinitialize();
     }

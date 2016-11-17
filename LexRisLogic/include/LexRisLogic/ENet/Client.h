@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_ENET_CLIENT_H
 #define INCLUDED_LL_ENET_CLIENT_H
 
+#include "../LL_Shared.h"
+
 #include "ENet.h"
 
 #include <sstream>
@@ -28,7 +30,7 @@
 
 namespace LL_ENet
 {
-    class Client
+    class LL_SHARED Client
     {
         private:
             unsigned int _V_test_time=5000;

@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_ENET_SERVER_H
 #define INCLUDED_LL_ENET_SERVER_H
 
+#include "../LL_Shared.h"
+
 #include "ENet.h"
 
 #include <sstream>
@@ -28,7 +30,7 @@
 
 namespace LL_ENet
 {
-    class Server
+    class LL_SHARED Server
     {
         private:
             typedef std::pair<ENetPeer*,std::string> _T_Type_enet_client;

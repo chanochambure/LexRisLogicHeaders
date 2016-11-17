@@ -20,12 +20,14 @@
 #ifndef INCLUDED_LL_ENET_H
 #define INCLUDED_LL_ENET_H
 
+#include "../LL_Shared.h"
+
 #include <enet/enet.h>
 
 namespace LL_ENet
 {
-    bool install_enet();
-    void uninstall_enet();
+    bool LL_SHARED install_enet();
+    void LL_SHARED uninstall_enet();
 }
 
 #endif // INCLUDED_LL_ENET_H

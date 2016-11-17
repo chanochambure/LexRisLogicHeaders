@@ -20,12 +20,14 @@
 #ifndef INCLUDED_LL_IRRKLANG_AUDIO_H
 #define INCLUDED_LL_IRRKLANG_AUDIO_H
 
+#include "../LL_Shared.h"
+
 #include "irrKlang.h"
 #include <string>
 
 namespace LL_irrKlang
 {
-    class Audio
+    class LL_SHARED Audio
     {
         private:
             unsigned int _V_position=0;
