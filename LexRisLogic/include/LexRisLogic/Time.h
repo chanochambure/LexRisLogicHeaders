@@ -20,11 +20,13 @@
 #ifndef INCLUDED_LL_TIME_H
 #define INCLUDED_LL_TIME_H
 
+#include "LL_Shared.h"
+
 #include <chrono>
 
 namespace LL
 {
-    class Chronometer
+    class LL_SHARED Chronometer
     {
         private:
             typedef std::chrono::high_resolution_clock::time_point _T_Type_clock;

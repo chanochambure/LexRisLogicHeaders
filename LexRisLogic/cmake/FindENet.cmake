@@ -14,8 +14,7 @@
 #=============================================================================
 #=============================================================================
 
-FIND_PATH(ENET_INCLUDE_DIR NAMES enet.h
-          PATH_SUFFIXES enet
+FIND_PATH(ENET_INCLUDE_DIR NAMES enet/enet.h
           DOC "ENet include directory"
 )
 

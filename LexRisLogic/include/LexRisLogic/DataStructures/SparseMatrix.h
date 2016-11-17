@@ -20,9 +20,11 @@
 #ifndef INCLUDED_LL_DATASTRUCTURE_SPARSEMATRIX_H
 #define INCLUDED_LL_DATASTRUCTURE_SPARSEMATRIX_H
 
+#include "../LL_Shared.h"
+
 namespace LL_DataStructure
 {
-    struct __SparseMatrixNodeBase__
+    struct LL_SHARED __SparseMatrixNodeBase__
     {
         unsigned int pos_x;
         unsigned int pos_y;
@@ -33,7 +35,7 @@ namespace LL_DataStructure
         virtual ~__SparseMatrixNodeBase__();
     };
 
-    class __SparseMatrixControllerBase__
+    class LL_SHARED __SparseMatrixControllerBase__
     {
         protected:
             __SparseMatrixNodeBase__** _V_pointer_x=nullptr;
@@ -46,7 +48,7 @@ namespace LL_DataStructure
                              unsigned int pos_x,unsigned int pos_y);
     };
 
-    class __SparseMatrixBase__
+    class LL_SHARED __SparseMatrixBase__
     {
         protected:
             __SparseMatrixNodeBase__** _V_vector_x=nullptr;

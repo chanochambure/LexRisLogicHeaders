@@ -20,12 +20,14 @@
 #ifndef INCLUDED_LL_STRINGSPLITTER_H
 #define INCLUDED_LL_STRINGSPLITTER_H
 
+#include "LL_Shared.h"
+
 #include <string>
 #include <vector>
 
 namespace LL
 {
-    class StringSplitter
+    class LL_SHARED StringSplitter
     {
         private:
             std::string _V_string;

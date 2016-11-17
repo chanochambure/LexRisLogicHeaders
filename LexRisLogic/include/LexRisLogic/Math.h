@@ -20,29 +20,31 @@
 #ifndef INCLUDED_LL_MATH_H
 #define INCLUDED_LL_MATH_H
 
+#include "LL_Shared.h"
+
 #include <math.h>
 #include <time.h>
 #include <random>
 
 namespace LL
 {
-    const double MATH_PI=3.14159265358979323846;
+    static const double MATH_PI=3.14159265358979323846;
 
-    int mod(int dividend,int divisor);
+    int LL_SHARED mod(int dividend,int divisor);
 
-    double range_mod(double dividend,double divisor);
+    double LL_SHARED range_mod(double dividend,double divisor);
 
-    float sexagesimal_to_radian(float sexagesimal);
+    float LL_SHARED sexagesimal_to_radian(float sexagesimal);
 
-    float radian_to_sexagesimal(float radian);
+    float LL_SHARED radian_to_sexagesimal(float radian);
 
-    void random_generate_new_seed();
+    void LL_SHARED random_generate_new_seed();
 
-    int random(int min_value,int max_value,bool include_max_value=false);
+    int LL_SHARED random(int min_value,int max_value,bool include_max_value=false);
 
-    bool segment_collision(float ini_segment_1,float fin_segment_1,float ini_segment_2,float fin_segment_2);
+    bool LL_SHARED segment_collision(float ini_segment_1,float fin_segment_1,float ini_segment_2,float fin_segment_2);
 
-    int max_integer(float number);
+    int LL_SHARED max_integer(float number);
 }
 
 #endif // INCLUDED_LL_MATH_H

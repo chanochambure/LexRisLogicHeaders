@@ -20,13 +20,15 @@
 #ifndef INCLUDED_LL_ENCRYPTOR_H
 #define INCLUDED_LL_ENCRYPTOR_H
 
+#include "LL_Shared.h"
+
 #include <string>
 #include <list>
 
 namespace LL
 {
-    const char* const DEFAULT_DICTIONARY=" 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    class Encryptor
+    static const char* const DEFAULT_DICTIONARY=" 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    class LL_SHARED Encryptor
     {
         private:
             typedef std::pair<unsigned,std::string> _T_Type_last_key;

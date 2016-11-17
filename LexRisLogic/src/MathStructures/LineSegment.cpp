@@ -75,7 +75,8 @@ namespace LL_MathStructure
                 and (number<=std::max(_V_ini_point[dimension],_V_end_point[dimension])));
     }
 
-    bool intersection_of_lines_in_two_dimensions(LineSegment first_line,LineSegment second_line,float* x,float* y)
+    bool LL_SHARED intersection_of_lines_in_two_dimensions(LineSegment first_line,LineSegment second_line,
+                                                           float* x,float* y)
     {
         if(first_line.get_dimension()!=second_line.get_dimension() or first_line.get_dimension()!=2)
             return false;
@@ -125,8 +126,9 @@ namespace LL_MathStructure
         return false;
     }
 
-    bool intersection_of_line_segments_in_two_dimensions(LineSegment first_segment,LineSegment second_segment,
-                                                         float* x,float* y)
+    bool LL_SHARED intersection_of_line_segments_in_two_dimensions(LineSegment first_segment,
+                                                                   LineSegment second_segment,
+                                                                   float* x,float* y)
     {
         float intersection_point_x,intersection_point_y;
         if(intersection_of_lines_in_two_dimensions(first_segment,second_segment,

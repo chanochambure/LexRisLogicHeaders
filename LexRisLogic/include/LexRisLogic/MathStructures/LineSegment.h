@@ -20,11 +20,13 @@
 #ifndef INCLUDED_LL_MATHSTRUCTURE_LINESEGMENT_H
 #define INCLUDED_LL_MATHSTRUCTURE_LINESEGMENT_H
 
+#include "../LL_Shared.h"
+
 #include "Point.h"
 
 namespace LL_MathStructure
 {
-    class LineSegment
+    class LL_SHARED LineSegment
     {
         private:
             Point _V_ini_point;
@@ -42,11 +44,12 @@ namespace LL_MathStructure
             bool in_range(unsigned int dimension,float number);
     };
 
-    bool intersection_of_lines_in_two_dimensions(LineSegment first_line,LineSegment second_line,
-                                                 float* x=nullptr,float* y=nullptr);
+    bool LL_SHARED intersection_of_lines_in_two_dimensions(LineSegment first_line,LineSegment second_line,
+                                                           float* x=nullptr,float* y=nullptr);
 
-    bool intersection_of_line_segments_in_two_dimensions(LineSegment first_segment,LineSegment second_segment,
-                                                         float* x=nullptr,float* y=nullptr);
+    bool LL_SHARED intersection_of_line_segments_in_two_dimensions(LineSegment first_segment,
+                                                                   LineSegment second_segment,
+                                                                   float* x=nullptr,float* y=nullptr);
 }
 
 #endif // INCLUDED_LL_MATHSTRUCTURE_LINESEGMENT_H

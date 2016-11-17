@@ -20,12 +20,14 @@
 #ifndef INCLUDED_LL_MATHSTRUCTURE_POINT_H
 #define INCLUDED_LL_MATHSTRUCTURE_POINT_H
 
+#include "../LL_Shared.h"
+
 #include <math.h>
 #include <iostream>
 
 namespace LL_MathStructure
 {
-    class Point
+    class LL_SHARED Point
     {
         private:
             unsigned int _V_dimension=0;
@@ -47,13 +49,13 @@ namespace LL_MathStructure
             ~Point();
     };
 
-    std::ostream& operator << (std::ostream& output_stream,Point point);
+    std::ostream& LL_SHARED operator << (std::ostream& output_stream,Point point);
 
-    double euclidean_distance(Point first_point,Point second_point);
+    double LL_SHARED euclidean_distance(Point first_point,Point second_point);
 
-    Point create_point(float x,float y);
+    Point LL_SHARED create_point(float x,float y);
 
-    Point create_point(float x,float y,float z);
+    Point LL_SHARED create_point(float x,float y,float z);
 }
 
 #endif // INCLUDED_LL_MATHSTRUCTURE_POINT_H

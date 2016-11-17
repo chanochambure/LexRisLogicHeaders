@@ -21,17 +21,17 @@
 
 namespace LL
 {
-    int to_int(std::string data)
+    int LL_SHARED to_int(std::string data)
     {
         return atoi(data.c_str());
     }
 
-    float to_float(std::string data)
+    float LL_SHARED to_float(std::string data)
     {
         return strtof(data.c_str(),NULL);
     }
 
-    double to_double(std::string data)
+    double LL_SHARED to_double(std::string data)
     {
         return strtod(data.c_str(),NULL);
     }

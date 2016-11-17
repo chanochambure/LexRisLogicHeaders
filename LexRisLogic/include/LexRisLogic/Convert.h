@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_CONVERT_H
 #define INCLUDED_LL_CONVERT_H
 
+#include "LL_Shared.h"
+
 #include <sstream>
 #include <string>
 #include <stdlib.h>
@@ -34,11 +36,11 @@ namespace LL
         return streamer.str();
     }
 
-    int to_int(std::string data);
+    int LL_SHARED to_int(std::string data);
 
-    float to_float(std::string data);
+    float LL_SHARED to_float(std::string data);
 
-    double to_double(std::string data);
+    double LL_SHARED to_double(std::string data);
 }
 
 #endif // INCLUDED_LL_CONVERT_H

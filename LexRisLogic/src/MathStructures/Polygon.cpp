@@ -60,7 +60,7 @@ namespace LL_MathStructure
         return _V_points[index];
     }
 
-    bool point_into_polygon(Polygon polygon,Point point)
+    bool LL_SHARED point_into_polygon(Polygon polygon,Point point)
     {
         if(point.get_dimension()==2 and polygon.size()>2)
         {
@@ -87,7 +87,7 @@ namespace LL_MathStructure
         return false;
     }
 
-    bool collision_of_polygons(Polygon first_polygon,Polygon second_polygon,std::list<Point>* points)
+    bool LL_SHARED collision_of_polygons(Polygon first_polygon,Polygon second_polygon,std::list<Point>* points)
     {
         if(first_polygon.size()>2 and second_polygon.size()>2)
         {

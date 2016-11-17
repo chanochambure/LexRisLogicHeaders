@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_DATASTRUCTURE_RTREE_H
 #define INCLUDED_LL_DATASTRUCTURE_RTREE_H
 
+#include "../LL_Shared.h"
+
 #include <algorithm>
 #include <stack>
 #include <vector>
@@ -28,7 +30,7 @@
 
 namespace LL_DataStructure
 {
-    struct MBB
+    struct LL_SHARED MBB
     {
         MBB();
         MBB(unsigned int new_dimension);
@@ -40,15 +42,15 @@ namespace LL_DataStructure
         bool operator != (MBB another_mbb);
     };
 
-    double mbb_distance(MBB first_mbb,MBB second_mbb);
+    double LL_SHARED mbb_distance(MBB first_mbb,MBB second_mbb);
 
-    struct __RTreeDataNodeBase__
+    struct LL_SHARED __RTreeDataNodeBase__
     {
         MBB mbb;
         virtual ~__RTreeDataNodeBase__();
     };
 
-    struct __RTreeNodeBase__
+    struct LL_SHARED __RTreeNodeBase__
     {
         __RTreeNodeBase__(unsigned int new_dimension,unsigned int new_node_size,bool node_type=false);
         MBB mbb;
@@ -67,7 +69,7 @@ namespace LL_DataStructure
         virtual ~__RTreeNodeBase__();
     };
 
-    class __RTreeIteratorBase__
+    class LL_SHARED __RTreeIteratorBase__
     {
         protected:
             typedef std::pair<unsigned int,__RTreeNodeBase__*> _T_Type_item;
@@ -76,7 +78,7 @@ namespace LL_DataStructure
             void _F_set_data(__RTreeNodeBase__* root_node);
     };
 
-    class __RTreeBase__
+    class LL_SHARED __RTreeBase__
     {
         protected:
             typedef std::pair<double,unsigned int> _T_Type_pair_dis_pos;

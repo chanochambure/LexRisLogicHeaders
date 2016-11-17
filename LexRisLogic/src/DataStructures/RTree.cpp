@@ -48,7 +48,7 @@ namespace LL_DataStructure
         return ((first_point!=another_mbb.first_point) or (second_point!=another_mbb.second_point));
     }
 
-    double mbb_distance(MBB first_mbb,MBB second_mbb)
+    double LL_SHARED mbb_distance(MBB first_mbb,MBB second_mbb)
     {
         if(first_mbb.dimension==second_mbb.dimension)
         {

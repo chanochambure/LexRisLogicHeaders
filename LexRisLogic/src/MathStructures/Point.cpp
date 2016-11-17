@@ -106,7 +106,7 @@ namespace LL_MathStructure
         _F_delete_coordinates();
     }
 
-    std::ostream& operator << (std::ostream& output_stream,Point point)
+    std::ostream& LL_SHARED operator << (std::ostream& output_stream,Point point)
     {
         output_stream<<"[";
         for(unsigned int i=0;i<point.get_dimension()-1;++i)
@@ -115,7 +115,7 @@ namespace LL_MathStructure
         return output_stream;
     }
 
-    double euclidean_distance(Point first_point,Point second_point)
+    double LL_SHARED euclidean_distance(Point first_point,Point second_point)
     {
         if(first_point.get_dimension()==second_point.get_dimension())
         {
@@ -127,7 +127,7 @@ namespace LL_MathStructure
         return 0.0;
     }
 
-    Point create_point(float x,float y)
+    Point LL_SHARED create_point(float x,float y)
     {
         Point point(2);
         point[0]=x;
@@ -135,7 +135,7 @@ namespace LL_MathStructure
         return point;
     }
 
-    Point create_point(float x,float y,float z)
+    Point LL_SHARED create_point(float x,float y,float z)
     {
         Point point(3);
         point[0]=x;

@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_MATHSTRUCTURE_POLYGON_H
 #define INCLUDED_LL_MATHSTRUCTURE_POLYGON_H
 
+#include "../LL_Shared.h"
+
 #include "Point.h"
 #include "LineSegment.h"
 #include <vector>
@@ -27,7 +29,7 @@
 
 namespace LL_MathStructure
 {
-    class Polygon
+    class LL_SHARED Polygon
     {
         private:
             std::vector<Point> _V_points;
@@ -40,9 +42,10 @@ namespace LL_MathStructure
             const Point operator [] (unsigned int index);
     };
 
-    bool point_into_polygon(Polygon polygon,Point point);
+    bool LL_SHARED point_into_polygon(Polygon polygon,Point point);
 
-    bool collision_of_polygons(Polygon first_polygon,Polygon second_polygon,std::list<Point>* points=nullptr);
+    bool LL_SHARED collision_of_polygons(Polygon first_polygon,Polygon second_polygon,
+                                         std::list<Point>* points=nullptr);
 }
 
 

@@ -20,13 +20,15 @@
 #ifndef INCLUDED_LL_FILESTREAM_H
 #define INCLUDED_LL_FILESTREAM_H
 
+#include "LL_Shared.h"
+
 #include <string>
 #include <vector>
 #include <fstream>
 
 namespace LL
 {
-    class FileStream
+    class LL_SHARED FileStream
     {
         private:
             std::string _V_file_path;
