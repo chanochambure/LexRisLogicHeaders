@@ -20,11 +20,13 @@
 #ifndef INCLUDED_LL_AL5_TIMER_H
 #define INCLUDED_LL_AL5_TIMER_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 namespace LL_AL5
 {
-    class Timer
+    class LL_SHARED Timer
     {
         private:
             ALLEGRO_TIMER* _V_timer=nullptr;

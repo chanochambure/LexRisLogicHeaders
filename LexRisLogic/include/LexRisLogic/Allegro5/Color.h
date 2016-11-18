@@ -20,11 +20,13 @@
 #ifndef INCLUDED_LL_AL5_COLOR_H
 #define INCLUDED_LL_AL5_COLOR_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 namespace LL_AL5
 {
-    struct Color
+    struct LL_SHARED Color
     {
         Color(unsigned char new_red=0,unsigned char new_green=0,unsigned char new_blue=0,unsigned char new_alpha=255);
         Color(ALLEGRO_COLOR color);

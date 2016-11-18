@@ -20,11 +20,13 @@
 #ifndef INCLUDED_LL_AL5_LIGHTING_H
 #define INCLUDED_LL_AL5_LIGHTING_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 namespace LL_AL5
 {
-    class Lighting
+    class LL_SHARED Lighting
     {
         private:
             int _V_blend_mode;
@@ -35,6 +37,9 @@ namespace LL_AL5
             Type_pos _V_pos_y=0.0;
             float _V_size_x=0.0;
             float _V_size_y=0.0;
+            ALLEGRO_COLOR _F_get_alpha_color(float intensity);
+            void _F_set_object_blender();
+            void _F_set_last_blender();
         public:
             Lighting();
             void set_pos(Type_pos new_pos_x,Type_pos new_pos_y);
@@ -51,11 +56,11 @@ namespace LL_AL5
             template<typename T>
             void add(T* object_shape,float intensity)
             {
-                al_set_blender(ALLEGRO_SRC_MINUS_DEST, ALLEGRO_ONE, ALLEGRO_ZERO);
+                _F_set_object_blender();
                 ALLEGRO_COLOR data_color=object_shape->get_color();
-                object_shape->set_color(al_map_rgba_f(0,0,0,intensity));
+                object_shape->set_color(_F_get_alpha_color(intensity));
                 object_shape->draw_in_another_target();
-                al_set_blender(_V_blend_mode, _V_blend_source_value, _V_blend_destination_value);
+                _F_set_last_blender();
                 object_shape->set_color(data_color);
             }
             float get_pixel_intensity(Type_pos pos_x,Type_pos pos_y);

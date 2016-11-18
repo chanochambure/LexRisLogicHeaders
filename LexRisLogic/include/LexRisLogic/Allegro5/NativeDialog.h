@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_AL5_NATIVEDIALOG_H
 #define INCLUDED_LL_AL5_NATIVEDIALOG_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 #include <allegro5/allegro_native_dialog.h>
@@ -27,11 +29,11 @@
 
 namespace LL_AL5
 {
-    bool native_dialog_addon();
-    bool show_native_message(ALLEGRO_DISPLAY* display,std::string title,
-                             std::string header,std::string message,int flag);
+    bool LL_SHARED native_dialog_addon();
+    bool LL_SHARED show_native_message(ALLEGRO_DISPLAY* display,std::string title,
+                                       std::string header,std::string message,int flag);
 
-    class FileChooser
+    class LL_SHARED FileChooser
     {
         private:
             int _V_mode=0;
@@ -58,7 +60,7 @@ namespace LL_AL5
             ~FileChooser();
     };
 
-    class TextLog
+    class LL_SHARED TextLog
     {
         private:
             int _V_mode=0;

@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_AL5_INPUT_H
 #define INCLUDED_LL_AL5_INPUT_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 #include <allegro5/allegro_native_dialog.h>
@@ -28,7 +30,7 @@
 
 namespace LL_AL5
 {
-    class KeyControl
+    class LL_SHARED KeyControl
     {
         private:
             struct _S_Structure_Key
@@ -56,7 +58,7 @@ namespace LL_AL5
             ~KeyControl();
     };
 
-    class Input
+    class LL_SHARED Input
     {
         private:
             bool _V_keyboard_status=false;

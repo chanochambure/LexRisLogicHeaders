@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_AL5_H
 #define INCLUDED_LL_AL5_H
 
+#include "../LL_Shared.h"
+
 #include <allegro5/allegro5.h>
 
 namespace LL_AL5
@@ -27,15 +29,15 @@ namespace LL_AL5
     typedef float Type_pos;
     typedef unsigned int Type_display_size;
 
-    extern float bitmap_scale_x;
-    extern float bitmap_scale_y;
-    extern float text_scale;
-    extern float primitives_scale;
-    extern Type_display_size desktop_size_x;
-    extern Type_display_size desktop_size_y;
+    extern LL_SHARED float bitmap_scale_x;
+    extern LL_SHARED float bitmap_scale_y;
+    extern LL_SHARED float text_scale;
+    extern LL_SHARED float primitives_scale;
+    extern LL_SHARED Type_display_size desktop_size_x;
+    extern LL_SHARED Type_display_size desktop_size_y;
 
-    void init_allegro();
-    void sleep(float sleep_time);
+    void LL_SHARED init_allegro();
+    void LL_SHARED sleep(float sleep_time);
 }
 
 #endif // INCLUDED_LL_AL5_H

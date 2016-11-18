@@ -21,11 +21,11 @@
 
 namespace LL_AL5
 {
-    bool image_addon()
+    bool LL_SHARED image_addon()
     {
         return al_init_image_addon();
     }
-    bool save_bitmap(std::string bitmap_file_name,ALLEGRO_BITMAP* bitmap)
+    bool LL_SHARED save_bitmap(std::string bitmap_file_name,ALLEGRO_BITMAP* bitmap)
     {
         return al_save_bitmap(bitmap_file_name.c_str(),bitmap);
     }

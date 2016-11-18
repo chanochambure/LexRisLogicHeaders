@@ -21,6 +21,18 @@
 
 namespace LL_AL5
 {
+    ALLEGRO_COLOR Lighting::_F_get_alpha_color(float intensity)
+    {
+        return al_map_rgba_f(0.0,0.0,0.0,intensity);
+    }
+    void Lighting::_F_set_object_blender()
+    {
+        al_set_blender(ALLEGRO_SRC_MINUS_DEST, ALLEGRO_ONE, ALLEGRO_ZERO);
+    }
+    void Lighting::_F_set_last_blender()
+    {
+        al_set_blender(_V_blend_mode, _V_blend_source_value, _V_blend_destination_value);
+    }
     Lighting::Lighting()
     {
         al_get_blender(&_V_blend_mode,&_V_blend_source_value,&_V_blend_destination_value);
@@ -83,9 +95,9 @@ namespace LL_AL5
     }
     void Lighting::clear(float intensity)
     {
-        al_set_blender(ALLEGRO_SRC_MINUS_DEST, ALLEGRO_ONE, ALLEGRO_ZERO);
-        al_clear_to_color(al_map_rgba_f(0.0,0.0,0.0,intensity));
-        al_set_blender(_V_blend_mode, _V_blend_source_value, _V_blend_destination_value);
+        _F_set_object_blender();
+        al_clear_to_color(_F_get_alpha_color(intensity));
+        _F_set_last_blender();
     }
     float Lighting::get_pixel_intensity(Type_pos pos_x,Type_pos pos_y)
     {
@@ -100,9 +112,7 @@ namespace LL_AL5
     }
     void Lighting::draw_in_another_target()
     {
-        al_set_blender(ALLEGRO_ADD, ALLEGRO_ZERO, ALLEGRO_ALPHA);
         al_draw_bitmap(_V_lighting_buffer,_V_pos_x,_V_pos_y,0);
-        al_set_blender(_V_blend_mode, _V_blend_source_value, _V_blend_destination_value);
     }
     Lighting::operator ALLEGRO_BITMAP* ()
     {

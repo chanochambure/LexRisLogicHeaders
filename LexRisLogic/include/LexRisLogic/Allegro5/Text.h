@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_AL5_TEXT_H
 #define INCLUDED_LL_AL5_TEXT_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 #include <allegro5/allegro_font.h>
@@ -28,9 +30,9 @@
 
 namespace LL_AL5
 {
-    bool text_addon();
+    bool LL_SHARED text_addon();
 
-    class Font
+    class LL_SHARED Font
     {
         private:
             ALLEGRO_FONT* _V_font=nullptr;
@@ -48,7 +50,7 @@ namespace LL_AL5
             ~Font();
     };
 
-    class Text
+    class LL_SHARED Text
     {
         private:
             Font* _V_font=nullptr;

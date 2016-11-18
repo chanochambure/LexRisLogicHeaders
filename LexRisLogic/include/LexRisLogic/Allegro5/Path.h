@@ -20,21 +20,23 @@
 #ifndef INCLUDED_LL_AL5_PATH_H
 #define INCLUDED_LL_AL5_PATH_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 #include <string>
 
 namespace LL_AL5
 {
-    std::string get_current_directory();
+    std::string LL_SHARED get_current_directory();
 
-    bool change_directory(std::string new_path);
+    bool LL_SHARED change_directory(std::string new_path);
 
-    bool make_directory(std::string new_dir);
+    bool LL_SHARED make_directory(std::string new_dir);
 
-    bool path_exists(std::string path);
+    bool LL_SHARED path_exists(std::string path);
 
-    bool remove_path(std::string path);
+    bool LL_SHARED remove_path(std::string path);
 }
 
 #endif // INCLUDED_LL_AL5_PATH_H

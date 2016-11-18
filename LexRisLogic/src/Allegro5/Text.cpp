@@ -21,7 +21,7 @@
 
 namespace LL_AL5
 {
-    bool text_addon()
+    bool LL_SHARED text_addon()
     {
         return al_init_font_addon()and al_init_ttf_addon();
     }

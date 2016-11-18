@@ -20,13 +20,15 @@
 #ifndef INCLUDED_LL_AL5_DISPLAY_H
 #define INCLUDED_LL_AL5_DISPLAY_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 #include <string>
 
 namespace LL_AL5
 {
-    class Display
+    class LL_SHARED Display
     {
         private:
             ALLEGRO_DISPLAY* _V_display=nullptr;

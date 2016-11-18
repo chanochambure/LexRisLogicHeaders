@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_AL5_MIXER_H
 #define INCLUDED_LL_AL5_MIXER_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 #include <allegro5/allegro_audio.h>
@@ -27,11 +29,11 @@
 
 namespace LL_AL5
 {
-    bool audio_addon();
-    void uninstall_audio();
-    bool restore_default_mixer();
+    bool LL_SHARED audio_addon();
+    void LL_SHARED uninstall_audio();
+    bool LL_SHARED restore_default_mixer();
 
-    class Mixer
+    class LL_SHARED Mixer
     {
         private:
             ALLEGRO_VOICE* _V_voice=nullptr;

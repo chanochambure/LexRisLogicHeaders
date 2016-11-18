@@ -21,7 +21,7 @@
 
 namespace LL_AL5
 {
-    std::string get_current_directory()
+    std::string LL_SHARED get_current_directory()
     {
         char* actual_dir=al_get_current_directory();
         std::string return_dir;
@@ -33,22 +33,22 @@ namespace LL_AL5
         return return_dir;
     }
 
-    bool change_directory(std::string new_path)
+    bool LL_SHARED change_directory(std::string new_path)
     {
         return al_change_directory(new_path.c_str());
     }
 
-    bool make_directory(std::string new_dir)
+    bool LL_SHARED make_directory(std::string new_dir)
     {
         return al_make_directory(new_dir.c_str());
     }
 
-    bool path_exists(std::string path)
+    bool LL_SHARED path_exists(std::string path)
     {
         return al_filename_exists(path.c_str());
     }
 
-    bool remove_path(std::string path)
+    bool LL_SHARED remove_path(std::string path)
     {
         return al_remove_filename(path.c_str());
     }

@@ -21,15 +21,15 @@
 
 namespace LL_AL5
 {
-    bool audio_addon()
+    bool LL_SHARED audio_addon()
     {
         return (al_install_audio() and al_init_acodec_addon());
     }
-    void uninstall_audio()
+    void LL_SHARED uninstall_audio()
     {
         al_uninstall_audio();
     }
-    bool restore_default_mixer()
+    bool LL_SHARED restore_default_mixer()
     {
         return al_restore_default_mixer();
     }

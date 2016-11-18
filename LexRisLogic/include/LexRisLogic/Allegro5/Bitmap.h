@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_AL5_BITMAP_H
 #define INCLUDED_LL_AL5_BITMAP_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 #include <allegro5/allegro_image.h>
@@ -27,10 +29,10 @@
 
 namespace LL_AL5
 {
-    bool image_addon();
-    bool save_bitmap(std::string bitmap_file_name,ALLEGRO_BITMAP* bitmap);
+    bool LL_SHARED image_addon();
+    bool LL_SHARED save_bitmap(std::string bitmap_file_name,ALLEGRO_BITMAP* bitmap);
 
-    class BitmapBase
+    class LL_SHARED BitmapBase
     {
         protected:
             int _V_flag=0;
@@ -59,7 +61,7 @@ namespace LL_AL5
             bool get_centering_option_y();
     };
 
-    class Bitmap:public BitmapBase
+    class LL_SHARED Bitmap:public BitmapBase
     {
         protected:
             ALLEGRO_BITMAP* _V_bitmap=nullptr;
@@ -80,7 +82,7 @@ namespace LL_AL5
             ~Bitmap();
     };
 
-    class SubBitmap:public BitmapBase
+    class LL_SHARED SubBitmap:public BitmapBase
     {
         private:
             ALLEGRO_BITMAP* _V_parent_bitmap=nullptr;
@@ -112,7 +114,7 @@ namespace LL_AL5
             ~SubBitmap();
     };
 
-    class Image:public BitmapBase
+    class LL_SHARED Image:public BitmapBase
     {
         private:
             ALLEGRO_BITMAP* _V_bitmap=nullptr;

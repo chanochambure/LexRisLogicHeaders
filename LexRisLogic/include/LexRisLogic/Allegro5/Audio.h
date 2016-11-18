@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_AL5_AUDIO_H
 #define INCLUDED_LL_AL5_AUDIO_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 #include "Mixer.h"
 
@@ -27,7 +29,7 @@
 
 namespace LL_AL5
 {
-    class Audio
+    class LL_SHARED Audio
     {
         private:
             unsigned int _V_position=0;

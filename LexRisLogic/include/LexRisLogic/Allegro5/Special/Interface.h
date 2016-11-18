@@ -20,6 +20,8 @@
 #ifndef INCLUDED_LL_AL5_INTERFACE_H
 #define INCLUDED_LL_AL5_INTERFACE_H
 
+#include "../../LL_Shared.h"
+
 #include "../Allegro5.h"
 #include "../Primitives.h"
 #include "../Input.h"
@@ -29,7 +31,7 @@
 
 namespace LL_AL5
 {
-    class Interface
+    class LL_SHARED Interface
     {
         protected:
             const float _C_CONSTANT_SCALE_FONT_X=0.75;
@@ -73,7 +75,7 @@ namespace LL_AL5
             ALLEGRO_COLOR get_text_color();
     };
 
-    class Button:public Interface
+    class LL_SHARED Button:public Interface
     {
         private:
             Type_pos _V_mid_x=0.0;
@@ -92,7 +94,7 @@ namespace LL_AL5
             bool button_off();
     };
 
-    class TextBox:public Interface
+    class LL_SHARED TextBox:public Interface
     {
         private:
             unsigned int _V_text_length=100;

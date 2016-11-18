@@ -20,16 +20,18 @@
 #ifndef INCLUDED_LL_AL5_PRIMITIVES_H
 #define INCLUDED_LL_AL5_PRIMITIVES_H
 
+#include "../LL_Shared.h"
+
 #include "Allegro5.h"
 
 #include <allegro5/allegro_primitives.h>
 
 namespace LL_AL5
 {
-    bool primitives_addon();
-    void uninstall_primitives();
+    bool LL_SHARED primitives_addon();
+    void LL_SHARED uninstall_primitives();
 
-    class Pixel
+    class LL_SHARED Pixel
     {
         private:
             Type_pos _V_pos_x=0.0;
@@ -49,7 +51,7 @@ namespace LL_AL5
             void draw_in_another_target();
     };
 
-    class Line
+    class LL_SHARED Line
     {
         private:
             Type_pos _V_cam_pos_x=0.0;
@@ -83,7 +85,7 @@ namespace LL_AL5
             void draw_in_another_target();
     };
 
-    class Primitive
+    class LL_SHARED Primitive
     {
         protected:
             bool _V_is_filled=false;
@@ -98,7 +100,7 @@ namespace LL_AL5
             bool get_filled_status();
     };
 
-    class Figure:public Primitive
+    class LL_SHARED Figure:public Primitive
     {
         protected:
             Type_pos _V_pos_x=0.0;
@@ -111,7 +113,7 @@ namespace LL_AL5
             Type_pos get_pos_y();
     };
 
-    class Circle:public Figure
+    class LL_SHARED Circle:public Figure
     {
         private:
             float _V_radius=1.0;
@@ -124,7 +126,7 @@ namespace LL_AL5
             void draw_in_another_target();
     };
 
-    class Ellipse:public Figure
+    class LL_SHARED Ellipse:public Figure
     {
         private:
             float _V_radius_x=1.0;
@@ -140,7 +142,7 @@ namespace LL_AL5
             void draw_in_another_target();
     };
 
-    class Rectangle:public Figure
+    class LL_SHARED Rectangle:public Figure
     {
         private:
             float _V_size_x=0.0;
@@ -156,7 +158,7 @@ namespace LL_AL5
             void draw_in_another_target();
     };
 
-    class Triangle:public Primitive
+    class LL_SHARED Triangle:public Primitive
     {
         private:
             Type_pos _V_cam_pos_x=0.0;
@@ -191,7 +193,7 @@ namespace LL_AL5
             void draw_in_another_target();
     };
 
-    class Function
+    class LL_SHARED Function
     {
         private:
             Type_pos _V_init_function=0.0;

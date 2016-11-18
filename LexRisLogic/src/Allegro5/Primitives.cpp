@@ -21,11 +21,11 @@
 
 namespace LL_AL5
 {
-    bool primitives_addon()
+    bool LL_SHARED primitives_addon()
     {
         return al_init_primitives_addon();
     }
-    void uninstall_primitives()
+    void LL_SHARED uninstall_primitives()
     {
         al_shutdown_primitives_addon();
     }

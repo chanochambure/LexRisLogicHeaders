@@ -21,7 +21,7 @@
 
 namespace LL_AL5
 {
-    bool video_addon()
+    bool LL_SHARED video_addon()
     {
         return al_init_video_addon();
     }

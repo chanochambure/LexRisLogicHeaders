@@ -21,12 +21,12 @@
 
 namespace LL_AL5
 {
-    bool native_dialog_addon()
+    bool LL_SHARED native_dialog_addon()
     {
         return al_init_native_dialog_addon();
     }
-    bool show_native_message(ALLEGRO_DISPLAY* display,std::string title,
-                             std::string header,std::string message,int flag)
+    bool LL_SHARED show_native_message(ALLEGRO_DISPLAY* display,std::string title,
+                                       std::string header,std::string message,int flag)
     {
         return (al_show_native_message_box(display,title.c_str(),header.c_str(),message.c_str(),nullptr,flag)==1);
     }

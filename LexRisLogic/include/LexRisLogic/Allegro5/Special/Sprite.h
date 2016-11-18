@@ -23,12 +23,14 @@
 #include "../Allegro5.h"
 #include "../Bitmap.h"
 
+#include "../../LL_Shared.h"
+
 #include <string>
 #include <sstream>
 
 namespace LL_AL5
 {
-    class Sprite:public BitmapBase
+    class LL_SHARED Sprite:public BitmapBase
     {
         private:
             ALLEGRO_BITMAP** _V_bitmap_set=nullptr;

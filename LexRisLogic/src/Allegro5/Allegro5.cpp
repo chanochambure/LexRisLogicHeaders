@@ -21,14 +21,14 @@
 
 namespace LL_AL5
 {
-    float bitmap_scale_x=1.0;
-    float bitmap_scale_y=1.0;
-    float text_scale=1.0;
-    float primitives_scale=1.0;
-    Type_display_size desktop_size_x=640;
-    Type_display_size desktop_size_y=480;
+    float LL_SHARED bitmap_scale_x=1.0;
+    float LL_SHARED bitmap_scale_y=1.0;
+    float LL_SHARED text_scale=1.0;
+    float LL_SHARED primitives_scale=1.0;
+    Type_display_size LL_SHARED desktop_size_x=640;
+    Type_display_size LL_SHARED desktop_size_y=480;
 
-    void init_allegro()
+    void LL_SHARED init_allegro()
     {
         al_init();
         ALLEGRO_MONITOR_INFO monitor_info;
@@ -38,7 +38,7 @@ namespace LL_AL5
             desktop_size_y=monitor_info.y2-monitor_info.y1;
         }
     }
-    void sleep(float sleep_time)
+    void LL_SHARED sleep(float sleep_time)
     {
         al_rest(sleep_time);
     }

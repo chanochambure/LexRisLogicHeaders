@@ -28,7 +28,7 @@ namespace LL_irrKlang
 {
     class LL_SHARED SoundEngine;
 
-    extern LL_SHARED SoundEngine* default_engine;
+    extern SoundEngine* LL_SHARED default_engine;
 
     class LL_SHARED SoundEngine
     {
