@@ -42,3 +42,7 @@ Terminada la compilación he instalación contara con tres carpetas en la ruta s
     bin/    :       Archivos DLL
     lib/    :       Archivos de Linkeo
     include/:       Cabeceras para incluir las librerías
+
+### 3. Consideraciones
+
+Recuerde que esta librería ya no tiene acceso a las funciones de Allegro, ENet e irrKlang, por lo que si desea usar nuestras cabeceras como parte de las librerías deberá linkear tambien cada una de las librerías.
