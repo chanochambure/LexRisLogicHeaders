@@ -4,7 +4,7 @@ Las Cabeceras de LexRis Logic brindan un código amigable orientado a objetos y 
 
 Allegro v5.2.0, ENet v1.3.13 y irrKlang v1.5.0 (API)
 
-## Instalación
+## Instalación v2.00
 
 Para instalar las cabeceras de LexRis Logic se cuenta con un archivo CMake en la carpeta LexRisLogic donde se encuentran los archivos.
 
@@ -40,11 +40,25 @@ Terminada la configuración, genere el MakeFile y compilela, si no conoce como c
 Terminada la compilación he instalación contara con tres carpetas en la ruta seleccionada de instalación:
 
     bin/    :       Archivos DLL
-    lib/    :       Archivos de Linkeo
+    lib/    :       Archivos de Enlace
     include/:       Cabeceras para incluir las librerías
 
-### 3. Consideraciones
+## Usando LL v2.00
 
-Recuerde que esta librería ya no tiene acceso a las funciones de Allegro, ENet e irrKlang, por lo que si desea usar nuestras cabeceras como parte de las librerías deberá linkear tambien cada una de estas.
+Para usar las cabeceras de LexRis Logic solo debe incluir la cabecera que se usara y enlazar el módulo que se este usando, por ejemplo si usa las cabeceras simples como Convert.h, StringSplitter.h o Math.h solo deberá añadir '-lLL' en opciones de enlace.
 
-Con respecto a la librería irrKlang que usa Plugins, es necesario que el plugin se encuentre en la carpeta del proyecto que use el módulo de irrKlang para reproducir MP3 o FLAC.
+    #include<LexRisLogic/Allegro5/...>                      //Se necesita -lLL_Allegro5
+    #include<LexRisLogic/ENet/...>                          //Se necesita -lLL_ENet
+    #include<LexRisLogic/irrKlang/...>                      //Se necesita -lLL_irrKlang
+    #include<LexRisLogic/MathStructures/...>                //Se necesita -lLL_MathStructure
+    #include<LexRisLogic/DataStructures/RTree.h>            //Se necesita -lLL_RTree
+    #include<LexRisLogic/DataStructures/SparseMatrix.h>     //Se necesita -lLL_SparseMatrix
+    #include<LexRisLogic/*.h>                               //Se necesita -lLL
+
+En caso de la librería irrKlang, para reproducir audio de formato MP3 o FLAC, será necesario tener el plugin ikpMP3 e ikpFlac en la ruta del proyecto.
+
+Las Cabeceras no tienen enlace hacia las librerías de Allegro5, ENet e irrKlang por lo que si se desea usar las cabeceras junto a las librerías será necesario enlazarlas en el proyecto.
+
+## Documentación
+
+La documentación de uso se encuentra en el directorio de documentación como "Guía del Programador", ahí encontrara redactado que hace cada una de las variables, funciones y clases públicas de las cabeceras de LexRis Logic.
