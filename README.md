@@ -45,4 +45,6 @@ Terminada la compilación he instalación contara con tres carpetas en la ruta s
 
 ### 3. Consideraciones
 
-Recuerde que esta librería ya no tiene acceso a las funciones de Allegro, ENet e irrKlang, por lo que si desea usar nuestras cabeceras como parte de las librerías deberá linkear tambien cada una de las librerías.
+Recuerde que esta librería ya no tiene acceso a las funciones de Allegro, ENet e irrKlang, por lo que si desea usar nuestras cabeceras como parte de las librerías deberá linkear tambien cada una de estas.
+
+Con respecto a la librería irrKlang que usa Plugins, es necesario que el plugin se encuentre en la carpeta del proyecto que use el módulo de irrKlang para reproducir MP3 o FLAC.
