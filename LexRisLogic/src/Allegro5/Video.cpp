@@ -103,11 +103,10 @@ namespace LL_AL5
         ALLEGRO_BITMAP* bitmap=al_get_video_frame(_V_video);
         if(bitmap)
         {
-            const Type_pos size_in_axe_x=(_V_size_x*bitmap_scale_x*_V_scale_x);
-            const Type_pos size_in_axe_y=(_V_size_y*bitmap_scale_y*_V_scale_y);
+            const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*bitmap_scale_x*_V_scale_x);
+            const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*bitmap_scale_y*_V_scale_y);
             al_draw_scaled_rotated_bitmap(bitmap,_V_size_x/2,_V_size_y/2,
-                                          _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
-                                          _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                          _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
                                           bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,
                                           _V_angle,_V_flag);
         }

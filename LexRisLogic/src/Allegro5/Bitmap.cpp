@@ -79,18 +79,18 @@ namespace LL_AL5
     {
         return _V_scale_y;
     }
-    void BitmapBase::set_centering_option(bool new_centering_option_x,bool new_centering_option_y)
+    void BitmapBase::set_anchor(float new_anchor_x,float new_anchor_y)
     {
-        _V_centering_option_x=new_centering_option_x;
-        _V_centering_option_y=new_centering_option_y;
+        _V_anchor_x=new_anchor_x;
+        _V_anchor_y=new_anchor_y;
     }
-    bool BitmapBase::get_centering_option_x()
+    float BitmapBase::get_anchor_x()
     {
-        return _V_centering_option_x;
+        return _V_anchor_x;
     }
-    bool BitmapBase::get_centering_option_y()
+    float BitmapBase::get_anchor_y()
     {
-        return _V_centering_option_y;
+        return _V_anchor_y;
     }
 
     float Bitmap::get_size_x()
@@ -142,20 +142,18 @@ namespace LL_AL5
     }
     void Bitmap::draw()
     {
-        const Type_pos size_in_axe_x=(_V_size_x*bitmap_scale_x*_V_scale_x);
-        const Type_pos size_in_axe_y=(_V_size_y*bitmap_scale_y*_V_scale_y);
+        const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*bitmap_scale_x*_V_scale_x);
+        const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*bitmap_scale_y*_V_scale_y);
         al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
-                                      _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
                                       bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
     }
     void Bitmap::draw_in_another_target()
     {
-        const Type_pos size_in_axe_x=(_V_size_x*_V_scale_x);
-        const Type_pos size_in_axe_y=(_V_size_y*_V_scale_y);
+        const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*_V_scale_x);
+        const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*_V_scale_y);
         al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
-                                      _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
                                       _V_scale_x,_V_scale_y,_V_angle,_V_flag);
     }
     Bitmap::operator ALLEGRO_BITMAP* ()
@@ -247,20 +245,18 @@ namespace LL_AL5
     }
     void SubBitmap::draw()
     {
-        const Type_pos size_in_axe_x=(_V_size_x*bitmap_scale_x*_V_scale_x);
-        const Type_pos size_in_axe_y=(_V_size_y*bitmap_scale_y*_V_scale_y);
+        const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*bitmap_scale_x*_V_scale_x);
+        const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*bitmap_scale_y*_V_scale_y);
         al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
-                                      _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
                                       bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
     }
     void SubBitmap::draw_in_another_target()
     {
-        const Type_pos size_in_axe_x=(_V_size_x*_V_scale_x);
-        const Type_pos size_in_axe_y=(_V_size_y*_V_scale_y);
+        const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*_V_scale_x);
+        const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*_V_scale_y);
         al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
-                                      _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
                                       _V_scale_x,_V_scale_y,_V_angle,_V_flag);
     }
     SubBitmap::operator ALLEGRO_BITMAP* ()
@@ -335,20 +331,18 @@ namespace LL_AL5
     }
     void Image::draw()
     {
-        const Type_pos size_in_axe_x=(_V_size_x*bitmap_scale_x*_V_scale_x);
-        const Type_pos size_in_axe_y=(_V_size_y*bitmap_scale_y*_V_scale_y);
+        const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*bitmap_scale_x*_V_scale_x);
+        const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*bitmap_scale_y*_V_scale_y);
         al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
-                                      _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
                                       bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
     }
     void Image::draw_in_another_target()
     {
-        const Type_pos size_in_axe_x=(_V_size_x*_V_scale_x);
-        const Type_pos size_in_axe_y=(_V_size_y*_V_scale_y);
+        const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*_V_scale_x);
+        const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*_V_scale_y);
         al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
-                                      _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
                                       _V_scale_x,_V_scale_y,_V_angle,_V_flag);
     }
     Image::operator ALLEGRO_BITMAP* ()

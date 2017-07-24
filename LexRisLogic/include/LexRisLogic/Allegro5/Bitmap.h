@@ -41,8 +41,8 @@ namespace LL_AL5
             Type_pos _V_pos_y=0.0;
             float _V_scale_x=1.0;
             float _V_scale_y=1.0;
-            bool _V_centering_option_x=false;
-            bool _V_centering_option_y=false;
+            Type_pos _V_anchor_x=0;
+            Type_pos _V_anchor_y=0;
         public:
             void set_pos(Type_pos new_pos_x,Type_pos new_pos_y);
             void set_pos_x(Type_pos new_pos_x);
@@ -56,9 +56,9 @@ namespace LL_AL5
             float get_scale_x();
             void set_scale_y(float new_scale_y);
             float get_scale_y();
-            void set_centering_option(bool new_centering_option_x,bool new_centering_option_y);
-            bool get_centering_option_x();
-            bool get_centering_option_y();
+            void set_anchor(float new_anchor_x,float new_anchor_y);
+            float get_anchor_x();
+            float get_anchor_y();
     };
 
     class LL_SHARED Bitmap:public BitmapBase

@@ -195,24 +195,20 @@ namespace LL_AL5
     }
     void Sprite::draw()
     {
-        const Type_pos size_in_axe_x=(_V_size_x[_V_index]*bitmap_scale_x*_V_scale_x);
-        const Type_pos size_in_axe_y=(_V_size_y[_V_index]*bitmap_scale_y*_V_scale_y);
+        const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x[_V_index]*bitmap_scale_x*_V_scale_x);
+        const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y[_V_index]*bitmap_scale_y*_V_scale_y);
         al_draw_scaled_rotated_bitmap(_V_bitmap_set[_V_index],
-                                      _V_size_x[_V_index]/2,
-                                      _V_size_y[_V_index]/2,
-                                      _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
-                                      _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                      _V_size_x[_V_index]/2,_V_size_y[_V_index]/2,
+                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
                                       bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
     }
     void Sprite::draw_in_another_target()
     {
-        const Type_pos size_in_axe_x=(_V_size_x[_V_index]*_V_scale_x);
-        const Type_pos size_in_axe_y=(_V_size_y[_V_index]*_V_scale_y);
+        const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x[_V_index]*bitmap_scale_x*_V_scale_x);
+        const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y[_V_index]*bitmap_scale_y*_V_scale_y);
         al_draw_scaled_rotated_bitmap(_V_bitmap_set[_V_index],
-                                      _V_size_x[_V_index]/2,
-                                      _V_size_y[_V_index]/2,
-                                      _V_pos_x+(!_V_centering_option_x*(size_in_axe_x/2)),
-                                      _V_pos_y+(!_V_centering_option_y*(size_in_axe_y/2)),
+                                      _V_size_x[_V_index]/2,_V_size_y[_V_index]/2,
+                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
                                       _V_scale_x,_V_scale_y,_V_angle,_V_flag);
     }
     Sprite::operator ALLEGRO_BITMAP* ()
