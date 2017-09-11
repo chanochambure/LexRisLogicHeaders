@@ -60,6 +60,6 @@ namespace LL
 
     int LL_SHARED max_integer(float number)
     {
-        return (int(number)-(number<0.0));
+        return int(number)-(number<0 && int(number)!=number);
     }
 }
