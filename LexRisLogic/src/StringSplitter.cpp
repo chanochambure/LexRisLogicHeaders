@@ -33,13 +33,18 @@ namespace LL
     bool StringSplitter::split(char character)
     {
         _V_data.clear();
-        std::string data=_V_string;
-        if(!data.size())
+        if(!_V_string.size())
             return false;
-        for(unsigned int position=data.find(character);position<data.size();position=data.find(character))
+        std::string data;
+        for(unsigned int i=0;i<_V_string.size();++i)
         {
-            _V_data.push_back(data.substr(0,position));
-            data=data.substr(position+1,data.size()-(position+1));
+            if(_V_string[i]==character)
+            {
+                _V_data.push_back(data);
+                data.clear();
+            }
+            else
+                data+=_V_string[i];
         }
         if(data.size())
             _V_data.push_back(data);
