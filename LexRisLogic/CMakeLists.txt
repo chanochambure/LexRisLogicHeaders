@@ -85,6 +85,7 @@ endif(INSTALL_ALLEGRO)
 #LL_RTree Library
 	FILE(GLOB LL_RTREE_SRC
 		"src/DataStructures/RTree.cpp"
+		"src/MathStructures/MBB.cpp"
 		"src/MathStructures/Point.cpp"
 	)
 	ADD_LIBRARY(LL_RTree SHARED ${LL_RTREE_SRC})
@@ -93,6 +94,7 @@ endif(INSTALL_ALLEGRO)
 
 	INSTALL(FILES "include/LexRisLogic/DataStructures/RTree.h" DESTINATION "include/LexRisLogic/DataStructures")
 	INSTALL(FILES "include/LexRisLogic/MathStructures/Point.h" DESTINATION "include/LexRisLogic/MathStructures")
+	INSTALL(FILES "include/LexRisLogic/MathStructures/MBB.h" DESTINATION "include/LexRisLogic/MathStructures")
 
 #LL_irrKlang Library
 if(INSTALL_IRRKLANG)

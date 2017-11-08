@@ -1,6 +1,6 @@
 /* RTree.cpp -- R-Tree Data Structure Source - LexRis Logic Headers
 
-    Copyright (c) 2016 LexRisLogic
+    Copyright (c) 2017 LexRisLogic
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
     documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -21,50 +21,6 @@
 
 namespace LL_DataStructure
 {
-    MBB::MBB()
-    {
-    }
-    MBB::MBB(unsigned int new_dimension)
-    {
-        set_dimension(new_dimension);
-    }
-    bool MBB::set_dimension(unsigned int new_dimension)
-    {
-        if(new_dimension)
-        {
-            dimension=new_dimension;
-            first_point.set_dimension(dimension);
-            second_point.set_dimension(dimension);
-            return true;
-        }
-        return false;
-    }
-    bool MBB::operator == (MBB another_mbb)
-    {
-        return ((first_point==another_mbb.first_point) and (second_point==another_mbb.second_point));
-    }
-    bool MBB::operator != (MBB another_mbb)
-    {
-        return ((first_point!=another_mbb.first_point) or (second_point!=another_mbb.second_point));
-    }
-
-    double LL_SHARED mbb_distance(MBB first_mbb,MBB second_mbb)
-    {
-        if(first_mbb.dimension==second_mbb.dimension)
-        {
-            double acumulator=0.0;
-            for(unsigned int i=0;i<first_mbb.dimension;++i)
-            {
-                double min_distance=std::max(first_mbb.first_point[i],second_mbb.first_point[i])-
-                                    std::min(first_mbb.second_point[i],second_mbb.second_point[i]);
-                if(min_distance>0)
-                    acumulator+=pow(min_distance,2);
-            }
-            return sqrt(acumulator);
-        }
-        return 0.0;
-    }
-
     __RTreeDataNodeBase__::~__RTreeDataNodeBase__()
     {
     }
@@ -244,15 +200,15 @@ namespace LL_DataStructure
         }
     }
 
-    void __RTreeBase__::_F_target_node(MBB new_mbb,__RTreeNodeBase__**& target_node)
+    void __RTreeBase__::_F_target_node(LL_MathStructure::MBB new_mbb,__RTreeNodeBase__**& target_node)
     {
         while((*target_node)->type)
         {
             unsigned int target_son=0;
-            double actual_distance=mbb_distance(new_mbb,(*target_node)->sons[0]->mbb);
+            double actual_distance=LL_MathStructure::mbb_distance(new_mbb,(*target_node)->sons[0]->mbb);
             for(unsigned int i=1;i<(*target_node)->size;++i)
             {
-                double new_distance=mbb_distance(new_mbb,(*target_node)->sons[i]->mbb);
+                double new_distance=LL_MathStructure::mbb_distance(new_mbb,(*target_node)->sons[i]->mbb);
                 if(new_distance<actual_distance)
                 {
                     actual_distance=new_distance;
@@ -262,7 +218,7 @@ namespace LL_DataStructure
             target_node=&((*target_node)->sons[target_son]);
         }
     }
-    bool __RTreeBase__::_F_find_data(MBB data_mbb,__RTreeNodeBase__**& node)
+    bool __RTreeBase__::_F_find_data(LL_MathStructure::MBB data_mbb,__RTreeNodeBase__**& node)
     {
         if(*node)
         {
@@ -273,7 +229,7 @@ namespace LL_DataStructure
                 for(unsigned int i=0;i<(*node)->size;++i)
                 {
                     node=&((*node)->sons[i]);
-                    if(mbb_distance((*node)->mbb,data_mbb)==0.0)
+                    if(LL_MathStructure::mbb_distance((*node)->mbb,data_mbb)==0.0)
                     {
                         selected_node=node;
                         if(_F_find_data(data_mbb,node))
@@ -305,7 +261,7 @@ namespace LL_DataStructure
         }
         ++_V_size;
     }
-    bool __RTreeBase__::_F_remove_data(MBB mbb)
+    bool __RTreeBase__::_F_remove_data(LL_MathStructure::MBB mbb)
     {
         __RTreeNodeBase__** leaf=&(_V_root);
         if(_F_find_data(mbb,leaf))
@@ -347,7 +303,7 @@ namespace LL_DataStructure
                 if(i!=sorted_data[0].second)
                 {
                     _T_Type_pair_dis_pos new_data(
-                                mbb_distance(node->sons[sorted_data[0].second]->mbb,node->sons[i]->mbb),i);
+                        LL_MathStructure::mbb_distance(node->sons[sorted_data[0].second]->mbb,node->sons[i]->mbb),i);
                     sorted_data.push_back(new_data);
                 }
             }
@@ -377,7 +333,7 @@ namespace LL_DataStructure
                 if(i!=sorted_data[0].second)
                 {
                     _T_Type_pair_dis_pos new_data(
-                                mbb_distance(node->data[sorted_data[0].second]->mbb,node->data[i]->mbb),i);
+                        LL_MathStructure::mbb_distance(node->data[sorted_data[0].second]->mbb,node->data[i]->mbb),i);
                     sorted_data.push_back(new_data);
                 }
             }
@@ -430,10 +386,10 @@ namespace LL_DataStructure
         {
             if(i!=son_in_underflow)
             {
-                double son_distance=mbb_distance(node->sons[son_in_underflow]->mbb,node->sons[i]->mbb);
+                double distance=LL_MathStructure::mbb_distance(node->sons[son_in_underflow]->mbb,node->sons[i]->mbb);
                 if(node->sons[i]->size>_V_min_node_size)
-                    sorted_data.push_back(_T_Type_pair_dis_pos(son_distance,i));
-                sorted_distance.push_back(_T_Type_pair_dis_pos(son_distance,i));
+                    sorted_data.push_back(_T_Type_pair_dis_pos(distance,i));
+                sorted_distance.push_back(_T_Type_pair_dis_pos(distance,i));
             }
         }
         if(sorted_data.size())
@@ -447,7 +403,7 @@ namespace LL_DataStructure
                 for(unsigned int i=0;i<donator_son->size;++i)
                 {
                     _T_Type_pair_dis_pos new_data(
-                                mbb_distance(donator_son->sons[i]->mbb,node->sons[son_in_underflow]->mbb),i);
+                        LL_MathStructure::mbb_distance(donator_son->sons[i]->mbb,node->sons[son_in_underflow]->mbb),i);
                     sorted_data.push_back(new_data);
                 }
                 std::sort(sorted_data.begin(),sorted_data.end());
@@ -466,7 +422,7 @@ namespace LL_DataStructure
                 for(unsigned int i=0;i<donator_son->size;++i)
                 {
                     _T_Type_pair_dis_pos new_data(
-                                mbb_distance(donator_son->data[i]->mbb,node->sons[son_in_underflow]->mbb),i);
+                        LL_MathStructure::mbb_distance(donator_son->data[i]->mbb,node->sons[son_in_underflow]->mbb),i);
                     sorted_data.push_back(new_data);
                 }
                 std::sort(sorted_data.begin(),sorted_data.end());

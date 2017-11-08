@@ -1,6 +1,6 @@
 /* RTree.h -- R-Tree Data Structure Header - LexRis Logic Headers
 
-    Copyright (c) 2016 LexRisLogic
+    Copyright (c) 2017 LexRisLogic
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
     documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -26,34 +26,20 @@
 #include <stack>
 #include <vector>
 #include <list>
-#include "../MathStructures/Point.h"
+#include "../MathStructures/MBB.h"
 
 namespace LL_DataStructure
 {
-    struct LL_SHARED MBB
-    {
-        MBB();
-        MBB(unsigned int new_dimension);
-        unsigned int dimension=0;
-        LL_MathStructure::Point first_point;
-        LL_MathStructure::Point second_point;
-        bool set_dimension(unsigned int new_dimension);
-        bool operator == (MBB another_mbb);
-        bool operator != (MBB another_mbb);
-    };
-
-    double LL_SHARED mbb_distance(MBB first_mbb,MBB second_mbb);
-
     struct LL_SHARED __RTreeDataNodeBase__
     {
-        MBB mbb;
+        LL_MathStructure::MBB mbb;
         virtual ~__RTreeDataNodeBase__();
     };
 
     struct LL_SHARED __RTreeNodeBase__
     {
         __RTreeNodeBase__(unsigned int new_dimension,unsigned int new_node_size,bool node_type=false);
-        MBB mbb;
+        LL_MathStructure::MBB mbb;
         bool type=false;
         unsigned int node_size;
         unsigned int dimension;
@@ -87,10 +73,10 @@ namespace LL_DataStructure
             unsigned int _V_min_node_size;
             __RTreeNodeBase__* _V_root=nullptr;
             unsigned int _V_size=0;
-            void _F_target_node(MBB new_mbb,__RTreeNodeBase__**& target_node);
-            bool _F_find_data(MBB data_mbb,__RTreeNodeBase__**& node);
+            void _F_target_node(LL_MathStructure::MBB new_mbb,__RTreeNodeBase__**& target_node);
+            bool _F_find_data(LL_MathStructure::MBB data_mbb,__RTreeNodeBase__**& node);
             void _F_refresh_data(__RTreeNodeBase__** node);
-            bool _F_remove_data(MBB mbb);
+            bool _F_remove_data(LL_MathStructure::MBB mbb);
             void _F_split_node(__RTreeNodeBase__* node);
             void _F_merge_node(__RTreeNodeBase__* node);
     };
@@ -101,21 +87,21 @@ namespace LL_DataStructure
         private:
             struct _S_Structure_DataNode:public __RTreeDataNodeBase__
             {
-                _S_Structure_DataNode(T new_data,MBB new_mbb)
+                _S_Structure_DataNode(T new_data,LL_MathStructure::MBB new_mbb)
                 {
                     data=new_data;
                     mbb=new_mbb;
                 }
                 T data;
             };
-            MBB (*_P_Function_to_mbb)(T)=nullptr;
-            void _F_range_query(std::list<T>* data_list,__RTreeNodeBase__* node,MBB mbb)
+            LL_MathStructure::MBB (*_P_Function_to_mbb)(T)=nullptr;
+            void _F_range_query(std::list<T>* data_list,__RTreeNodeBase__* node,LL_MathStructure::MBB mbb)
             {
                 if(node->type)
                 {
                     for(unsigned int i=0;i<node->size;++i)
                     {
-                        if(mbb_distance(mbb,node->sons[i]->mbb)==0.0)
+                        if(LL_MathStructure::mbb_distance(mbb,node->sons[i]->mbb)==0.0)
                             _F_range_query(data_list,node->sons[i],mbb);
                     }
                 }
@@ -124,13 +110,13 @@ namespace LL_DataStructure
                     for(unsigned int i=0;i<node->size;++i)
                     {
                         _S_Structure_DataNode* pointer=static_cast<_S_Structure_DataNode*>(node->data[i]);
-                        if(mbb_distance(mbb,node->data[i]->mbb)==0.0)
+                        if(LL_MathStructure::mbb_distance(mbb,node->data[i]->mbb)==0.0)
                             data_list->push_back(pointer->data);
                     }
                 }
             }
         public:
-            RTree(MBB (*Function_to_mbb)(T))
+            RTree(LL_MathStructure::MBB (*Function_to_mbb)(T))
             {
                 _V_dimension=DIMENSION;
                 _V_node_size=NODE_SIZE;
@@ -184,7 +170,7 @@ namespace LL_DataStructure
                     {
                         return _V_node->type;
                     }
-                    MBB get_mbb()
+                    LL_MathStructure::MBB get_mbb()
                     {
                         return _V_node->mbb;
                     }
@@ -230,14 +216,14 @@ namespace LL_DataStructure
             bool find(T data)
             {
                 __RTreeNodeBase__** leaf=&(_V_root);
-                MBB mbb=_P_Function_to_mbb(data);
+                LL_MathStructure::MBB mbb=_P_Function_to_mbb(data);
                 if(mbb.dimension==_V_dimension)
                     return _F_find_data(mbb,leaf);
                 return false;
             }
             bool insert(T new_data)
             {
-                MBB mbb=_P_Function_to_mbb(new_data);
+                LL_MathStructure::MBB mbb=_P_Function_to_mbb(new_data);
                 __RTreeNodeBase__** leaf=&(_V_root);
                 if(_F_find_data(mbb,leaf) or (mbb.dimension!=_V_dimension))
                     return false;
@@ -248,12 +234,12 @@ namespace LL_DataStructure
             }
             bool remove(T data_to_remove)
             {
-                MBB mbb=_P_Function_to_mbb(data_to_remove);
+                LL_MathStructure::MBB mbb=_P_Function_to_mbb(data_to_remove);
                 if(mbb.dimension==_V_dimension)
                     return _F_remove_data(mbb);
                 return false;
             }
-            std::list<T> range_query(MBB mbb)
+            std::list<T> range_query(LL_MathStructure::MBB mbb)
             {
                 std::list<T> data_list;
                 if(mbb.dimension==_V_dimension)

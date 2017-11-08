@@ -1,4 +1,4 @@
-/* Path.cpp -- Path Allegro 5 Source - LexRis Logic Headers
+/* MBB.h -- Minimal Bounding Box Math Structure Header - LexRis Logic Headers
 
     Copyright (c) 2017 LexRisLogic
 
@@ -17,39 +17,29 @@
     SOFTWARE.
 */
 
-#include "../../include/LexRisLogic/Allegro5/Path.h"
+#ifndef INCLUDED_LL_MATHSTRUCTURE_MBB_H
+#define INCLUDED_LL_MATHSTRUCTURE_MBB_H
 
-namespace LL_AL5
+#include "../LL_Shared.h"
+
+#include "../MathStructures/Point.h"
+
+namespace LL_MathStructure
 {
-    std::string LL_SHARED get_current_directory()
+    struct LL_SHARED MBB
     {
-        char* actual_dir=al_get_current_directory();
-        std::string return_dir;
-        if(actual_dir)
-        {
-            return_dir=actual_dir;
-            al_free(actual_dir);
-        }
-        return return_dir;
-    }
+        MBB();
+        MBB(unsigned int new_dimension);
+        unsigned int dimension=0;
+        Point first_point;
+        Point second_point;
+        bool set_dimension(unsigned int new_dimension);
+        bool operator == (MBB another_mbb);
+        bool operator != (MBB another_mbb);
+    };
 
-    bool LL_SHARED change_directory(std::string new_path)
-    {
-        return al_change_directory(new_path.c_str());
-    }
-
-    bool LL_SHARED make_directory(std::string new_dir)
-    {
-        return al_make_directory(new_dir.c_str());
-    }
-
-    bool LL_SHARED path_exists(std::string path)
-    {
-        return al_filename_exists(path.c_str());
-    }
-
-    bool LL_SHARED remove_path(std::string path)
-    {
-        return al_remove_filename(path.c_str());
-    }
+    double LL_SHARED mbb_distance(MBB first_mbb,MBB second_mbb);
 }
+
+
+#endif // INCLUDED_LL_MATHSTRUCTURE_MBB_H
