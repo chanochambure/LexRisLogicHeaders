@@ -30,6 +30,10 @@ namespace LL_AL5
         return al_save_bitmap(bitmap_file_name.c_str(),bitmap);
     }
 
+    BitmapBase::BitmapBase()
+    {
+        _V_tint_color=al_map_rgb(255,255,255);
+    }
     void BitmapBase::set_pos(Type_pos new_pos_x,Type_pos new_pos_y)
     {
         _V_pos_x=new_pos_x;
@@ -92,6 +96,14 @@ namespace LL_AL5
     {
         return _V_anchor_y;
     }
+    void BitmapBase::set_tint_color(ALLEGRO_COLOR new_color)
+    {
+        _V_tint_color=new_color;
+    }
+    ALLEGRO_COLOR BitmapBase::get_tint_color()
+    {
+        return _V_tint_color;
+    }
 
     float Bitmap::get_size_x()
     {
@@ -144,17 +156,17 @@ namespace LL_AL5
     {
         const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*bitmap_scale_x*_V_scale_x);
         const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*bitmap_scale_y*_V_scale_y);
-        al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
-                                      bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
+        al_draw_tinted_scaled_rotated_bitmap(_V_bitmap,_V_tint_color,_V_size_x/2,_V_size_y/2,
+                                             _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
+                                             bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
     }
     void Bitmap::draw_in_another_target()
     {
         const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*_V_scale_x);
         const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*_V_scale_y);
-        al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
-                                      _V_scale_x,_V_scale_y,_V_angle,_V_flag);
+        al_draw_tinted_scaled_rotated_bitmap(_V_bitmap,_V_tint_color,_V_size_x/2,_V_size_y/2,
+                                             _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
+                                             _V_scale_x,_V_scale_y,_V_angle,_V_flag);
     }
     Bitmap::operator ALLEGRO_BITMAP* ()
     {
@@ -247,17 +259,17 @@ namespace LL_AL5
     {
         const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*bitmap_scale_x*_V_scale_x);
         const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*bitmap_scale_y*_V_scale_y);
-        al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
-                                      bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
+        al_draw_tinted_scaled_rotated_bitmap(_V_bitmap,_V_tint_color,_V_size_x/2,_V_size_y/2,
+                                             _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
+                                             bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
     }
     void SubBitmap::draw_in_another_target()
     {
         const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*_V_scale_x);
         const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*_V_scale_y);
-        al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
-                                      _V_scale_x,_V_scale_y,_V_angle,_V_flag);
+        al_draw_tinted_scaled_rotated_bitmap(_V_bitmap,_V_tint_color,_V_size_x/2,_V_size_y/2,
+                                             _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
+                                             _V_scale_x,_V_scale_y,_V_angle,_V_flag);
     }
     SubBitmap::operator ALLEGRO_BITMAP* ()
     {
@@ -333,17 +345,17 @@ namespace LL_AL5
     {
         const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*bitmap_scale_x*_V_scale_x);
         const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*bitmap_scale_y*_V_scale_y);
-        al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
-                                      bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
+        al_draw_tinted_scaled_rotated_bitmap(_V_bitmap,_V_tint_color,_V_size_x/2,_V_size_y/2,
+                                             _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
+                                             bitmap_scale_x*_V_scale_x,bitmap_scale_y*_V_scale_y,_V_angle,_V_flag);
     }
     void Image::draw_in_another_target()
     {
         const Type_pos size_in_axe_x=((_V_anchor_x-0.5)*_V_size_x*_V_scale_x);
         const Type_pos size_in_axe_y=((_V_anchor_y-0.5)*_V_size_y*_V_scale_y);
-        al_draw_scaled_rotated_bitmap(_V_bitmap,_V_size_x/2,_V_size_y/2,
-                                      _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
-                                      _V_scale_x,_V_scale_y,_V_angle,_V_flag);
+        al_draw_tinted_scaled_rotated_bitmap(_V_bitmap,_V_tint_color,_V_size_x/2,_V_size_y/2,
+                                             _V_pos_x-size_in_axe_x,_V_pos_y-size_in_axe_y,
+                                             _V_scale_x,_V_scale_y,_V_angle,_V_flag);
     }
     Image::operator ALLEGRO_BITMAP* ()
     {

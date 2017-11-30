@@ -43,7 +43,9 @@ namespace LL_AL5
             float _V_scale_y=1.0;
             Type_pos _V_anchor_x=0;
             Type_pos _V_anchor_y=0;
+            ALLEGRO_COLOR _V_tint_color;
         public:
+            BitmapBase();
             void set_pos(Type_pos new_pos_x,Type_pos new_pos_y);
             void set_pos_x(Type_pos new_pos_x);
             Type_pos get_pos_x();
@@ -59,6 +61,8 @@ namespace LL_AL5
             void set_anchor(float new_anchor_x,float new_anchor_y);
             float get_anchor_x();
             float get_anchor_y();
+            void set_tint_color(ALLEGRO_COLOR new_color);
+            ALLEGRO_COLOR get_tint_color();
     };
 
     class LL_SHARED Bitmap:public BitmapBase
