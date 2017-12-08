@@ -53,8 +53,8 @@ namespace LL
 
     bool LL_SHARED segment_collision(float ini_segment_1,float fin_segment_1,float ini_segment_2,float fin_segment_2)
     {
-        int ini_segment=std::max(ini_segment_1,ini_segment_2);
-        int fin_segment=std::min(fin_segment_1,fin_segment_2);
+        float ini_segment=std::max(ini_segment_1,ini_segment_2);
+        float fin_segment=std::min(fin_segment_1,fin_segment_2);
         return (ini_segment<=fin_segment);
     }
 
