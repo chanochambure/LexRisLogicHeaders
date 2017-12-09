@@ -229,7 +229,7 @@ namespace LL_DataStructure
                 for(unsigned int i=0;i<(*node)->size;++i)
                 {
                     node=&((*node)->sons[i]);
-                    if(LL_MathStructure::mbb_distance((*node)->mbb,data_mbb)==0.0)
+                    if(LL_MathStructure::mbb_collision((*node)->mbb,data_mbb))
                     {
                         selected_node=node;
                         if(_F_find_data(data_mbb,node))

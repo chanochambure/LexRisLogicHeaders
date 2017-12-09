@@ -64,4 +64,18 @@ namespace LL_MathStructure
         }
         return 0.0;
     }
+
+    bool LL_SHARED mbb_collision(MBB first_mbb,MBB second_mbb)
+    {
+        if(first_mbb.dimension!=second_mbb.dimension)
+            return false;
+        for(unsigned int i=0;i<first_mbb.dimension;++i)
+        {
+            float ini_segment=std::max(first_mbb.first_point[i],second_mbb.first_point[i]);
+            float fin_segment=std::min(first_mbb.second_point[i],second_mbb.second_point[i]);
+            if(ini_segment>fin_segment)
+                return false;
+        }
+        return true;
+    }
 }

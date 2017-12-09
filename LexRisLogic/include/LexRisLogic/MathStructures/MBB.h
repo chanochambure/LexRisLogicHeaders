@@ -39,6 +39,7 @@ namespace LL_MathStructure
     };
 
     double LL_SHARED mbb_distance(MBB first_mbb,MBB second_mbb);
+    bool LL_SHARED mbb_collision(MBB first_mbb,MBB second_mbb);
 }
 
 
