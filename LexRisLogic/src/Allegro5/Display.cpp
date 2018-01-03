@@ -21,21 +21,6 @@
 
 namespace LL_AL5
 {
-    void Display::_F_destroy()
-    {
-        if(_V_display)
-        {
-            al_destroy_display(_V_display);
-            _V_display=nullptr;
-        }
-    }
-    void Display::_F_create()
-    {
-        _F_destroy();
-        al_set_new_display_flags(_V_display_mode);
-        _V_display=al_create_display(_V_size_x,_V_size_y);
-        al_flip_display();
-    }
     void Display::_F_set_global_scale()
     {
         _V_cam_pos_x=((_V_cam_pos_x*_V_size_x)/(_V_last_size_x));
@@ -50,11 +35,13 @@ namespace LL_AL5
         else
             primitives_scale=text_scale;
     }
+    Display::Display()
+    {
+    }
     Display::Display(Type_display_size size_x,Type_display_size size_y)
     {
         _V_real_size_x=_V_size_x=size_x;
         _V_real_size_y=_V_size_y=size_y;
-        _F_create();
         _F_set_global_scale();
     }
     Display::Display(Type_display_size size_x,Type_display_size size_y,
@@ -64,12 +51,44 @@ namespace LL_AL5
         _V_size_y=size_y;
         _V_real_size_x=real_size_x;
         _V_real_size_y=real_size_y;
-        _F_create();
         _F_set_global_scale();
     }
-    void Display::set_title(std::string new_title)
+    bool Display::create()
     {
+        if(_V_display)
+            return false;
+        al_set_new_display_flags(_V_display_mode);
+        _V_display=al_create_display(_V_size_x,_V_size_y);
+        if(_V_display)
+        {
+            set_target();
+            al_flip_display();
+        }
+        return _V_display;
+    }
+    bool Display::destroy()
+    {
+        if(!_V_display)
+            return false;
+        al_destroy_display(_V_display);
+        _V_display=nullptr;
+        return true;
+    }
+    bool Display::set_title(std::string new_title)
+    {
+        if(!_V_display)
+            return false;
         al_set_window_title(_V_display,new_title.c_str());
+        return true;
+    }
+    bool Display::set_size(Type_display_size size_x,Type_display_size size_y)
+    {
+        if(_V_display && !al_resize_display(_V_display,size_x,size_y))
+            return false;
+        _V_size_x=size_x;
+        _V_size_y=size_y;
+        _F_set_global_scale();
+        return true;
     }
     Type_display_size Display::get_size_x()
     {
@@ -93,17 +112,16 @@ namespace LL_AL5
     {
         return _V_real_size_y;
     }
-    void Display::set_flag(int new_flag)
+    bool Display::set_display_mode(int new_flag)
     {
+        if(_V_display)
+            return false;
         _V_display_mode=new_flag;
-        _F_create();
+        return true;
     }
-    void Display::resize(Type_display_size size_x,Type_display_size size_y)
+    int Display::get_display_mode()
     {
-        _V_size_x=size_x;
-        _V_size_y=size_y;
-        al_resize_display(_V_display,_V_size_x,_V_size_y);
-        _F_set_global_scale();
+        return _V_display_mode;
     }
     void Display::set_cam(Type_pos new_pos_x,Type_pos new_pos_y)
     {
@@ -179,10 +197,13 @@ namespace LL_AL5
     {
         al_flip_display();
     }
-    void Display::set_target()
+    bool Display::set_target()
     {
+        if(!_V_display)
+            return false;
         al_set_target_backbuffer(_V_display);
         _F_set_global_scale();
+        return true;
     }
     Display::operator ALLEGRO_DISPLAY* ()
     {
@@ -199,6 +220,6 @@ namespace LL_AL5
     Display::~Display()
     {
         destroy_cursor();
-        _F_destroy();
+        destroy();
     }
 }

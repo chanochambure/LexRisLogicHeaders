@@ -42,21 +42,23 @@ namespace LL_AL5
             Type_pos _V_cam_pos_x=0.0;
             Type_pos _V_cam_pos_y=0.0;
             int _V_display_mode=ALLEGRO_WINDOWED;
-            void _F_destroy();
-            void _F_create();
             void _F_set_global_scale();
         public:
+            Display();
             Display(Type_display_size size_x,Type_display_size size_y);
             Display(Type_display_size size_x,Type_display_size size_y,
                     Type_display_size real_size_x,Type_display_size real_size_y);
-            void set_title(std::string new_title);
+            bool create();
+            bool destroy();
+            bool set_title(std::string new_title);
+            bool set_size(Type_display_size size_x,Type_display_size size_y);
             Type_display_size get_size_x();
             Type_display_size get_size_y();
             void set_real_size(Type_display_size real_size_x,Type_display_size real_size_y);
             Type_display_size get_real_size_x();
             Type_display_size get_real_size_y();
-            void set_flag(int new_flag);
-            void resize(Type_display_size size_x,Type_display_size size_y);
+            bool set_display_mode(int new_flag);
+            int get_display_mode();
             void set_cam(Type_pos new_pos_x,Type_pos new_pos_y);
             void set_cam_x(Type_pos new_pos_x);
             Type_pos get_cam_x();
@@ -83,7 +85,7 @@ namespace LL_AL5
                 object->set_pos(data_pos_x,data_pos_y);
             }
             void refresh();
-            void set_target();
+            bool set_target();
             operator ALLEGRO_DISPLAY* ();
             operator ALLEGRO_BITMAP* ();
             operator ALLEGRO_MOUSE_CURSOR* ();
