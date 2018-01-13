@@ -50,7 +50,7 @@ if(INSTALL_ALLEGRO)
 endif(INSTALL_ALLEGRO)
 
 #LL Library
-	FILE(GLOB LL_SRC 
+	FILE(GLOB LL_SRC
 		"src/*.cpp"
 	)
 	FILE(GLOB LL_H
@@ -71,6 +71,16 @@ endif(INSTALL_ALLEGRO)
 	INSTALL(TARGETS LL_MathStructure RUNTIME DESTINATION "bin" LIBRARY DESTINATION "lib" ARCHIVE DESTINATION "lib")
 
 	INSTALL(DIRECTORY "include/LexRisLogic/MathStructures/" DESTINATION "include/LexRisLogic/MathStructures")
+
+#LL_List Library
+	FILE(GLOB LL_LIST_SRC
+		"src/DataStructures/List.cpp"
+	)
+	ADD_LIBRARY(LL_List SHARED ${LL_LIST_SRC})
+	SET_PROPERTY(TARGET LL_List PROPERTY SOVERSION 2.0)
+	INSTALL(TARGETS LL_List RUNTIME DESTINATION "bin" LIBRARY DESTINATION "lib" ARCHIVE DESTINATION "lib")
+
+	INSTALL(FILES "include/LexRisLogic/DataStructures/List.h" DESTINATION "include/LexRisLogic/DataStructures")
 
 #LL_SparseMatrix Library
 	FILE(GLOB LL_SPARSEMATRIX_SRC
