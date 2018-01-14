@@ -26,8 +26,12 @@ namespace LL_DataStructure
 {
     struct LL_SHARED __ListNodeBase__
     {
+        bool enabled=false;
         __ListNodeBase__* prev=nullptr;
         __ListNodeBase__* next=nullptr;
+        __ListNodeBase__* prev_enabled=nullptr;
+        __ListNodeBase__* next_enabled=nullptr;
+        void enable();
         virtual ~__ListNodeBase__();
     };
 
@@ -39,7 +43,10 @@ namespace LL_DataStructure
         protected:
             __ListNodeBase__* _V_node=nullptr;
             __ListNodeBase__* _V_prev_node=nullptr;
+            void _F_get_prev();
             void _F_get_next();
+            void _F_get_prev_enabled();
+            void _F_get_next_enabled();
     };
 
     class LL_SHARED __ListBase__
@@ -51,6 +58,8 @@ namespace LL_DataStructure
             void _F_clear();
             void _F_insert(__ListIteratorBase__& position,__ListNodeBase__* node);
             void _F_erase(__ListIteratorBase__& position);
+            void _F_enable();
+            void _F_disable(__ListIteratorBase__& position);
         public:
             __ListBase__()
             {
@@ -100,6 +109,17 @@ namespace LL_DataStructure
                         _V_node=node;
                         _V_prev_node=prev_node;
                     }
+                    iterator operator -- (int)
+                    {
+                        iterator temp_iterator=(*this);
+                        _F_get_prev();
+                        return temp_iterator;
+                    }
+                    iterator operator -- ()
+                    {
+                        _F_get_prev();
+                        return (*this);
+                    }
                     iterator operator ++ (int)
                     {
                         iterator temp_iterator=(*this);
@@ -121,6 +141,48 @@ namespace LL_DataStructure
                         return (_V_node!=another_iterator._V_node);
                     }
             };
+            class Class_EnabledIterator:public __ListIteratorBase__
+            {
+                public:
+                    Class_EnabledIterator()
+                    {
+                    }
+                    Class_EnabledIterator(__ListNodeBase__* node,__ListNodeBase__* prev_node)
+                    {
+                        _V_node=node;
+                        _V_prev_node=prev_node;
+                    }
+                    T get_data()
+                    {
+                        return static_cast<_S_Structure_Node*>(_V_node)->data;
+                    }
+                    bool is_valid()
+                    {
+                        return _V_node;
+                    }
+                    Class_EnabledIterator operator -- (int)
+                    {
+                        Class_EnabledIterator temp_iterator=(*this);
+                        _F_get_prev_enabled();
+                        return temp_iterator;
+                    }
+                    Class_EnabledIterator operator -- ()
+                    {
+                        _F_get_prev_enabled();
+                        return (*this);
+                    }
+                    Class_EnabledIterator operator ++ (int)
+                    {
+                        Class_EnabledIterator temp_iterator=(*this);
+                        _F_get_next_enabled();
+                        return temp_iterator;
+                    }
+                    Class_EnabledIterator operator ++ ()
+                    {
+                        _F_get_next_enabled();
+                        return (*this);
+                    }
+            };
             iterator begin()
             {
                 return iterator(_V_root.next,&_V_root);
@@ -128,6 +190,10 @@ namespace LL_DataStructure
             iterator end()
             {
                 return iterator(nullptr,_V_head);
+            }
+            Class_EnabledIterator get_enabled_iterator()
+            {
+                return Class_EnabledIterator(_V_root.next_enabled,&_V_root);
             }
             unsigned int size()
             {
@@ -169,6 +235,15 @@ namespace LL_DataStructure
             iterator erase(iterator position)
             {
                 _F_erase(position);
+                return position;
+            }
+            void enable_list()
+            {
+                _F_enable();
+            }
+            Class_EnabledIterator disable(Class_EnabledIterator position)
+            {
+                _F_disable(position);
                 return position;
             }
             List& operator = (const List<T>& another_list)
