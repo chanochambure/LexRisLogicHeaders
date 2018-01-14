@@ -131,7 +131,7 @@ namespace LL_DataStructure
                         _F_get_next();
                         return (*this);
                     }
-                    const T operator * ()
+                    T& operator * ()
                     {
                         _S_Structure_Node* pointer=static_cast<_S_Structure_Node*>(_V_node);
                         return pointer->data;
@@ -152,7 +152,7 @@ namespace LL_DataStructure
                         _V_node=node;
                         _V_prev_node=prev_node;
                     }
-                    T get_data()
+                    T& get_data()
                     {
                         return static_cast<_S_Structure_Node*>(_V_node)->data;
                     }
