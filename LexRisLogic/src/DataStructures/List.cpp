@@ -144,4 +144,8 @@ namespace LL_DataStructure
             position._V_node=position._V_node->next_enabled;
         }
     }
+	__ListBase__::__ListBase__()
+	{
+        _V_head=&_V_root;
+	}
 }

@@ -61,10 +61,7 @@ namespace LL_DataStructure
             void _F_enable();
             void _F_disable(__ListIteratorBase__& position);
         public:
-            __ListBase__()
-            {
-                _V_head=&_V_root;
-            }
+            __ListBase__();
     };
 
     template<typename T>
