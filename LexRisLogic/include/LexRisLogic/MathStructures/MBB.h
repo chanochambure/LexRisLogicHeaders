@@ -42,5 +42,4 @@ namespace LL_MathStructure
     bool LL_SHARED mbb_collision(MBB first_mbb,MBB second_mbb);
 }
 
-
 #endif // INCLUDED_LL_MATHSTRUCTURE_MBB_H

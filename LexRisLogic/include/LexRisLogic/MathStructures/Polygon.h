@@ -48,5 +48,4 @@ namespace LL_MathStructure
                                          std::list<Point>* points=nullptr);
 }
 
-
 #endif // INCLUDED_LL_MATHSTRUCTURE_POLYGON_H

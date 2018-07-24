@@ -4,9 +4,9 @@ Las Cabeceras de LexRis Logic brindan un código amigable orientado a objetos y 
 
 Allegro v5.2.0, ENet v1.3.13 y irrKlang v1.5.0 (API)
 
-## Instalación v2.00
+## Instalación v2.10
 
-Para instalar las cabeceras de LexRis Logic se cuenta con un archivo CMake en la carpeta LexRisLogic donde se encuentran los archivos.
+Para instalar las cabeceras de LexRis Logic se cuenta con un archivo CMake en la carpeta LexRisLogic (Directorio Raíz).
 
 ### 1. CMake en UNIX
 
@@ -16,6 +16,7 @@ Clone el repositorio y siga los siguientes pasos:
     mkdir build
     cd build
     cmake ..
+
 La compilación CMake puede ser modificada mediante los siguientes parámetros:
 
     -DINSTALL_ALLEGRO  :         Para decidir si instalar la extensión de Allegro 5.2.0
@@ -43,7 +44,7 @@ Terminada la compilación he instalación contara con tres carpetas en la ruta s
     lib/    :       Archivos de Enlace
     include/:       Cabeceras para incluir las librerías
 
-## Usando LL v2.00
+## Usando LL v2.10
 
 Para usar las cabeceras de LexRis Logic solo debe incluir la cabecera que se usara y enlazar el módulo que se este usando, por ejemplo si usa las cabeceras simples como Convert.h, StringSplitter.h o Math.h solo deberá añadir '-lLL' en opciones de enlace.
 
@@ -51,6 +52,7 @@ Para usar las cabeceras de LexRis Logic solo debe incluir la cabecera que se usa
     #include<LexRisLogic/ENet/...>                          //Se necesita -lLL_ENet
     #include<LexRisLogic/irrKlang/...>                      //Se necesita -lLL_irrKlang
     #include<LexRisLogic/MathStructures/...>                //Se necesita -lLL_MathStructure
+    #include<LexRisLogic/DataStructures/List.h>             //Se necesita -lLL_List
     #include<LexRisLogic/DataStructures/RTree.h>            //Se necesita -lLL_RTree
     #include<LexRisLogic/DataStructures/SparseMatrix.h>     //Se necesita -lLL_SparseMatrix
     #include<LexRisLogic/*.h>                               //Se necesita -lLL
@@ -61,4 +63,4 @@ Las Cabeceras no tienen enlace hacia las librerías de Allegro5, ENet e irrKlang
 
 ## Documentación
 
-La documentación de uso se encuentra en el directorio de documentación como "Guía del Programador", ahí encontrara redactado que hace cada una de las variables, funciones y clases públicas de las cabeceras de LexRis Logic.
+La documentación de uso se encuentra en el directorio de documentación como "Guía del Programador", ahí encontrará redactado la funcionalidad de cada una de las variables, funciones y clases públicas de las cabeceras de LexRis Logic.
