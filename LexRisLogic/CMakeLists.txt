@@ -72,6 +72,18 @@ endif(INSTALL_ALLEGRO)
 
 	INSTALL(DIRECTORY "include/LexRisLogic/MathStructures/" DESTINATION "include/LexRisLogic/MathStructures")
 
+#LL_IntervalTree Library
+	FILE(GLOB LL_INTERVALTREE_SRC
+		"src/DataStructures/IntervalTree.cpp"
+		"src/MathStructures/Interval.cpp"
+	)
+	ADD_LIBRARY(LL_IntervalTree SHARED ${LL_INTERVALTREE_SRC})
+	SET_PROPERTY(TARGET LL_IntervalTree PROPERTY SOVERSION 2.10)
+	INSTALL(TARGETS LL_IntervalTree RUNTIME DESTINATION "bin" LIBRARY DESTINATION "lib" ARCHIVE DESTINATION "lib")
+
+	INSTALL(FILES "include/LexRisLogic/DataStructures/IntervalTree.h" DESTINATION "include/LexRisLogic/DataStructures")
+	INSTALL(FILES "include/LexRisLogic/MathStructures/Interval.h" DESTINATION "include/LexRisLogic/MathStructures")
+
 #LL_List Library
 	FILE(GLOB LL_LIST_SRC
 		"src/DataStructures/List.cpp"
