@@ -17,7 +17,7 @@ Clone el repositorio y siga los siguientes pasos:
     cd build
     cmake ..
 
-La compilación CMake puede ser modificada mediante los siguientes parámetros:
+La compilación CMake puede ser modificada mediante los siguientes parámetros añadiendo True o False si se desea la extensión:
 
     -DINSTALL_ALLEGRO  :         Para decidir si instalar la extensión de Allegro 5.2.0
     -DINSTALL_ENET     :         Para decidir si instalar la extensión de ENet 1.3.13
@@ -32,9 +32,9 @@ Para desinstalación:
 
     sudo make uninstall
 
-### 2. CMake en Windows
+### 2. Usar CMake
 
-Para facilidad del usuario, utilizar la interfaz gráfica de CMake, dar click en configurar, seleccionar el compilador deseado (actualmente se probo en MinGW) y cambiar las opciones, en especial el prefijo de instalación.
+Para facilidad del usuario, utilizar la interfaz gráfica de CMake, dar click en configurar, seleccionar el compilador deseado (probado para MinGW en Windows) y cambiar las opciones.
 
 Terminada la configuración, genere el MakeFile y compilela, si no conoce como compilar un make, puede usar el CMake para generar un proyecto de Code::Blocks - MinGW para mayor facilidad.
 
@@ -52,6 +52,7 @@ Para usar las cabeceras de LexRis Logic solo debe incluir la cabecera que se usa
     #include<LexRisLogic/ENet/...>                          //Se necesita -lLL_ENet
     #include<LexRisLogic/irrKlang/...>                      //Se necesita -lLL_irrKlang
     #include<LexRisLogic/MathStructures/...>                //Se necesita -lLL_MathStructure
+    #include<LexRisLogic/DataStructures/Interval.h>         //Se necesita -lLL_IntervalTree
     #include<LexRisLogic/DataStructures/List.h>             //Se necesita -lLL_List
     #include<LexRisLogic/DataStructures/RTree.h>            //Se necesita -lLL_RTree
     #include<LexRisLogic/DataStructures/SparseMatrix.h>     //Se necesita -lLL_SparseMatrix
