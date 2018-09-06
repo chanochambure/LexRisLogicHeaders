@@ -55,27 +55,6 @@ namespace LL_DataStructure
                 int get_right_height();
                 void update_height();
                 ~_S_Structure_Node();
-                void print(std::string level)
-                {
-                    std::cout<<level<<"Height: "<<height<<std::endl;
-                    std::cout<<level<<"MidPoint: "<<mid_point<<std::endl;
-                    std::cout<<level<<"Intervals(Increasing)"<<std::endl;
-                    for(auto i=increasing.begin();i!=increasing.end();++i)
-                        std::cout<<level<<*i<<std::endl;
-                    std::cout<<level<<"Intervals(Decreasing)"<<std::endl;
-                    for(auto i=decreasing.begin();i!=decreasing.end();++i)
-                        std::cout<<level<<*i<<std::endl;
-                    std::cout<<level<<"Left"<<std::endl;
-                    if(left)
-                        left->print(level+"\t");
-                    else
-                        std::cout<<level<<"-"<<std::endl;
-                    std::cout<<level<<"Right"<<std::endl;
-                    if(right)
-                        right->print(level+"\t");
-                    else
-                        std::cout<<level<<"-"<<std::endl;
-                }
             };
             _S_Structure_Node* _V_root=nullptr;
             unsigned int _V_size=0;
@@ -121,13 +100,6 @@ namespace LL_DataStructure
             std::list<LL_MathStructure::Interval> range_query(const LL_MathStructure::Interval& query);
             IntervalTree& operator = (const IntervalTree& another_interval_tree);
             ~IntervalTree();
-            void print()
-            {
-                if(_V_root)
-                    _V_root->print("");
-                else
-                    std::cout<<"Empty"<<std::endl;
-            }
     };
 }
 
