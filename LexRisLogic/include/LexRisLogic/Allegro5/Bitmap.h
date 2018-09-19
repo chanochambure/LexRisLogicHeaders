@@ -31,6 +31,7 @@ namespace LL_AL5
 {
     bool LL_SHARED image_addon();
     bool LL_SHARED save_bitmap(std::string bitmap_file_name,ALLEGRO_BITMAP* bitmap);
+    void LL_SHARED disable_premultiplied_alpha();
 
     class LL_SHARED BitmapBase
     {
@@ -72,9 +73,12 @@ namespace LL_AL5
             float _V_size_x=0.0;
             float _V_size_y=0.0;
         public:
+            Bitmap();
+            Bitmap(const Bitmap&) = delete;
             float get_size_x();
             float get_size_y();
             bool create(int size_x,int size_y);
+            bool clone(ALLEGRO_BITMAP* base_bitmap);
             bool destroy();
             void set_target();
             bool lock();
@@ -82,6 +86,7 @@ namespace LL_AL5
             ALLEGRO_COLOR get_pixel_color(Type_pos pos_x,Type_pos pos_y);
             void draw();
             void draw_in_another_target();
+            const Bitmap& operator = (const Bitmap&) = delete;
             operator ALLEGRO_BITMAP* ();
             ~Bitmap();
     };
@@ -96,6 +101,8 @@ namespace LL_AL5
             float _V_size_x=0.0;
             float _V_size_y=0.0;
         public:
+            SubBitmap();
+            SubBitmap(const SubBitmap&) = delete;
             void set_parent_bitmap(ALLEGRO_BITMAP* new_parent_bitmap);
             ALLEGRO_BITMAP* get_parent_bitmap();
             void set_sub_x(int new_sub_x);
@@ -114,6 +121,7 @@ namespace LL_AL5
             ALLEGRO_COLOR get_pixel_color(Type_pos pos_x,Type_pos pos_y);
             void draw();
             void draw_in_another_target();
+            const SubBitmap& operator = (const SubBitmap&) = delete;
             operator ALLEGRO_BITMAP* ();
             ~SubBitmap();
     };
@@ -126,6 +134,8 @@ namespace LL_AL5
             float _V_size_x=0.0;
             float _V_size_y=0.0;
         public:
+            Image();
+            Image(const Image&) = delete;
             void set_path(std::string new_image_path);
             std::string get_path();
             float get_size_x();
@@ -139,6 +149,7 @@ namespace LL_AL5
             ALLEGRO_COLOR get_pixel_color(Type_pos pos_x,Type_pos pos_y);
             void draw();
             void draw_in_another_target();
+            const Image& operator = (const Image&) = delete;
             operator ALLEGRO_BITMAP* ();
             ~Image();
     };

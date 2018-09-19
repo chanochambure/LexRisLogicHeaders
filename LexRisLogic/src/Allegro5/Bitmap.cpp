@@ -29,6 +29,10 @@ namespace LL_AL5
     {
         return al_save_bitmap(bitmap_file_name.c_str(),bitmap);
     }
+    void LL_SHARED disable_premultiplied_alpha()
+    {
+        al_set_new_bitmap_flags(ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+    }
 
     BitmapBase::BitmapBase()
     {
@@ -105,6 +109,9 @@ namespace LL_AL5
         return _V_tint_color;
     }
 
+    Bitmap::Bitmap()
+    {
+    }
     float Bitmap::get_size_x()
     {
         return _V_size_x;
@@ -122,6 +129,21 @@ namespace LL_AL5
             _V_size_x=size_x;
             _V_size_y=size_y;
             return true;
+        }
+        return false;
+    }
+    bool Bitmap::clone(ALLEGRO_BITMAP* base_bitmap)
+    {
+        if(base_bitmap)
+        {
+            destroy();
+            _V_bitmap=al_clone_bitmap(base_bitmap);
+            if(_V_bitmap)
+            {
+                _V_size_x=al_get_bitmap_width(_V_bitmap);
+                _V_size_y=al_get_bitmap_height(_V_bitmap);
+                return true;
+            }
         }
         return false;
     }
@@ -177,6 +199,9 @@ namespace LL_AL5
         destroy();
     }
 
+    SubBitmap::SubBitmap()
+    {
+    }
     void SubBitmap::set_parent_bitmap(ALLEGRO_BITMAP* new_parent_bitmap)
     {
         destroy();
@@ -280,6 +305,9 @@ namespace LL_AL5
         destroy();
     }
 
+    Image::Image()
+    {
+    }
     void Image::set_path(std::string new_image_path)
     {
         _V_image_path=new_image_path;
