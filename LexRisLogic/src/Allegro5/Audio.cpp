@@ -21,6 +21,9 @@
 
 namespace LL_AL5
 {
+    Audio::Audio()
+    {
+    }
     void Audio::set_path(std::string new_audio_path)
     {
         _V_audio_path=new_audio_path;
@@ -29,147 +32,160 @@ namespace LL_AL5
     {
         return _V_audio_path;
     }
-    bool Audio::set_speed(float new_speed)
-    {
-        if(_V_instance)
-            return al_set_sample_instance_speed(_V_instance,new_speed);
-        return false;
-    }
-    float Audio::get_speed()
-    {
-        if(_V_instance)
-            return al_get_sample_instance_speed(_V_instance);
-        return 0.0;
-    }
-    bool Audio::set_pan(float new_pan)
-    {
-        if(_V_instance)
-            return al_set_sample_instance_pan(_V_instance,new_pan);
-        return false;
-    }
-    float Audio::get_pan()
-    {
-        if(_V_instance)
-            return al_get_sample_instance_pan(_V_instance);
-        return 0.0;
-    }
-    bool Audio::set_volume(float new_volume)
-    {
-        if(_V_instance)
-            return al_set_sample_instance_gain(_V_instance,new_volume);
-        return false;
-    }
-    float Audio::get_volume()
-    {
-        if(_V_instance)
-            return al_get_sample_instance_gain(_V_instance);
-        return 0.0;
-    }
-    bool Audio::set_playmode(ALLEGRO_PLAYMODE playmode)
-    {
-        if(_V_instance)
-            return al_set_sample_instance_playmode(_V_instance,_V_playmode=playmode);
-        return false;
-    }
-    ALLEGRO_PLAYMODE Audio::get_playmode()
-    {
-        return _V_playmode;
-    }
     bool Audio::load()
     {
-        destroy();
-        if(!al_reserve_samples(1))
-            return false;
-        _V_sample=al_load_sample(_V_audio_path.c_str());
         if(_V_sample)
-        {
-            _V_instance=al_create_sample_instance(_V_sample);
-            if(_V_instance)
-            {
-                al_attach_sample_instance_to_mixer(_V_instance,al_get_default_mixer());
-                return true;
-            }
-            al_destroy_sample(_V_sample);
-            _V_sample=nullptr;
-        }
-        return false;
+            return false;
+        if(al_reserve_samples(1))
+            _V_sample=al_load_sample(_V_audio_path.c_str());
+        return _V_sample;
     }
     bool Audio::destroy()
     {
-        if(_V_instance)
+        if(_V_sample)
         {
-            al_destroy_sample_instance(_V_instance);
-            _V_instance=nullptr;
-            if(_V_sample)
-            {
-                al_destroy_sample(_V_sample);
-                _V_sample=nullptr;
-                return true;
-            }
+            clear();
+            al_destroy_sample(_V_sample);
+            _V_sample=nullptr;
+            return true;
         }
         return false;
     }
-    unsigned int Audio::size()
+    unsigned int Audio::length()
     {
         if(_V_sample)
             return al_get_sample_length(_V_sample);
         return 0;
     }
-    float Audio::get_time()
+    unsigned int Audio::size()
     {
-        if(_V_instance)
-            return al_get_sample_instance_time(_V_instance);
-        return 0.0;
+        return _V_instances.size();
     }
-    bool Audio::set_audio_position(unsigned int new_position)
+    bool Audio::create_instance()
     {
-        if(_V_instance and al_set_sample_instance_position(_V_instance,new_position))
+        if(_V_sample)
         {
-            _V_position=new_position;
+            _S_Structure_AudioInstance new_instance;
+            new_instance.instance=al_create_sample_instance(_V_sample);
+            if(new_instance.instance)
+            {
+                _V_instances.push_back(new_instance);
+                return true;
+            }
+        }
+        return false;
+    }
+    bool Audio::attack_instance_to_mixer(unsigned int index, ALLEGRO_MIXER* mixer)
+    {
+        return al_attach_sample_instance_to_mixer(_V_instances[index].instance,mixer);
+    }
+    bool Audio::destroy_instance(unsigned int index)
+    {
+        if(index<_V_instances.size())
+        {
+            auto iter=_V_instances.begin()+index;
+            al_destroy_sample_instance(iter->instance);
+            _V_instances.erase(iter);
             return true;
         }
         return false;
     }
-    unsigned int Audio::get_audio_position()
+    void Audio::clear()
     {
-        if(_V_instance)
-            return al_get_sample_instance_position(_V_instance);
-        return 0;
+        for(_S_Structure_AudioInstance& iter:_V_instances)
+            al_destroy_sample_instance(iter.instance);
+        _V_instances.clear();
     }
-    bool Audio::is_playing()
+    bool Audio::set_speed(unsigned int index,float new_speed)
     {
-        if(_V_instance)
-            return al_get_sample_instance_playing(_V_instance);
+        return al_set_sample_instance_speed(_V_instances[index].instance,new_speed);
+    }
+    float Audio::get_speed(unsigned int index)
+    {
+        return al_get_sample_instance_speed(_V_instances[index].instance);
+    }
+    bool Audio::set_pan(unsigned int index,float new_pan)
+    {
+        return al_set_sample_instance_pan(_V_instances[index].instance,new_pan);
+    }
+    float Audio::get_pan(unsigned int index)
+    {
+        return al_get_sample_instance_pan(_V_instances[index].instance);
+    }
+    bool Audio::set_volume(unsigned int index,float new_volume)
+    {
+        return al_set_sample_instance_gain(_V_instances[index].instance,new_volume);
+    }
+    float Audio::get_volume(unsigned int index)
+    {
+        return al_get_sample_instance_gain(_V_instances[index].instance);
+    }
+    bool Audio::set_playmode(unsigned int index,ALLEGRO_PLAYMODE new_playmode)
+    {
+        return al_set_sample_instance_playmode(_V_instances[index].instance,new_playmode);
+    }
+    ALLEGRO_PLAYMODE Audio::get_playmode(unsigned int index)
+    {
+        return al_get_sample_instance_playmode(_V_instances[index].instance);
+    }
+    float Audio::get_time(unsigned int index)
+    {
+        return al_get_sample_instance_time(_V_instances[index].instance)*get_speed(index);
+    }
+    bool Audio::set_length(unsigned int index,unsigned int new_length)
+    {
+        return al_set_sample_instance_length(_V_instances[index].instance,new_length);
+    }
+    unsigned int Audio::get_length(unsigned int index)
+    {
+        if(is_playing(index))
+            return al_get_sample_instance_length(_V_instances[index].instance);
+        return _V_instances[index].position;
+    }
+    bool Audio::set_audio_position(unsigned int index,unsigned int new_position)
+    {
+        if(al_set_sample_instance_position(_V_instances[index].instance,new_position))
+        {
+            _V_instances[index].position=new_position;
+            return true;
+        }
         return false;
     }
-    void Audio::stop()
+    unsigned int Audio::get_audio_position(unsigned int index)
     {
-        if(_V_instance)
-        {
-            al_stop_sample_instance(_V_instance);
-            _V_position=0;
-        }
+        return al_get_sample_instance_position(_V_instances[index].instance);
     }
-    void Audio::pause()
+    bool Audio::is_playing(unsigned int index)
     {
-        if(is_playing())
-        {
-            al_set_sample_instance_playing(_V_instance,false);
-            _V_position=get_audio_position();
-        }
+        return al_get_sample_instance_playing(_V_instances[index].instance);
     }
-    void Audio::play()
+    bool Audio::stop(unsigned int index)
     {
-        if(!is_playing() and set_audio_position(_V_position))
-            al_set_sample_instance_playing(_V_instance,true);
+        if(al_stop_sample_instance(_V_instances[index].instance))
+        {
+            _V_instances[index].position=0;
+            return true;
+        }
+        return false;
+    }
+    bool Audio::pause(unsigned int index)
+    {
+        if(is_playing(index))
+        {
+            _V_instances[index].position=get_audio_position(index);
+            return al_set_sample_instance_playing(_V_instances[index].instance,false);
+        }
+        return false;
+    }
+    bool Audio::play(unsigned int index)
+    {
+        if(!is_playing(index) and set_audio_position(index,_V_instances[index].position))
+            return al_set_sample_instance_playing(_V_instances[index].instance,true);
+        return false;
     }
     Audio::operator ALLEGRO_SAMPLE* ()
     {
         return _V_sample;
-    }
-    Audio::operator ALLEGRO_SAMPLE_INSTANCE* ()
-    {
-        return _V_instance;
     }
     Audio::~Audio()
     {

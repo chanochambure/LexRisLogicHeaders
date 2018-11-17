@@ -34,6 +34,9 @@ namespace LL_AL5
         return al_restore_default_mixer();
     }
 
+    Mixer::Mixer()
+    {
+    }
     bool Mixer::set_frequency(unsigned int new_frequency)
     {
         if(_V_mixer)

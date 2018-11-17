@@ -42,6 +42,8 @@ namespace LL_AL5
             ALLEGRO_CHANNEL_CONF _V_chanel_conf=ALLEGRO_CHANNEL_CONF_2;
             unsigned int _V_frequency=44100;
         public:
+            Mixer();
+            Mixer(const Mixer&) = delete;
             bool set_frequency(unsigned int new_frequency);
             unsigned int get_frequency();
             bool set_audio_depth(ALLEGRO_AUDIO_DEPTH new_audio_depth);
@@ -55,6 +57,7 @@ namespace LL_AL5
             bool set_volume(float new_volume);
             float get_volume();
             bool set_default_mixer();
+            const Mixer& operator = (const Mixer&) = delete;
             operator ALLEGRO_MIXER* ();
             operator ALLEGRO_VOICE* ();
             ~Mixer();

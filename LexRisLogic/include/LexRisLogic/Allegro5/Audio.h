@@ -26,40 +26,53 @@
 #include "Mixer.h"
 
 #include <string>
+#include <vector>
 
 namespace LL_AL5
 {
     class LL_SHARED Audio
     {
         private:
-            unsigned int _V_position=0;
+            struct _S_Structure_AudioInstance
+            {
+                unsigned int position=0;
+                ALLEGRO_SAMPLE_INSTANCE* instance=nullptr;
+            };
             std::string _V_audio_path;
-            ALLEGRO_PLAYMODE _V_playmode=ALLEGRO_PLAYMODE_ONCE;
             ALLEGRO_SAMPLE* _V_sample=nullptr;
-            ALLEGRO_SAMPLE_INSTANCE* _V_instance=nullptr;
+            std::vector<_S_Structure_AudioInstance> _V_instances;
         public:
+            Audio();
+            Audio(const Audio&) = delete;
             void set_path(std::string new_audio_path);
             std::string get_path();
-            bool set_speed(float new_speed);
-            float get_speed();
-            bool set_pan(float new_pan);
-            float get_pan();
-            bool set_volume(float new_volume);
-            float get_volume();
-            bool set_playmode(ALLEGRO_PLAYMODE playmode);
-            ALLEGRO_PLAYMODE get_playmode();
             bool load();
             bool destroy();
+            unsigned int length();
             unsigned int size();
-            float get_time();
-            bool set_audio_position(unsigned int new_position);
-            unsigned int get_audio_position();
-            bool is_playing();
-            void stop();
-            void pause();
-            void play();
+            bool create_instance();
+            bool attack_instance_to_mixer(unsigned int index, ALLEGRO_MIXER* mixer);
+            bool destroy_instance(unsigned int index);
+            void clear();
+            bool set_speed(unsigned int index,float new_speed);
+            float get_speed(unsigned int index);
+            bool set_pan(unsigned int index,float new_pan);
+            float get_pan(unsigned int index);
+            bool set_volume(unsigned int index,float new_volume);
+            float get_volume(unsigned int index);
+            bool set_playmode(unsigned int index,ALLEGRO_PLAYMODE playmode);
+            ALLEGRO_PLAYMODE get_playmode(unsigned int index);
+            float get_time(unsigned int index);
+            bool set_length(unsigned int index,unsigned int new_length);
+            unsigned int get_length(unsigned int index);
+            bool set_audio_position(unsigned int index,unsigned int new_position);
+            unsigned int get_audio_position(unsigned int index);
+            bool is_playing(unsigned int index);
+            bool stop(unsigned int index);
+            bool pause(unsigned int index);
+            bool play(unsigned int index);
+            const Audio& operator = (const Audio&) = delete;
             operator ALLEGRO_SAMPLE* ();
-            operator ALLEGRO_SAMPLE_INSTANCE* ();
             ~Audio();
     };
 }
