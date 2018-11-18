@@ -27,11 +27,19 @@
 #include <allegro5/allegro_native_dialog.h>
 #include <map>
 #include <string>
+#include <vector>
 
 namespace LL_AL5
 {
-    class LL_SHARED KeyControl
+    bool LL_SHARED input_addon();
+    void LL_SHARED uninstall_input();
+    std::string LL_SHARED get_keycode_name(int keycode);
+
+    class LL_SHARED Input;
+
+    class LL_SHARED KeyController
     {
+        friend class Input;
         private:
             struct _S_Structure_Key
             {
@@ -53,31 +61,108 @@ namespace LL_AL5
             unsigned int size();
             void clear_key_status();
             void clear();
-            bool& get_key_down_status(std::string key_name);
+            bool& get_key_status(std::string key_name);
             int get_keycode(std::string key_name);
-            ~KeyControl();
+            void update();
+            ~KeyController();
     };
 
-    class LL_SHARED Input
+    class LL_SHARED MouseController
     {
+        friend class Input;
         private:
-            bool _V_keyboard_status=false;
-            bool _V_mouse_status=false;
-            bool _V_mouse_event_type=false;
-            std::string* _V_input_objetive=nullptr;
-            unsigned int _V_max_input_size;
-            ALLEGRO_EVENT_QUEUE* _V_event_queue;
-            KeyControl* _V_key_control=nullptr;
-            bool _V_auxiliar_key=false;
-            bool _V_display_exit_status=false;
-            bool _V_textlog_exit_status=false;
-            float _V_time=0.0;
-            bool _V_timer_event=false;
             int _V_mouse_x=0;
             int _V_mouse_y=0;
             int _V_mouse_z=0;
             bool _V_mouse_buttons[3]={false,false,false};
             bool _V_mouse_buttons_auxiliar[3]={false,false,false};
+        public:
+            bool set_mouse_xy(ALLEGRO_DISPLAY* display,int new_mouse_x,int new_mouse_y);
+            int get_mouse_x();
+            int get_mouse_y();
+            bool set_mouse_z(int new_mouse_z);
+            int get_mouse_z();
+            bool& left_click();
+            bool& right_click();
+            bool& middle_click();
+            void update();
+    };
+
+    class LL_SHARED JoyStickController
+    {
+        friend class Input;
+        private:
+            struct _S_Structure_Axis
+            {
+                std::string name;
+                float value=0;
+            };
+            struct _S_Structure_Stick
+            {
+                std::string name;
+                int flag;
+                std::vector<_S_Structure_Axis> axes;
+            };
+            struct _S_Structure_Button
+            {
+                bool value=false;
+                std::string name;
+            };
+            struct _S_Structure_JoyStick
+            {
+                ALLEGRO_JOYSTICK* joystick=nullptr;
+                float axis_min_value=0.0;
+                std::string name;
+                std::vector<_S_Structure_Stick> sticks;
+                std::vector<_S_Structure_Button> buttons;
+            };
+            bool _V_auxiliar_button=false;
+            float _V_auxiliar_axis=0.0;
+            float _V_default_axis_min_value=0.0;
+            std::vector<_S_Structure_JoyStick> _V_joystick_data;
+            std::map<ALLEGRO_JOYSTICK*,unsigned int> _V_joysticks;
+            void _F_init();
+        public:
+            JoyStickController();
+            JoyStickController(const JoyStickController&) = delete;
+            bool reconfigure_joysticks();
+            bool set_default_axis_min_value(float new_default_axis_min_value);
+            float get_default_axis_min_value();
+            unsigned int size();
+            bool set_axis_min_value(unsigned int joystick_id,float new_axis_min_value);
+            float get_axis_min_value(unsigned int joystick_id);
+            std::string get_name(unsigned int joystick_id);
+            unsigned int get_num_buttons(unsigned int joystick_id);
+            bool& get_button_value(unsigned int joystick_id,unsigned int button_id);
+            std::string get_button_name(unsigned int joystick_id,unsigned int button_id);
+            unsigned int get_num_sticks(unsigned int joystick_id);
+            int get_stick_flag(unsigned int joystick_id,unsigned int stick_id);
+            std::string get_stick_name(unsigned int joystick_id,unsigned int stick_id);
+            unsigned int get_num_axes(unsigned int joystick_id,unsigned int stick_id);
+            float& get_axis_value(unsigned int joystick_id,unsigned int stick_id,unsigned int axis_id);
+            std::string get_axis_name(unsigned int joystick_id,unsigned int stick_id,unsigned int axis_id);
+            void update(unsigned int joystick_id);
+            const JoyStickController& operator = (const JoyStickController&) = delete;
+    };
+
+    class LL_SHARED Input
+    {
+        private:
+            typedef JoyStickController::_S_Structure_JoyStick _T_Type_joystick;
+            bool _V_keyboard_status=false;
+            bool _V_mouse_status=false;
+            bool _V_joystick_status=false;
+            std::string* _V_input_objetive=nullptr;
+            unsigned int _V_max_input_size;
+            ALLEGRO_EVENT_QUEUE* _V_event_queue;
+            KeyController* _V_key_controller=nullptr;
+            MouseController* _V_mouse_controller=nullptr;
+            JoyStickController* _V_joystick_controller=nullptr;
+            bool _V_auxiliar_data=false;
+            bool _V_display_exit_status=false;
+            bool _V_textlog_exit_status=false;
+            float _V_time=0.0;
+            bool _V_timer_event=false;
             bool _V_input_activated=false;
             ALLEGRO_DISPLAY* _V_display=nullptr;
             ALLEGRO_TEXTLOG* _V_textlog=nullptr;
@@ -88,40 +173,40 @@ namespace LL_AL5
             bool _V_char_lock=false;
             bool _F_find_key(std::string key_name);
             bool _F_find_key(int keycode,std::string* key_name=nullptr);
+            int _V_last_keycode_down=-1;
         public:
             Input();
+            Input(const Input&) = delete;
             bool unregister_timer();
             bool register_timer(ALLEGRO_TIMER* new_timer);
             bool unregister_display();
             bool register_display(ALLEGRO_DISPLAY* new_display);
             bool unregister_textlog();
             bool register_textlog(ALLEGRO_TEXTLOG* new_textlog);
-            void set_key_control(KeyControl* new_key_control);
-            KeyControl* get_key_control();
+            void set_key_controller(KeyController* new_key_controller);
+            KeyController* get_key_controller();
+            void set_mouse_controller(MouseController* new_mouse_controller);
+            MouseController* get_mouse_controller();
+            void set_joystick_controller(JoyStickController* new_mouse_controller);
+            JoyStickController* get_joystick_controller();
             void clear_events();
             void clear_key_status();
             bool set_wait_time(float wait_time);
             float get_wait_time();
             bool keyboard_on();
             bool keyboard_off();
+            bool mouse_on();
+            bool mouse_off();
+            bool joystick_on();
+            bool joystick_off();
             bool input_on(std::string* input_objetive,unsigned int max_input_size,bool special_is_blocked=false);
             bool input_off(std::string* input_objetive);
-            bool mouse_on(bool event_type=false);
-            bool mouse_off();
-            bool set_mouse_xy(int new_mouse_x,int new_mouse_y);
-            int get_mouse_x();
-            int get_mouse_y();
-            bool set_mouse_z(int new_mouse_z);
-            int get_mouse_z();
-            bool& left_click();
-            bool& right_click();
-            bool& middle_click();
             bool get_timer_event();
             bool& get_display_status();
             bool& get_textlog_status();
             bool get_event();
-            int get_keycode();
-            bool& operator [](std::string key_name);
+            int get_last_keycode_down();
+            const Input& operator = (const Input&) = delete;
             operator ALLEGRO_EVENT_QUEUE* ();
             ~Input();
     };

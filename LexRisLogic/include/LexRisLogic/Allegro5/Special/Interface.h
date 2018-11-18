@@ -50,6 +50,9 @@ namespace LL_AL5
             float _V_thickness=1.0;
             bool _V_interface_status=false;
             Input* _V_input_pointer=nullptr;
+            int _F_get_mouse_x();
+            int _F_get_mouse_y();
+            bool _F_get_left_click();
             bool _F_in_focus();
         public:
             Interface();

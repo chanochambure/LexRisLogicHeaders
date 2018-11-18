@@ -23,7 +23,7 @@ namespace LL_AL5
 {
     bool LL_SHARED text_addon()
     {
-        return al_init_font_addon()and al_init_ttf_addon();
+        return al_init_font_addon() && al_init_ttf_addon();
     }
 
     void Font::set_path(std::string new_font_path)
@@ -36,7 +36,7 @@ namespace LL_AL5
     }
     bool Font::set_size(float new_size)
     {
-        if(new_size>0.0 and !_V_font)
+        if(new_size>0.0 && !_V_font)
         {
             _V_size=new_size;
             return true;

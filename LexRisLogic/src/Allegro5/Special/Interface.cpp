@@ -21,12 +21,30 @@
 
 namespace LL_AL5
 {
+    int Interface::_F_get_mouse_x()
+    {
+        if(_V_input_pointer->get_mouse_controller())
+            return _V_input_pointer->get_mouse_controller()->get_mouse_x();
+        return 0;
+    }
+    int Interface::_F_get_mouse_y()
+    {
+        if(_V_input_pointer->get_mouse_controller())
+            return _V_input_pointer->get_mouse_controller()->get_mouse_y();
+        return 0;
+    }
+    bool Interface::_F_get_left_click()
+    {
+        if(_V_input_pointer->get_mouse_controller())
+            return _V_input_pointer->get_mouse_controller()->left_click();
+        return false;
+    }
     bool Interface::_F_in_focus()
     {
-        Type_pos mouse_x=_V_input_pointer->get_mouse_x();
-        Type_pos mouse_y=_V_input_pointer->get_mouse_y();
-        return ((_V_pos_x<=mouse_x and mouse_x<(_V_pos_x+(_V_size_x*bitmap_scale_x))) and
-                (_V_pos_y<=mouse_y and mouse_y<(_V_pos_y+(_V_size_y*bitmap_scale_y))));
+        Type_pos mouse_x=_F_get_mouse_x();
+        Type_pos mouse_y=_F_get_mouse_y();
+        return ((_V_pos_x<=mouse_x && mouse_x<(_V_pos_x+(_V_size_x*bitmap_scale_x))) &&
+                (_V_pos_y<=mouse_y && mouse_y<(_V_pos_y+(_V_size_y*bitmap_scale_y))));
     }
     Interface::Interface()
     {
@@ -115,12 +133,12 @@ namespace LL_AL5
 
     void Button::_F_get_event()
     {
-        if(!_V_locked and _V_interface_status and _V_input_pointer->left_click() and _F_in_focus())
+        if(!_V_locked && _V_interface_status && _F_get_left_click() && _F_in_focus())
         {
             _V_is_clicked=_V_locked=true;
             return;
         }
-        if(!_V_input_pointer->left_click())
+        if(!_F_get_left_click())
             _V_locked=false;
     }
     Button::Button(Input* input_pointer)
@@ -151,7 +169,7 @@ namespace LL_AL5
     void Button::draw()
     {
         _F_get_event();
-        if(_F_in_focus() and _V_input_pointer->left_click())
+        if(_F_in_focus() && _F_get_left_click())
         {
             al_draw_filled_rectangle(_V_pos_x,_V_pos_y,
                                      _V_pos_x+(_V_size_x*bitmap_scale_x),_V_pos_y+(_V_size_y*bitmap_scale_y),
@@ -201,9 +219,9 @@ namespace LL_AL5
 
     void TextBox::_F_get_event()
     {
-        if(_V_interface_status and _V_input_pointer->left_click() and _F_in_focus())
+        if(_V_interface_status && _F_get_left_click() && _F_in_focus())
             _V_selected_status=true;
-        else if(!_F_in_focus() and _V_input_pointer->left_click())
+        else if(!_F_in_focus() && _F_get_left_click())
             _V_selected_status=false;
     }
     TextBox::TextBox(Input* input_pointer)
