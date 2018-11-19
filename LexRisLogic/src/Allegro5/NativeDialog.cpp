@@ -31,6 +31,9 @@ namespace LL_AL5
         return (al_show_native_message_box(display,title.c_str(),header.c_str(),message.c_str(),nullptr,flag)==1);
     }
 
+    FileChooser::FileChooser()
+    {
+    }
     void FileChooser::set_display(ALLEGRO_DISPLAY* display)
     {
         _V_display=display;
@@ -104,6 +107,9 @@ namespace LL_AL5
             al_destroy_native_file_dialog(_V_filechooser);
     }
 
+    TextLog::TextLog()
+    {
+    }
     void TextLog::set_title(std::string new_title)
     {
         _V_title=new_title;

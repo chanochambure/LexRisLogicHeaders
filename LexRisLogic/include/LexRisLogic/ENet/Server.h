@@ -45,6 +45,8 @@ namespace LL_ENet
             bool _V_event_disconnection=false;
             unsigned int _V_max_connections=32;
         public:
+            Server();
+            Server(const Server&) = delete;
             bool set_ip(std::string new_ip);
             std::string get_ip();
             bool set_port(unsigned int new_port);
@@ -67,6 +69,7 @@ namespace LL_ENet
             bool send(ENetPeer* receiver,std::string message);
             bool broadcast(std::string message);
             bool stop_server();
+            const Server& operator = (const Server&) = delete;
             ~Server();
     };
 }

@@ -41,6 +41,8 @@ namespace LL_AL5
             float _V_size_y=0.0;
             std::string _V_video_path;
         public:
+            Video();
+            Video(const Video&) = delete;
             void set_path(std::string new_video_path);
             std::string get_path();
             float get_size_x();
@@ -54,6 +56,7 @@ namespace LL_AL5
             void pause();
             void play();
             void draw();
+            const Video& operator = (const Video&) = delete;
             operator ALLEGRO_VIDEO* ();
             ~Video();
     };

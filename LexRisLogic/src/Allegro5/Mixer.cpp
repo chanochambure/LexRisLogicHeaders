@@ -29,6 +29,10 @@ namespace LL_AL5
     {
         al_uninstall_audio();
     }
+    ALLEGRO_MIXER* LL_SHARED get_default_mixer()
+    {
+        return al_get_default_mixer();
+    }
     bool LL_SHARED restore_default_mixer()
     {
         return al_restore_default_mixer();

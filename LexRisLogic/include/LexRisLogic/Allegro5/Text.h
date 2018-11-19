@@ -39,6 +39,8 @@ namespace LL_AL5
             std::string _V_font_path;
             float _V_size=12.0;
         public:
+            Font();
+            Font(const Font&) = delete;
             void set_path(std::string new_font_path);
             std::string get_path();
             bool set_size(float new_size);
@@ -46,6 +48,7 @@ namespace LL_AL5
             bool load_ttf_font();
             bool load_ttf_font_for_another_target();
             bool destroy();
+            const Font& operator = (const Font&) = delete;
             operator ALLEGRO_FONT* ();
             ~Font();
     };

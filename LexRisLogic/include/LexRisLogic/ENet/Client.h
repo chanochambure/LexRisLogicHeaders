@@ -46,6 +46,8 @@ namespace LL_ENet
             bool _F_reset_connection();
             bool _F_test_connection();
         public:
+            Client();
+            Client(const Client&) = delete;
             bool set_ip(std::string new_ip);
             std::string get_ip();
             bool set_port(unsigned int new_port);
@@ -65,6 +67,7 @@ namespace LL_ENet
             bool empty();
             bool send(std::string message);
             bool stop_client();
+            const Client& operator = (const Client&) = delete;
             ~Client();
     };
 }

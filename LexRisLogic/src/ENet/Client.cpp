@@ -21,6 +21,9 @@
 
 namespace LL_ENet
 {
+    Client::Client()
+    {
+    }
     bool Client::_F_reset_connection()
     {
         if(_V_client_connection)

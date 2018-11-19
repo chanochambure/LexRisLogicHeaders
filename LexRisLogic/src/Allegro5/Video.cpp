@@ -26,6 +26,9 @@ namespace LL_AL5
         return al_init_video_addon();
     }
 
+    Video::Video()
+    {
+    }
     void Video::set_path(std::string new_video_path)
     {
         _V_video_path=new_video_path;

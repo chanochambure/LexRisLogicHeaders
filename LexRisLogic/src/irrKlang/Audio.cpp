@@ -21,6 +21,9 @@
 
 namespace LL_irrKlang
 {
+    Audio::Audio()
+    {
+    }
     void Audio::set_path(std::string new_audio_path)
     {
         _V_audio_path=new_audio_path;

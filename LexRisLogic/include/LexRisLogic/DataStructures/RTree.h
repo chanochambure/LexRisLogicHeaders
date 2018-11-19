@@ -124,6 +124,7 @@ namespace LL_DataStructure
                 _P_Function_to_mbb=Function_to_mbb;
                 _V_root=new __RTreeNodeBase__(_V_dimension,_V_node_size);
             }
+            RTree(const RTree&) = delete;
             class iterator:public __RTreeIteratorBase__
             {
                 public:
@@ -246,6 +247,7 @@ namespace LL_DataStructure
                     _F_range_query(&data_list,_V_root,mbb);
                 return data_list;
             }
+            const RTree& operator = (const RTree&) = delete;
             ~RTree()
             {
                 delete(_V_root);

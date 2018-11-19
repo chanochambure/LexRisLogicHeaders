@@ -41,6 +41,8 @@ namespace LL_AL5
             bool _V_initialised=false;
             std::string _F_int_to_string(unsigned int value);
         public:
+            Sprite();
+            Sprite(const Sprite&) = delete;
             float get_size_x();
             float get_size_y();
             unsigned int get_size();
@@ -59,6 +61,7 @@ namespace LL_AL5
             ALLEGRO_COLOR get_pixel_color(Type_pos pos_x,Type_pos pos_y);
             void draw();
             void draw_in_another_target();
+            const Sprite& operator = (const Sprite&) = delete;
             operator ALLEGRO_BITMAP* ();
             ~Sprite();
     };

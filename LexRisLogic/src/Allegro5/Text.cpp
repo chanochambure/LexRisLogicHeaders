@@ -26,6 +26,9 @@ namespace LL_AL5
         return al_init_font_addon() && al_init_ttf_addon();
     }
 
+    Font::Font()
+    {
+    }
     void Font::set_path(std::string new_font_path)
     {
         _V_font_path=new_font_path;

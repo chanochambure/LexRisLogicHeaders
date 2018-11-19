@@ -31,6 +31,7 @@ namespace LL_AL5
 {
     bool LL_SHARED audio_addon();
     void LL_SHARED uninstall_audio();
+    ALLEGRO_MIXER* LL_SHARED LL_SHARED get_default_mixer();
     bool LL_SHARED restore_default_mixer();
 
     class LL_SHARED Mixer

@@ -21,6 +21,9 @@
 
 namespace LL_ENet
 {
+    Server::Server()
+    {
+    }
     bool Server::set_ip(std::string new_ip)
     {
         if(!_V_is_running and !enet_address_set_host(&_V_address,new_ip.c_str()))

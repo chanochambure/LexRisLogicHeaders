@@ -36,6 +36,8 @@ namespace LL_irrKlang
             irrklang::ISound* _V_isound=nullptr;
             bool _V_loop_mode=false;
         public:
+            Audio();
+            Audio(const Audio&) = delete;
             void set_path(std::string new_audio_path);
             std::string get_path();
             bool set_speed(float new_speed);
@@ -55,6 +57,7 @@ namespace LL_irrKlang
             void pause();
             void play();
             bool destroy();
+            const Audio& operator = (const Audio&) = delete;
             operator irrklang::ISound* ();
             ~Audio();
     };

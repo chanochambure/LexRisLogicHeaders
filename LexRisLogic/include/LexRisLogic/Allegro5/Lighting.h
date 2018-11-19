@@ -42,6 +42,7 @@ namespace LL_AL5
             void _F_set_last_blender();
         public:
             Lighting();
+            Lighting(const Lighting&) = delete;
             void set_pos(Type_pos new_pos_x,Type_pos new_pos_y);
             void set_pos_x(Type_pos new_pos_x);
             Type_pos get_pos_x();
@@ -66,6 +67,7 @@ namespace LL_AL5
             float get_pixel_intensity(Type_pos pos_x,Type_pos pos_y);
             void draw();
             void draw_in_another_target();
+            const Lighting& operator = (const Lighting&) = delete;
             operator ALLEGRO_BITMAP* ();
             ~Lighting();
     };

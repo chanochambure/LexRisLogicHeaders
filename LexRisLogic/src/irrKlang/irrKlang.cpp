@@ -23,6 +23,9 @@ namespace LL_irrKlang
 {
     SoundEngine* LL_SHARED default_engine=nullptr;
 
+    SoundEngine::SoundEngine()
+    {
+    }
     bool SoundEngine::create()
     {
         destroy();

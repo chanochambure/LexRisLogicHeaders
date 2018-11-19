@@ -32,6 +32,8 @@ namespace LL_AL5
             ALLEGRO_TIMER* _V_timer=nullptr;
             double _V_speed_seconds=1.0;
         public:
+            Timer();
+            Timer(const Timer&) = delete;
             bool set_speed_seconds(double new_speed_seconds);
             double get_speed_seconds();
             bool create();
@@ -39,6 +41,7 @@ namespace LL_AL5
             bool start();
             bool resume();
             bool stop();
+            const Timer& operator = (const Timer&) = delete;
             operator ALLEGRO_TIMER* ();
             ~Timer();
     };

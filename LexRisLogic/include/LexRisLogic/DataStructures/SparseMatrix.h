@@ -83,6 +83,7 @@ namespace LL_DataStructure
                 _V_null_value=null_value;
                 _F_construct_matrix(size_x,size_y);
             }
+            SparseMatrix(const SparseMatrix&) = delete;
             class Class_Controller:public __SparseMatrixControllerBase__
             {
                 private:
@@ -155,6 +156,7 @@ namespace LL_DataStructure
                     }
                 }
             }
+            const SparseMatrix& operator = (const SparseMatrix&) = delete;
             Class_Controller operator () (unsigned int pos_x,unsigned int pos_y)
             {
                 __SparseMatrixNodeBase__** root_x;

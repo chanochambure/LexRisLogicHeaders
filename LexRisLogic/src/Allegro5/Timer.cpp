@@ -21,6 +21,9 @@
 
 namespace LL_AL5
 {
+    Timer::Timer()
+    {
+    }
     bool Timer::set_speed_seconds(double new_speed_seconds)
     {
         if(!_V_timer and new_speed_seconds>0.0)

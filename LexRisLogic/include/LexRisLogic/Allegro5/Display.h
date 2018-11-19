@@ -48,6 +48,7 @@ namespace LL_AL5
             Display(Type_display_size size_x,Type_display_size size_y);
             Display(Type_display_size size_x,Type_display_size size_y,
                     Type_display_size real_size_x,Type_display_size real_size_y);
+            Display(const Display&) = delete;
             bool create();
             bool destroy();
             bool set_title(std::string new_title);
@@ -86,6 +87,7 @@ namespace LL_AL5
             }
             void refresh();
             bool set_target();
+            const Display& operator = (const Display&) = delete;
             operator ALLEGRO_DISPLAY* ();
             operator ALLEGRO_BITMAP* ();
             operator ALLEGRO_MOUSE_CURSOR* ();

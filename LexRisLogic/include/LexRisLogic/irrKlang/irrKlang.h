@@ -36,11 +36,14 @@ namespace LL_irrKlang
             float _V_volume=1.0;
             irrklang::ISoundEngine* _V_engine=nullptr;
         public:
+            SoundEngine();
+            SoundEngine(const SoundEngine&) = delete;
             bool create();
             void set_default_engine();
             void set_volume(float new_volume);
             float get_volume();
             bool destroy();
+            const SoundEngine& operator = (const SoundEngine&) = delete;
             operator irrklang::ISoundEngine* ();
             ~SoundEngine();
     };

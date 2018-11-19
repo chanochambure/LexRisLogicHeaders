@@ -45,6 +45,8 @@ namespace LL_AL5
             ALLEGRO_FILECHOOSER* _V_filechooser=nullptr;
             ALLEGRO_DISPLAY* _V_display=nullptr;
         public:
+            FileChooser();
+            FileChooser(const FileChooser&) = delete;
             void set_display(ALLEGRO_DISPLAY* display);
             ALLEGRO_DISPLAY* get_display();
             void set_initial_path(std::string new_search_path);
@@ -57,6 +59,7 @@ namespace LL_AL5
             bool start_filechooser();
             unsigned int get_number_of_selected_files();
             std::string operator [] (unsigned int index);
+            const FileChooser& operator = (const FileChooser&) = delete;
             ~FileChooser();
     };
 
@@ -67,6 +70,8 @@ namespace LL_AL5
             std::string _V_title;
             ALLEGRO_TEXTLOG* _V_textlog=nullptr;
         public:
+            TextLog();
+            TextLog(const TextLog&) = delete;
             void set_title(std::string new_title);
             std::string get_title();
             void set_mode(int new_mode);
@@ -75,6 +80,7 @@ namespace LL_AL5
             bool write_endl();
             bool close_textlog();
             bool is_open();
+            const TextLog& operator = (const TextLog&) = delete;
             operator ALLEGRO_TEXTLOG* ();
             ~TextLog();
     };

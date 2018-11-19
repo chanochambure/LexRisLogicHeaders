@@ -27,6 +27,9 @@ namespace LL_AL5
         string_stream<<value;
         return string_stream.str();
     }
+    Sprite::Sprite()
+    {
+    }
     float Sprite::get_size_x()
     {
         return _V_size_x[_V_index];
