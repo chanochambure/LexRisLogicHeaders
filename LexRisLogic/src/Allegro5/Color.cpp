@@ -49,13 +49,13 @@ namespace LL_AL5
     }
     bool Color::operator == (Color another_color)
     {
-        return (another_color.red==red and another_color.green==green and
-                another_color.blue==blue and another_color.alpha==alpha);
+        return (another_color.red==red && another_color.green==green &&
+                another_color.blue==blue && another_color.alpha==alpha);
     }
     bool Color::operator != (Color another_color)
     {
-        return (another_color.red!=red or another_color.green!=green or
-                another_color.blue!=blue or another_color.alpha!=alpha);
+        return (another_color.red!=red || another_color.green!=green ||
+                another_color.blue!=blue || another_color.alpha!=alpha);
     }
     Color::operator ALLEGRO_COLOR()
     {

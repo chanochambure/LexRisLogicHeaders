@@ -71,17 +71,17 @@ namespace LL_MathStructure
     }
     bool LineSegment::in_range(unsigned int dimension,float number)
     {
-        return ((std::min(_V_ini_point[dimension],_V_end_point[dimension])<=number)
-                and (number<=std::max(_V_ini_point[dimension],_V_end_point[dimension])));
+        return ((std::min(_V_ini_point[dimension],_V_end_point[dimension])<=number) &&
+                (number<=std::max(_V_ini_point[dimension],_V_end_point[dimension])));
     }
 
     bool LL_SHARED intersection_of_lines_in_two_dimensions(LineSegment first_line,LineSegment second_line,
                                                            float* x,float* y)
     {
-        if(first_line.get_dimension()!=second_line.get_dimension() or first_line.get_dimension()!=2)
+        if(first_line.get_dimension()!=second_line.get_dimension() || first_line.get_dimension()!=2)
             return false;
-        if((first_line.get_ini_point()==first_line.get_end_point())
-           or (second_line.get_ini_point()==second_line.get_end_point()))
+        if((first_line.get_ini_point()==first_line.get_end_point()) ||
+           (second_line.get_ini_point()==second_line.get_end_point()))
             return false;
         if(((first_line.get_end_point()[0]-first_line.get_ini_point()[0])
                 *(second_line.get_end_point()[1]-second_line.get_ini_point()[1]))
@@ -116,7 +116,7 @@ namespace LL_MathStructure
                 intersection_point_x=(b2-b1)/(m1-m2);
                 intersection_point_y=m1*intersection_point_x+b1;
             }
-            if(x and y)
+            if(x && y)
             {
                 *x=intersection_point_x;
                 *y=intersection_point_y;
@@ -134,15 +134,15 @@ namespace LL_MathStructure
         if(intersection_of_lines_in_two_dimensions(first_segment,second_segment,
                                                    &intersection_point_x,&intersection_point_y))
         {
-            if(x and y)
+            if(x && y)
             {
                 *x=intersection_point_x;
                 *y=intersection_point_y;
             }
-            return ((first_segment.in_range(0,intersection_point_x)
-                    and first_segment.in_range(1,intersection_point_y))
-                    and (second_segment.in_range(0,intersection_point_x)
-                    and second_segment.in_range(1,intersection_point_y)));
+            return ((first_segment.in_range(0,intersection_point_x) &&
+                     first_segment.in_range(1,intersection_point_y)) &&
+                    (second_segment.in_range(0,intersection_point_x) &&
+                     second_segment.in_range(1,intersection_point_y)));
         }
         return false;
     }

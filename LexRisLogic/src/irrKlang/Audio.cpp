@@ -68,7 +68,7 @@ namespace LL_irrKlang
     }
     bool Audio::set_loop_mode(bool loop_mode_on)
     {
-        if(_V_isound and loop_mode_on!=_V_loop_mode)
+        if(_V_isound && loop_mode_on!=_V_loop_mode)
         {
             _V_loop_mode=loop_mode_on;
             _V_isound->setIsLooped(_V_loop_mode);
@@ -99,7 +99,7 @@ namespace LL_irrKlang
     }
     bool Audio::set_position(unsigned int new_position)
     {
-        if(_V_isound and _V_isound->setPlayPosition(new_position))
+        if(_V_isound && _V_isound->setPlayPosition(new_position))
         {
             _V_position=new_position;
             return true;
@@ -114,12 +114,12 @@ namespace LL_irrKlang
     }
     bool Audio::is_playing()
     {
-        if(_V_isound and _V_isound->isFinished())
+        if(_V_isound && _V_isound->isFinished())
         {
             _V_position=0;
             return false;
         }
-        return (_V_isound and !_V_isound->getIsPaused());
+        return (_V_isound && !_V_isound->getIsPaused());
     }
     void Audio::stop()
     {

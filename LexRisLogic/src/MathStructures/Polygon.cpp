@@ -17,7 +17,6 @@
     SOFTWARE.
 */
 
-
 #include "../../include/LexRisLogic/MathStructures/Polygon.h"
 
 namespace LL_MathStructure
@@ -48,7 +47,7 @@ namespace LL_MathStructure
     }
     bool Polygon::set_point(unsigned int index,Point new_point)
     {
-        if(new_point.get_dimension()==2 and index<_V_points.size())
+        if(new_point.get_dimension()==2 && index<_V_points.size())
         {
             _V_points[index]=new_point;
             return true;
@@ -62,7 +61,7 @@ namespace LL_MathStructure
 
     bool LL_SHARED point_into_polygon(Polygon polygon,Point point)
     {
-        if(point.get_dimension()==2 and polygon.size()>2)
+        if(point.get_dimension()==2 && polygon.size()>2)
         {
             float max_pos_x=polygon[0][0];
             for(unsigned int i=1;i<polygon.size();++i)
@@ -89,7 +88,7 @@ namespace LL_MathStructure
 
     bool LL_SHARED collision_of_polygons(Polygon first_polygon,Polygon second_polygon,std::list<Point>* points)
     {
-        if(first_polygon.size()>2 and second_polygon.size()>2)
+        if(first_polygon.size()>2 && second_polygon.size()>2)
         {
             for(unsigned int i=0;i<first_polygon.size();++i)
             {
@@ -113,7 +112,7 @@ namespace LL_MathStructure
                             bool insertion=true;
                             for(std::list<Point>::iterator m=points->begin();m!=points->end();++m)
                             {
-                                if((*m)[0]==intersection_x and (*m)[1]==intersection_y)
+                                if((*m)[0]==intersection_x && (*m)[1]==intersection_y)
                                 {
                                     insertion=false;
                                     break;
@@ -127,9 +126,9 @@ namespace LL_MathStructure
                     }
                 }
             }
-            if(points and points->size())
+            if(points && points->size())
                 return true;
-            return (point_into_polygon(first_polygon,second_polygon[0]) or
+            return (point_into_polygon(first_polygon,second_polygon[0]) ||
                     point_into_polygon(second_polygon,first_polygon[0]));
         }
         return false;

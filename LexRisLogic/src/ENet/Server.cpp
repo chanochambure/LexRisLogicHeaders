@@ -26,7 +26,7 @@ namespace LL_ENet
     }
     bool Server::set_ip(std::string new_ip)
     {
-        if(!_V_is_running and !enet_address_set_host(&_V_address,new_ip.c_str()))
+        if(!_V_is_running && !enet_address_set_host(&_V_address,new_ip.c_str()))
         {
             _V_ip=new_ip;
             return true;
@@ -171,7 +171,7 @@ namespace LL_ENet
     }
     bool Server::send(ENetPeer* receiver,std::string message)
     {
-        if(_V_is_running and message.size())
+        if(_V_is_running && message.size())
         {
             ENetPacket* packet=enet_packet_create(message.c_str(),message.size()+1,ENET_PACKET_FLAG_RELIABLE);
             if(packet)
@@ -181,7 +181,7 @@ namespace LL_ENet
     }
     bool Server::broadcast(std::string message)
     {
-        if(_V_is_running and message.size())
+        if(_V_is_running && message.size())
         {
             ENetPacket* packet=enet_packet_create(message.c_str(),message.size()+1,ENET_PACKET_FLAG_RELIABLE);
             if(packet)

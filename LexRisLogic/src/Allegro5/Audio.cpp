@@ -179,7 +179,7 @@ namespace LL_AL5
     }
     bool Audio::play(unsigned int index)
     {
-        if(!is_playing(index) and set_audio_position(index,_V_instances[index].position))
+        if(!is_playing(index) && set_audio_position(index,_V_instances[index].position))
             return al_set_sample_instance_playing(_V_instances[index].instance,true);
         return false;
     }

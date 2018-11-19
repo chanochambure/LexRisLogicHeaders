@@ -26,7 +26,7 @@ namespace LL_AL5
     }
     bool Timer::set_speed_seconds(double new_speed_seconds)
     {
-        if(!_V_timer and new_speed_seconds>0.0)
+        if(!_V_timer && new_speed_seconds>0.0)
         {
             _V_speed_seconds=new_speed_seconds;
             return true;

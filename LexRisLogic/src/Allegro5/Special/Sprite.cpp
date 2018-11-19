@@ -44,7 +44,7 @@ namespace LL_AL5
     }
     bool Sprite::set_size(unsigned int new_size)
     {
-        if(_V_initialised or !new_size)
+        if(_V_initialised || !new_size)
             return false;
         _V_size=new_size;
         if(_V_index>=_V_size)
@@ -113,7 +113,7 @@ namespace LL_AL5
     }
     bool Sprite::destroy_selection()
     {
-        if(_V_initialised and _V_bitmap_set[_V_index])
+        if(_V_initialised && _V_bitmap_set[_V_index])
         {
             al_destroy_bitmap(_V_bitmap_set[_V_index]);
             _V_bitmap_set[_V_index]=nullptr;

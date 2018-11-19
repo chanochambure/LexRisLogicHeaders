@@ -41,11 +41,11 @@ namespace LL_MathStructure
     }
     bool MBB::operator == (MBB another_mbb)
     {
-        return ((first_point==another_mbb.first_point) and (second_point==another_mbb.second_point));
+        return ((first_point==another_mbb.first_point) && (second_point==another_mbb.second_point));
     }
     bool MBB::operator != (MBB another_mbb)
     {
-        return ((first_point!=another_mbb.first_point) or (second_point!=another_mbb.second_point));
+        return ((first_point!=another_mbb.first_point) || (second_point!=another_mbb.second_point));
     }
 
     double LL_SHARED mbb_distance(MBB first_mbb,MBB second_mbb)

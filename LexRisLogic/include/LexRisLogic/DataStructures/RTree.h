@@ -226,7 +226,7 @@ namespace LL_DataStructure
             {
                 LL_MathStructure::MBB mbb=_P_Function_to_mbb(new_data);
                 __RTreeNodeBase__** leaf=&(_V_root);
-                if(_F_find_data(mbb,leaf) or (mbb.dimension!=_V_dimension))
+                if(_F_find_data(mbb,leaf) || (mbb.dimension!=_V_dimension))
                     return false;
                 _F_target_node(mbb,leaf);
                 (*leaf)->data[(*leaf)->size++]=new _S_Structure_DataNode(new_data,mbb);

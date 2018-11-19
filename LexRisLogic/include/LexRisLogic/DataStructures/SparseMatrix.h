@@ -106,13 +106,13 @@ namespace LL_DataStructure
                     T get_value()
                     {
                         _S_Structure_Node* pointer=static_cast<_S_Structure_Node*>(*_V_pointer_x);
-                        if(((*_V_pointer_x) and (*_V_pointer_y)) and ((*_V_pointer_x)==(*_V_pointer_y)))
+                        if(((*_V_pointer_x) && (*_V_pointer_y)) && ((*_V_pointer_x)==(*_V_pointer_y)))
                             return pointer->data;
                         return _V_null_value;
                     }
                     T operator = (T new_data)
                     {
-                        if(((*_V_pointer_x) and (*_V_pointer_y)) and ((*_V_pointer_x)==(*_V_pointer_y)))
+                        if(((*_V_pointer_x) && (*_V_pointer_y)) && ((*_V_pointer_x)==(*_V_pointer_y)))
                         {
                             _S_Structure_Node* pointer=static_cast<_S_Structure_Node*>(*_V_pointer_x);
                             if(new_data!=_V_null_value)

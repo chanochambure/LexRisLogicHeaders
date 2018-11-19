@@ -23,7 +23,7 @@ namespace LL_AL5
 {
     bool LL_SHARED audio_addon()
     {
-        return (al_install_audio() and al_init_acodec_addon());
+        return (al_install_audio() && al_init_acodec_addon());
     }
     void LL_SHARED uninstall_audio()
     {
@@ -70,7 +70,7 @@ namespace LL_AL5
     }
     bool Mixer::set_chanel_configuration(ALLEGRO_CHANNEL_CONF new_chanel_conf)
     {
-        if(_V_voice or _V_mixer)
+        if(_V_voice || _V_mixer)
             return false;
         _V_chanel_conf=new_chanel_conf;
         return true;
@@ -100,7 +100,7 @@ namespace LL_AL5
     }
     bool Mixer::destroy()
     {
-        if(_V_mixer and _V_voice)
+        if(_V_mixer && _V_voice)
         {
             al_detach_voice(_V_voice);
             al_detach_mixer(_V_mixer);

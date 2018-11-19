@@ -78,9 +78,9 @@ namespace LL_DataStructure
                                                         __SparseMatrixNodeBase__**& root_y)
     {
         root_x=&_V_vector_y[pos_y];
-        for(;(*root_x) and ((*root_x)->pos_x)<pos_x;root_x=&((*root_x)->next_x));
+        for(;(*root_x) && ((*root_x)->pos_x)<pos_x;root_x=&((*root_x)->next_x));
         root_y=&_V_vector_x[pos_x];
-        for(;(*root_y) and ((*root_y)->pos_y)<pos_y;root_y=&((*root_y)->next_y));
+        for(;(*root_y) && ((*root_y)->pos_y)<pos_y;root_y=&((*root_y)->next_y));
     }
     bool __SparseMatrixBase__::_F_can_clear(unsigned int& ini_x,unsigned int& ini_y,
                                             unsigned int& fin_x,unsigned int& fin_y)

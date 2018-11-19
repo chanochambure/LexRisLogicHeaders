@@ -181,7 +181,7 @@ namespace LL_DataStructure
             else
                 _V_stack.pop();
         }
-        while((!_V_stack.empty()) and _V_stack.top().second->type)
+        while((!_V_stack.empty()) && _V_stack.top().second->type)
         {
             if(_V_stack.top().first<(_V_stack.top().second->size))
                 _V_stack.push(_T_Type_item(0,_V_stack.top().second->sons[_V_stack.top().first++]));

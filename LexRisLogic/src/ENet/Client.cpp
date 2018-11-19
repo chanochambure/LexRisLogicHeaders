@@ -56,7 +56,7 @@ namespace LL_ENet
     }
     bool Client::set_ip(std::string new_ip)
     {
-        if(!_V_is_running and !enet_address_set_host(&_V_address,new_ip.c_str()))
+        if(!_V_is_running && !enet_address_set_host(&_V_address,new_ip.c_str()))
         {
             _V_ip=new_ip;
             return true;
@@ -82,7 +82,7 @@ namespace LL_ENet
     }
     bool Client::set_test_time(unsigned int new_test_time)
     {
-        if(!_V_is_running and new_test_time>0)
+        if(!_V_is_running && new_test_time>0)
         {
             _V_test_time=new_test_time;
             return true;
@@ -121,7 +121,7 @@ namespace LL_ENet
     }
     bool Client::disconnect_from_server()
     {
-        if(_V_status_connected and _V_client_connection)
+        if(_V_status_connected && _V_client_connection)
         {
             enet_peer_disconnect(_V_client_connection,0);
             while(enet_host_service(_V_client_host,&_V_event,_V_time)>0)
@@ -203,7 +203,7 @@ namespace LL_ENet
     }
     bool Client::send(std::string message)
     {
-        if(_V_is_running and _V_status_connected and message.size())
+        if(_V_is_running && _V_status_connected && message.size())
         {
             ENetPacket* packet=enet_packet_create(message.c_str(),message.size()+1,ENET_PACKET_FLAG_RELIABLE);
             if(packet)
