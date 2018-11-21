@@ -24,6 +24,7 @@
 
 #include "Point.h"
 #include "LineSegment.h"
+
 #include <vector>
 #include <list>
 

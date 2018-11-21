@@ -23,12 +23,12 @@ namespace LL_AL5
 {
     std::string LL_SHARED get_current_directory()
     {
-        char* actual_dir=al_get_current_directory();
+        char* current_dir=al_get_current_directory();
         std::string return_dir;
-        if(actual_dir)
+        if(current_dir)
         {
-            return_dir=actual_dir;
-            al_free(actual_dir);
+            return_dir=current_dir;
+            al_free(current_dir);
         }
         return return_dir;
     }

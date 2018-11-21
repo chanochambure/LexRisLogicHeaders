@@ -205,13 +205,13 @@ namespace LL_DataStructure
         while((*target_node)->type)
         {
             unsigned int target_son=0;
-            double actual_distance=LL_MathStructure::mbb_distance(new_mbb,(*target_node)->sons[0]->mbb);
+            double current_distance=LL_MathStructure::mbb_distance(new_mbb,(*target_node)->sons[0]->mbb);
             for(unsigned int i=1;i<(*target_node)->size;++i)
             {
                 double new_distance=LL_MathStructure::mbb_distance(new_mbb,(*target_node)->sons[i]->mbb);
-                if(new_distance<actual_distance)
+                if(new_distance<current_distance)
                 {
-                    actual_distance=new_distance;
+                    current_distance=new_distance;
                     target_son=i;
                 }
             }

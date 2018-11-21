@@ -192,13 +192,13 @@ namespace LL_AL5
         al_get_mouse_state(&mouse_state);
         for(unsigned int i=0;i<3;++i)
         {
-            bool actual_state=(mouse_state.buttons & 1<<i);
+            bool current_state=(mouse_state.buttons & 1<<i);
             if(_V_mouse_buttons_auxiliar[i]==_V_mouse_buttons[i])
-                _V_mouse_buttons_auxiliar[i]=_V_mouse_buttons[i]=actual_state;
+                _V_mouse_buttons_auxiliar[i]=_V_mouse_buttons[i]=current_state;
             else
             {
-                if(_V_mouse_buttons[i]==actual_state)
-                    _V_mouse_buttons_auxiliar[i]=actual_state;
+                if(_V_mouse_buttons[i]==current_state)
+                    _V_mouse_buttons_auxiliar[i]=current_state;
             }
         }
         _V_mouse_x=mouse_state.x;
