@@ -51,7 +51,7 @@ namespace LL_AL5
             unsigned int length();
             unsigned int size();
             bool create_instance();
-            bool attack_instance_to_mixer(unsigned int index, ALLEGRO_MIXER* mixer);
+            bool attach_instance_to_mixer(unsigned int index, ALLEGRO_MIXER* mixer);
             bool destroy_instance(unsigned int index);
             void clear();
             bool set_speed(unsigned int index,float new_speed);

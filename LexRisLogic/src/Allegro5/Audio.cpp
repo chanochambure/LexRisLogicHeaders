@@ -75,7 +75,7 @@ namespace LL_AL5
         }
         return false;
     }
-    bool Audio::attack_instance_to_mixer(unsigned int index, ALLEGRO_MIXER* mixer)
+    bool Audio::attach_instance_to_mixer(unsigned int index, ALLEGRO_MIXER* mixer)
     {
         return al_attach_sample_instance_to_mixer(_V_instances[index].instance,mixer);
     }
