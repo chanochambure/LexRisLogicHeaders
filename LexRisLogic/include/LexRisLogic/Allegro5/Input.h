@@ -145,6 +145,43 @@ namespace LL_AL5
             const JoyStickController& operator = (const JoyStickController&) = delete;
     };
 
+    enum InputEventType
+    {
+        INPUT_EVENT_NONE                    = 0,
+
+        INPUT_EVENT_TIMER                   = 1,
+
+        INPUT_EVENT_DISPLAY_CLOSE           = 11,
+
+        INPUT_EVENT_TEXTLOG_CLOSE           = 21,
+
+        INPUT_EVENT_KEY_CHAR                = 31,
+        INPUT_EVENT_KEY_DOWN                = 32,
+        INPUT_EVENT_KEY_UP                  = 33,
+
+        INPUT_EVENT_MOUSE_AXES              = 41,
+        INPUT_EVENT_MOUSE_BUTTON_DOWN       = 42,
+        INPUT_EVENT_MOUSE_BUTTON_UP         = 43,
+
+        INPUT_EVENT_JOYSTICK_CONF           = 51,
+        INPUT_EVENT_JOYSTICK_AXIS           = 52,
+        INPUT_EVENT_JOYSTICK_BUTTON_DOWN    = 53,
+        INPUT_EVENT_JOYSTICK_BUTTON_UP      = 54
+    };
+
+    class LL_SHARED InputEvent
+    {
+        friend class Input;
+        private:
+            ALLEGRO_EVENT _V_event;
+            InputEventType _V_type=INPUT_EVENT_NONE;
+        public:
+            InputEvent();
+            const InputEventType& get_type();
+            const ALLEGRO_EVENT& get();
+            operator bool ();
+    };
+
     class LL_SHARED Input
     {
         private:
@@ -152,9 +189,9 @@ namespace LL_AL5
             bool _V_keyboard_status=false;
             bool _V_mouse_status=false;
             bool _V_joystick_status=false;
-            std::string* _V_input_objetive=nullptr;
+            std::string* _V_target_input=nullptr;
             unsigned int _V_max_input_size;
-            ALLEGRO_EVENT_QUEUE* _V_event_queue;
+            ALLEGRO_EVENT_QUEUE* _V_event_queue=nullptr;
             KeyController* _V_key_controller=nullptr;
             MouseController* _V_mouse_controller=nullptr;
             JoyStickController* _V_joystick_controller=nullptr;
@@ -162,7 +199,6 @@ namespace LL_AL5
             bool _V_display_exit_status=false;
             bool _V_textlog_exit_status=false;
             float _V_time=0.0;
-            bool _V_timer_event=false;
             bool _V_input_activated=false;
             ALLEGRO_DISPLAY* _V_display=nullptr;
             ALLEGRO_TEXTLOG* _V_textlog=nullptr;
@@ -173,10 +209,11 @@ namespace LL_AL5
             bool _V_char_lock=false;
             bool _F_find_key(std::string key_name);
             bool _F_find_key(int keycode,std::string* key_name=nullptr);
-            int _V_last_keycode_down=-1;
         public:
             Input();
             Input(const Input&) = delete;
+            bool create();
+            bool destroy();
             bool unregister_timer();
             bool register_timer(ALLEGRO_TIMER* new_timer);
             bool unregister_display();
@@ -190,7 +227,6 @@ namespace LL_AL5
             void set_joystick_controller(JoyStickController* new_mouse_controller);
             JoyStickController* get_joystick_controller();
             void clear_events();
-            void clear_key_status();
             bool set_wait_time(float wait_time);
             float get_wait_time();
             bool keyboard_on();
@@ -199,13 +235,11 @@ namespace LL_AL5
             bool mouse_off();
             bool joystick_on();
             bool joystick_off();
-            bool input_on(std::string* input_objetive,unsigned int max_input_size,bool special_is_blocked=false);
-            bool input_off(std::string* input_objetive);
-            bool get_timer_event();
+            bool input_on(std::string* target_input,unsigned int max_input_size,bool special_is_blocked=false);
+            bool input_off(std::string* target_input);
             bool& get_display_status();
             bool& get_textlog_status();
-            bool get_event();
-            int get_last_keycode_down();
+            InputEvent get_event();
             const Input& operator = (const Input&) = delete;
             operator ALLEGRO_EVENT_QUEUE* ();
             ~Input();

@@ -378,6 +378,22 @@ namespace LL_AL5
         }
     }
 
+    InputEvent::InputEvent()
+    {
+    }
+    const InputEventType& InputEvent::get_type()
+    {
+        return _V_type;
+    }
+    InputEvent::operator bool ()
+    {
+        return _V_type!=InputEventType::INPUT_EVENT_NONE;
+    }
+    const ALLEGRO_EVENT& InputEvent::get()
+    {
+        return _V_event;
+    }
+
     bool Input::_F_find_key(std::string key_name)
     {
         if(_V_key_controller)
@@ -392,11 +408,31 @@ namespace LL_AL5
     }
     Input::Input()
     {
-        _V_event_queue=al_create_event_queue();
+    }
+    bool Input::create()
+    {
+        if(!_V_event_queue)
+            return (_V_event_queue=al_create_event_queue());
+        return false;
+    }
+    bool Input::destroy()
+    {
+        if(_V_event_queue)
+        {
+            unregister_timer();
+            unregister_display();
+            unregister_textlog();
+            joystick_off();
+            keyboard_off();
+            mouse_off();
+            al_destroy_event_queue(_V_event_queue);
+            _V_event_queue=nullptr;
+        }
+        return false;
     }
     bool Input::unregister_timer()
     {
-        if(_V_timer_registered)
+        if(_V_event_queue && _V_timer_registered)
         {
             al_unregister_event_source(_V_event_queue,al_get_timer_event_source(_V_timer));
             _V_timer_registered=false;
@@ -407,7 +443,7 @@ namespace LL_AL5
     }
     bool Input::register_timer(ALLEGRO_TIMER* new_timer)
     {
-        if(!_V_timer_registered)
+        if(_V_event_queue && !_V_timer_registered)
         {
             _V_timer=new_timer;
             al_register_event_source(_V_event_queue,al_get_timer_event_source(_V_timer));
@@ -418,7 +454,7 @@ namespace LL_AL5
     }
     bool Input::unregister_display()
     {
-        if(_V_display_registered)
+        if(_V_event_queue && _V_display_registered)
         {
             al_unregister_event_source(_V_event_queue,al_get_display_event_source(_V_display));
             _V_display_registered=false;
@@ -429,7 +465,7 @@ namespace LL_AL5
     }
     bool Input::register_display(ALLEGRO_DISPLAY* new_display)
     {
-        if(!_V_display_registered)
+        if(_V_event_queue && !_V_display_registered)
         {
             _V_display=new_display;
             al_register_event_source(_V_event_queue,al_get_display_event_source(_V_display));
@@ -440,7 +476,7 @@ namespace LL_AL5
     }
     bool Input::unregister_textlog()
     {
-        if(_V_textlog_registered)
+        if(_V_event_queue && _V_textlog_registered)
         {
             al_unregister_event_source(_V_event_queue,al_get_native_text_log_event_source(_V_textlog));
             _V_textlog_registered=false;
@@ -451,7 +487,7 @@ namespace LL_AL5
     }
     bool Input::register_textlog(ALLEGRO_TEXTLOG* new_textlog)
     {
-        if(!_V_textlog_registered)
+        if(_V_event_queue && !_V_textlog_registered)
         {
             _V_textlog=new_textlog;
             al_register_event_source(_V_event_queue,al_get_native_text_log_event_source(_V_textlog));
@@ -487,13 +523,8 @@ namespace LL_AL5
     }
     void Input::clear_events()
     {
-        al_flush_event_queue(_V_event_queue);
-    }
-    void Input::clear_key_status()
-    {
-        if(_V_key_controller)
-            _V_key_controller->clear_key_status();
-        _V_last_keycode_down=-1;
+        if(_V_event_queue)
+            al_flush_event_queue(_V_event_queue);
     }
     bool Input::set_wait_time(float wait_time)
     {
@@ -508,7 +539,7 @@ namespace LL_AL5
     }
     bool Input::keyboard_on()
     {
-        if(!_V_keyboard_status)
+        if(_V_event_queue && !_V_keyboard_status)
         {
             al_register_event_source(_V_event_queue,al_get_keyboard_event_source());
             _V_keyboard_status=true;
@@ -518,41 +549,42 @@ namespace LL_AL5
     }
     bool Input::keyboard_off()
     {
-        if(_V_keyboard_status)
+        if(_V_event_queue && _V_keyboard_status)
         {
+            input_off(_V_target_input);
             al_unregister_event_source(_V_event_queue,al_get_keyboard_event_source());
             _V_keyboard_status=false;
             return true;
         }
         return false;
     }
-    bool Input::input_on(std::string* input_objetive,unsigned int max_input_size,bool special_is_blocked)
+    bool Input::input_on(std::string* target_input,unsigned int max_input_size,bool special_is_blocked)
     {
-        if(_V_keyboard_status && !_V_input_activated && max_input_size>0)
+        if(_V_keyboard_status && !_V_input_activated && target_input && max_input_size>0)
         {
             _V_char_lock=special_is_blocked;
-            _V_input_objetive=input_objetive;
+            _V_target_input=target_input;
             _V_max_input_size=max_input_size;
-            if(_V_input_objetive->size()>_V_max_input_size)
-                (*_V_input_objetive)=_V_input_objetive->substr(0,_V_max_input_size);
+            if(_V_target_input->size()>_V_max_input_size)
+                (*_V_target_input)=_V_target_input->substr(0,_V_max_input_size);
             _V_input_activated=true;
             return true;
         }
         return false;
     }
-    bool Input::input_off(std::string* input_objetive)
+    bool Input::input_off(std::string* target_input)
     {
-        if(_V_input_activated && _V_input_objetive && input_objetive==_V_input_objetive)
+        if(_V_input_activated && _V_target_input && target_input==_V_target_input)
         {
             _V_input_activated=false;
-            _V_input_objetive=nullptr;
+            _V_target_input=nullptr;
             return true;
         }
         return false;
     }
     bool Input::mouse_on()
     {
-        if(!_V_mouse_status)
+        if(_V_event_queue && !_V_mouse_status)
         {
             al_register_event_source(_V_event_queue,al_get_mouse_event_source());
             _V_mouse_status=true;
@@ -562,7 +594,7 @@ namespace LL_AL5
     }
     bool Input::mouse_off()
     {
-        if(_V_mouse_status)
+        if(_V_event_queue && _V_mouse_status)
         {
             al_unregister_event_source(_V_event_queue,al_get_mouse_event_source());
             _V_mouse_status=false;
@@ -572,7 +604,7 @@ namespace LL_AL5
     }
     bool Input::joystick_on()
     {
-        if(!_V_joystick_status)
+        if(_V_event_queue && !_V_joystick_status)
         {
             al_register_event_source(_V_event_queue,al_get_joystick_event_source());
             _V_joystick_status=true;
@@ -582,17 +614,13 @@ namespace LL_AL5
     }
     bool Input::joystick_off()
     {
-        if(_V_joystick_status)
+        if(_V_event_queue && _V_joystick_status)
         {
             al_unregister_event_source(_V_event_queue,al_get_joystick_event_source());
             _V_joystick_status=false;
             return true;
         }
         return false;
-    }
-    bool Input::get_timer_event()
-    {
-        return _V_timer_event;
     }
     bool& Input::get_display_status()
     {
@@ -602,150 +630,191 @@ namespace LL_AL5
     {
         return _V_textlog_exit_status;
     }
-    bool Input::get_event()
+    InputEvent Input::get_event()
     {
-        ALLEGRO_EVENT event;
-        if(al_wait_for_event_timed(_V_event_queue,&event,_V_time))
+        InputEvent event;
+        if(_V_event_queue)
         {
-            if(_V_timer_registered)
+            if(al_wait_for_event_timed(_V_event_queue,&event._V_event,_V_time))
             {
-                if(event.type==ALLEGRO_EVENT_TIMER)
+                switch(event._V_event.type)
                 {
-                    _V_timer_event=true;
-                    return true;
-                }
-                else
-                    _V_timer_event=false;
-            }
-            if(_V_display_registered)
-            {
-                if(event.type==ALLEGRO_EVENT_DISPLAY_CLOSE)
-                {
-                    _V_display_exit_status=true;
-                    return true;
-                }
-            }
-            if(_V_textlog_registered)
-            {
-                if(event.type==ALLEGRO_EVENT_NATIVE_DIALOG_CLOSE)
-                {
-                    _V_textlog_exit_status=true;
-                    return true;
-                }
-            }
-            if(_V_keyboard_status)
-            {
-                if(_V_input_activated && event.type==ALLEGRO_EVENT_KEY_CHAR)
-                {
-                    if(event.keyboard.keycode==ALLEGRO_KEY_BACKSPACE)
-                        (*_V_input_objetive)=_V_input_objetive->substr(0,_V_input_objetive->size()-1);
-                    else if(_V_input_objetive->size()<_V_max_input_size)
+                    case ALLEGRO_EVENT_TIMER:
                     {
-                        if(event.keyboard.keycode==ALLEGRO_KEY_ENTER)
+                        if(_V_timer_registered)
+                            event._V_type=InputEventType::INPUT_EVENT_TIMER;
+                        break;
+                    }
+                    case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                    {
+                        if(_V_display_registered)
                         {
-                            if(!_V_char_lock)
-                                (*_V_input_objetive)=(*_V_input_objetive)+'\n';
+                            event._V_type=InputEventType::INPUT_EVENT_DISPLAY_CLOSE;
+                            _V_display_exit_status=true;
                         }
-                        else if(event.keyboard.keycode==ALLEGRO_KEY_TAB)
+                        break;
+                    }
+                    case ALLEGRO_EVENT_NATIVE_DIALOG_CLOSE:
+                    {
+                        if(_V_textlog_registered)
                         {
-                            if(!_V_char_lock)
-                                (*_V_input_objetive)=(*_V_input_objetive)+'\t';
+                            event._V_type=InputEventType::INPUT_EVENT_TEXTLOG_CLOSE;
+                            _V_textlog_exit_status=true;
                         }
-                        else if(event.keyboard.unichar>=32 && event.keyboard.keycode!=77)
-                            (*_V_input_objetive)=(*_V_input_objetive)+char(event.keyboard.unichar);
+                        break;
                     }
-                }
-                else if(event.type==ALLEGRO_EVENT_KEY_DOWN)
-                {
-                    std::string key_name;
-                    if(_F_find_key(event.keyboard.keycode,&key_name))
-                        _V_key_controller->get_key_status(key_name)=true;
-                    _V_last_keycode_down=event.keyboard.keycode;
-                    return true;
-                }
-                else if(event.type==ALLEGRO_EVENT_KEY_UP)
-                {
-                    std::string key_name;
-                    if(_F_find_key(event.keyboard.keycode,&key_name))
-                        _V_key_controller->get_key_status(key_name)=false;
-                    return true;
-                }
-            }
-            if(_V_mouse_status)
-            {
-                if(event.type==ALLEGRO_EVENT_MOUSE_AXES)
-                {
-                    if(_V_mouse_controller)
+                    case ALLEGRO_EVENT_KEY_CHAR:
                     {
-                        _V_mouse_controller->_V_mouse_x=event.mouse.x;
-                        _V_mouse_controller->_V_mouse_y=event.mouse.y;
-                        _V_mouse_controller->_V_mouse_z=event.mouse.z;
-                    }
-                    return true;
-                }
-                else if(event.type==ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-                {
-                    if(_V_mouse_controller)
-                        _V_mouse_controller->_V_mouse_buttons[event.mouse.button-1]=true;
-                    return true;
-                }
-                else if(event.type==ALLEGRO_EVENT_MOUSE_BUTTON_UP)
-                {
-                    if(_V_mouse_controller)
-                        _V_mouse_controller->_V_mouse_buttons[event.mouse.button-1]=false;
-                    return true;
-                }
-            }
-            if(_V_joystick_status)
-            {
-                if(event.type==ALLEGRO_EVENT_JOYSTICK_CONFIGURATION)
-                {
-                    if(_V_joystick_controller)
-                        _V_joystick_controller->reconfigure_joysticks();
-                    return true;
-                }
-                else if(event.type==ALLEGRO_EVENT_JOYSTICK_AXIS)
-                {
-                    if(_V_joystick_controller)
-                    {
-                        auto iter=_V_joystick_controller->_V_joysticks.find(event.joystick.id);
-                        if(iter!=_V_joystick_controller->_V_joysticks.end())
+                        if(_V_input_activated)
                         {
-                            _T_Type_joystick& joystick=_V_joystick_controller->_V_joystick_data[iter->second];
-                            joystick.sticks[event.joystick.stick].axes[event.joystick.axis].value=event.joystick.pos;
+                            event._V_type=InputEventType::INPUT_EVENT_KEY_CHAR;
+                            if(event._V_event.keyboard.keycode==ALLEGRO_KEY_BACKSPACE)
+                                (*_V_target_input)=_V_target_input->substr(0,_V_target_input->size()-1);
+                            else if(_V_target_input->size()<_V_max_input_size)
+                            {
+                                if(event._V_event.keyboard.keycode==ALLEGRO_KEY_ENTER)
+                                {
+                                    if(!_V_char_lock)
+                                        (*_V_target_input)=(*_V_target_input)+'\n';
+                                }
+                                else if(event._V_event.keyboard.keycode==ALLEGRO_KEY_TAB)
+                                {
+                                    if(!_V_char_lock)
+                                        (*_V_target_input)=(*_V_target_input)+'\t';
+                                }
+                                else if(event._V_event.keyboard.unichar>=32 && event._V_event.keyboard.keycode!=77)
+                                    (*_V_target_input)=(*_V_target_input)+char(event._V_event.keyboard.unichar);
+                            }
                         }
+                        break;
                     }
-                    return true;
-                }
-                else if(event.type==ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN)
-                {
-                    auto iter=_V_joystick_controller->_V_joysticks.find(event.joystick.id);
-                    if(iter!=_V_joystick_controller->_V_joysticks.end())
+                    case ALLEGRO_EVENT_KEY_DOWN:
                     {
-                        _T_Type_joystick& joystick=_V_joystick_controller->_V_joystick_data[iter->second];
-                        joystick.buttons[event.joystick.button].value=true;
+                        if(_V_keyboard_status)
+                        {
+                            event._V_type=InputEventType::INPUT_EVENT_KEY_DOWN;
+                            if(_V_key_controller)
+                            {
+                                std::string key_name;
+                                if(_F_find_key(event._V_event.keyboard.keycode,&key_name))
+                                    _V_key_controller->get_key_status(key_name)=true;
+                            }
+                        }
+                        break;
                     }
-                    return true;
-                }
-                else if(event.type==ALLEGRO_EVENT_JOYSTICK_BUTTON_UP)
-                {
-                    auto iter=_V_joystick_controller->_V_joysticks.find(event.joystick.id);
-                    if(iter!=_V_joystick_controller->_V_joysticks.end())
+                    case ALLEGRO_EVENT_KEY_UP:
                     {
-                        _T_Type_joystick& joystick=_V_joystick_controller->_V_joystick_data[iter->second];
-                        joystick.buttons[event.joystick.button].value=false;
+                        if(_V_keyboard_status)
+                        {
+                            event._V_type=InputEventType::INPUT_EVENT_KEY_UP;
+                            if(_V_key_controller)
+                            {
+                                std::string key_name;
+                                if(_F_find_key(event._V_event.keyboard.keycode,&key_name))
+                                    _V_key_controller->get_key_status(key_name)=false;
+                            }
+                        }
+                        break;
                     }
-                    return true;
+                    case ALLEGRO_EVENT_MOUSE_AXES:
+                    {
+                        if(_V_mouse_status)
+                        {
+                            event._V_type=InputEventType::INPUT_EVENT_MOUSE_AXES;
+                            if(_V_mouse_controller)
+                            {
+                                _V_mouse_controller->_V_mouse_x=event._V_event.mouse.x;
+                                _V_mouse_controller->_V_mouse_y=event._V_event.mouse.y;
+                                _V_mouse_controller->_V_mouse_z=event._V_event.mouse.z;
+                            }
+                        }
+                        break;
+                    }
+                    case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                    {
+                        if(_V_mouse_status)
+                        {
+                            event._V_type=InputEventType::INPUT_EVENT_MOUSE_BUTTON_DOWN;
+                            if(_V_mouse_controller)
+                                _V_mouse_controller->_V_mouse_buttons[event._V_event.mouse.button-1]=true;
+                        }
+                        break;
+                    }
+                    case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+                    {
+                        if(_V_mouse_status)
+                        {
+                            event._V_type=InputEventType::INPUT_EVENT_MOUSE_BUTTON_UP;
+                            if(_V_mouse_controller)
+                                _V_mouse_controller->_V_mouse_buttons[event._V_event.mouse.button-1]=false;
+                        }
+                        break;
+                    }
+                    case ALLEGRO_EVENT_JOYSTICK_CONFIGURATION:
+                    {
+                        if(_V_joystick_status)
+                        {
+                            event._V_type=InputEventType::INPUT_EVENT_JOYSTICK_CONF;
+                            if(_V_joystick_controller)
+                                _V_joystick_controller->reconfigure_joysticks();
+                        }
+                        break;
+                    }
+                    case ALLEGRO_EVENT_JOYSTICK_AXIS:
+                    {
+                        if(_V_joystick_status)
+                        {
+                            event._V_type=InputEventType::INPUT_EVENT_JOYSTICK_AXIS;
+                            if(_V_joystick_controller)
+                            {
+                                auto iter=_V_joystick_controller->_V_joysticks.find(event._V_event.joystick.id);
+                                if(iter!=_V_joystick_controller->_V_joysticks.end())
+                                {
+                                    _T_Type_joystick& joystick=_V_joystick_controller->_V_joystick_data[iter->second];
+                                    joystick.sticks[event._V_event.joystick.stick].axes[event._V_event.joystick.axis].value=event._V_event.joystick.pos;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case ALLEGRO_EVENT_JOYSTICK_BUTTON_DOWN:
+                    {
+                        if(_V_joystick_status)
+                        {
+                            event._V_type=InputEventType::INPUT_EVENT_JOYSTICK_BUTTON_DOWN;
+                            if(_V_joystick_controller)
+                            {
+                                auto iter=_V_joystick_controller->_V_joysticks.find(event._V_event.joystick.id);
+                                if(iter!=_V_joystick_controller->_V_joysticks.end())
+                                {
+                                    _T_Type_joystick& joystick=_V_joystick_controller->_V_joystick_data[iter->second];
+                                    joystick.buttons[event._V_event.joystick.button].value=true;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case ALLEGRO_EVENT_JOYSTICK_BUTTON_UP:
+                    {
+                        if(_V_joystick_status)
+                        {
+                            event._V_type=InputEventType::INPUT_EVENT_JOYSTICK_BUTTON_UP;
+                            if(_V_joystick_controller)
+                            {
+                                auto iter=_V_joystick_controller->_V_joysticks.find(event._V_event.joystick.id);
+                                if(iter!=_V_joystick_controller->_V_joysticks.end())
+                                {
+                                    _T_Type_joystick& joystick=_V_joystick_controller->_V_joystick_data[iter->second];
+                                    joystick.buttons[event._V_event.joystick.button].value=false;
+                                }
+                            }
+                        }
+                        break;
+                    }
                 }
             }
-            return true;
         }
-        _V_timer_event=false;
-        return false;
-    }
-    int Input::get_last_keycode_down()
-    {
-        return _V_last_keycode_down;
+        return event;
     }
     Input::operator ALLEGRO_EVENT_QUEUE* ()
     {
@@ -753,16 +822,6 @@ namespace LL_AL5
     }
     Input::~Input()
     {
-        unregister_timer();
-        unregister_display();
-        unregister_textlog();
-        joystick_off();
-        keyboard_off();
-        mouse_off();
-        if(_V_event_queue)
-        {
-            al_destroy_event_queue(_V_event_queue);
-            _V_event_queue=nullptr;
-        }
+        destroy();
     }
 }
