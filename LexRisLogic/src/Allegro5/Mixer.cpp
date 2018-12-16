@@ -43,15 +43,10 @@ namespace LL_AL5
     }
     bool Mixer::set_frequency(unsigned int new_frequency)
     {
-        if(_V_mixer)
-        {
-            if(al_set_mixer_frequency(_V_mixer,new_frequency))
-            {
-                _V_frequency=new_frequency;
-                return true;
-            }
-        }
-        return false;
+        if(_V_voice || _V_mixer)
+            return false;
+        _V_frequency=new_frequency;
+        return true;
     }
     unsigned int Mixer::get_frequency()
     {
