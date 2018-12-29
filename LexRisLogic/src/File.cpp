@@ -105,7 +105,6 @@ namespace LL
     }
     bool FileStream::close()
     {
-        _V_current_byte=0;
         if(_V_input_stream.is_open())
         {
             _V_input_stream.close();

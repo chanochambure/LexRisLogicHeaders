@@ -55,7 +55,7 @@ namespace LL_AL5
             bool set_size(Type_display_size size_x,Type_display_size size_y);
             Type_display_size get_size_x();
             Type_display_size get_size_y();
-            void set_real_size(Type_display_size real_size_x,Type_display_size real_size_y);
+            bool set_real_size(Type_display_size real_size_x,Type_display_size real_size_y);
             Type_display_size get_real_size_x();
             Type_display_size get_real_size_y();
             bool set_display_mode(int new_flag);

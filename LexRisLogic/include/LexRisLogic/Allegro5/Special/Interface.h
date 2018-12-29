@@ -34,9 +34,6 @@ namespace LL_AL5
     class LL_SHARED Interface
     {
         protected:
-            const float _C_CONSTANT_SCALE_FONT_X=0.75;
-            const float _C_CONSTANT_SCALE_FONT_Y=1.25;
-            unsigned int _V_font_size=1;
             Type_pos _V_pos_x=0.0;
             Type_pos _V_pos_y=0.0;
             float _V_size_x=0.0;
@@ -100,6 +97,7 @@ namespace LL_AL5
     class LL_SHARED TextBox:public Interface
     {
         private:
+            float _V_space=1.0;
             unsigned int _V_text_length=100;
             std::string _V_value;
             bool _V_hide_option=false;

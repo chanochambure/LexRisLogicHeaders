@@ -151,7 +151,9 @@ namespace LL_AL5
     void Button::set_button_text(std::string new_button_text)
     {
         _V_button_text=new_button_text;
-        _V_size_x=_V_button_text.size()*_V_font_size*_C_CONSTANT_SCALE_FONT_X;
+        _V_size_x=_V_button_text.size();
+        if(_V_font)
+            _V_size_x=_V_font->get_width(_V_button_text+"--")/text_scale;
         _V_mid_x=(_V_size_x*bitmap_scale_x/2);
     }
     std::string Button::get_button_text()
@@ -161,9 +163,13 @@ namespace LL_AL5
     void Button::set_font(Font* new_font)
     {
         _V_font=new_font;
-        _V_font_size=_V_font->get_size();
-        _V_size_x=_V_button_text.size()*_V_font_size*_C_CONSTANT_SCALE_FONT_X;
-        _V_size_y=(_V_font_size*_C_CONSTANT_SCALE_FONT_Y);
+        _V_size_x=_V_button_text.size();
+        _V_size_y=1;
+        if(_V_font)
+        {
+            _V_size_x=_V_font->get_width(_V_button_text+"--")/text_scale;
+            _V_size_y=_V_font->get_height()/text_scale;
+        }
         _V_mid_x=(_V_size_x*bitmap_scale_x/2);
     }
     void Button::draw()
@@ -243,7 +249,13 @@ namespace LL_AL5
     {
         clear();
         _V_text_length=new_text_length;
-        _V_size_x=(_V_text_length+1)*_V_font_size*_C_CONSTANT_SCALE_FONT_X;
+        _V_size_x=new_text_length;
+        _V_space=1.0;
+        if(_V_font)
+        {
+            _V_size_x=_V_font->get_width(std::string(_V_text_length+2,'m'))/text_scale;
+            _V_space=_V_font->get_width(std::string(1,'m'));
+        }
     }
     unsigned int TextBox::get_text_length()
     {
@@ -252,9 +264,15 @@ namespace LL_AL5
     void TextBox::set_font(Font* new_font)
     {
         _V_font=new_font;
-        _V_font_size=_V_font->get_size();
-        _V_size_x=(_V_text_length+1)*_V_font_size*_C_CONSTANT_SCALE_FONT_X;
-        _V_size_y=_V_font->get_size()*_C_CONSTANT_SCALE_FONT_Y;
+        _V_size_x=_V_text_length;
+        _V_size_y=1.0;
+        _V_space=1.0;
+        if(_V_font)
+        {
+            _V_size_x=_V_font->get_width(std::string(_V_text_length+2,'m'))/text_scale;
+            _V_size_y=_V_font->get_height()/text_scale;
+            _V_space=_V_font->get_width(std::string(1,'m'));
+        }
     }
     void TextBox::clear()
     {
@@ -301,11 +319,11 @@ namespace LL_AL5
         if(_V_hide_option)
         {
             std::string hide_value(_V_value.size(),'*');
-            al_draw_text(*_V_font,_V_text_color,_V_pos_x+(_V_font->get_size()*text_scale),_V_pos_y,
+            al_draw_text(*_V_font,_V_text_color,_V_pos_x+_V_space,_V_pos_y,
                          ALLEGRO_ALIGN_LEFT,hide_value.c_str());
         }
         else
-            al_draw_text(*_V_font,_V_text_color,_V_pos_x+(_V_font->get_size()*text_scale),_V_pos_y,
+            al_draw_text(*_V_font,_V_text_color,_V_pos_x+_V_space,_V_pos_y,
                          ALLEGRO_ALIGN_LEFT,_V_value.c_str());
     }
     bool TextBox::is_clicked()

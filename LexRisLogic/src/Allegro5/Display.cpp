@@ -83,7 +83,7 @@ namespace LL_AL5
     }
     bool Display::set_size(Type_display_size size_x,Type_display_size size_y)
     {
-        if(_V_display && !al_resize_display(_V_display,size_x,size_y))
+        if(size_x<=0.0 || size_y<=0.0 || (_V_display && !al_resize_display(_V_display,size_x,size_y)))
             return false;
         _V_size_x=size_x;
         _V_size_y=size_y;
@@ -98,11 +98,14 @@ namespace LL_AL5
     {
         return _V_size_y;
     }
-    void Display::set_real_size(Type_display_size real_size_x,Type_display_size real_size_y)
+    bool Display::set_real_size(Type_display_size real_size_x,Type_display_size real_size_y)
     {
+        if(real_size_x<=0.0 || real_size_y<=0.0)
+            return false;
         _V_real_size_x=real_size_x;
         _V_real_size_y=real_size_y;
         _F_set_global_scale();
+        return true;
     }
     Type_display_size Display::get_real_size_x()
     {

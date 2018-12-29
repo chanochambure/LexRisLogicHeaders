@@ -59,11 +59,11 @@ namespace LL_AL5
             bool remove_key(std::string key_name);
             bool remove_key(int keycode);
             unsigned int size();
-            void clear_key_status();
             void clear();
             bool& get_key_status(std::string key_name);
             int get_keycode(std::string key_name);
             void update();
+            void clear_key_status();
             ~KeyController();
     };
 
@@ -85,6 +85,7 @@ namespace LL_AL5
             bool& left_click();
             bool& right_click();
             bool& middle_click();
+            void clear_mouse_status();
             void update();
     };
 
@@ -141,6 +142,7 @@ namespace LL_AL5
             unsigned int get_num_axes(unsigned int joystick_id,unsigned int stick_id);
             float& get_axis_value(unsigned int joystick_id,unsigned int stick_id,unsigned int axis_id);
             std::string get_axis_name(unsigned int joystick_id,unsigned int stick_id,unsigned int axis_id);
+            void clear_joystick_status();
             void update(unsigned int joystick_id);
             const JoyStickController& operator = (const JoyStickController&) = delete;
     };

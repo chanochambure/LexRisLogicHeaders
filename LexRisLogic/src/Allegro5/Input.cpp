@@ -109,11 +109,6 @@ namespace LL_AL5
     {
         return _V_keys.size();
     }
-    void KeyController::clear_key_status()
-    {
-        for(auto i=_V_keys.begin();i!=_V_keys.end();++i)
-            i->second.key_down=false;
-    }
     void KeyController::clear()
     {
         _V_keys.clear();
@@ -137,6 +132,11 @@ namespace LL_AL5
         al_get_keyboard_state(&keyboard_state);
         for(auto i=_V_keys.begin();i!=_V_keys.end();++i)
             i->second.key_down=al_key_down(&keyboard_state,i->second.keycode);
+    }
+    void KeyController::clear_key_status()
+    {
+        for(auto i=_V_keys.begin();i!=_V_keys.end();++i)
+            i->second.key_down=false;
     }
     KeyController::~KeyController()
     {
@@ -185,6 +185,14 @@ namespace LL_AL5
     bool& MouseController::middle_click()
     {
         return (_V_mouse_buttons[2]);
+    }
+    void MouseController::clear_mouse_status()
+    {
+        _V_mouse_x=0;
+        _V_mouse_y=0;
+        _V_mouse_z=0;
+        _V_mouse_buttons[0]=_V_mouse_buttons[1]=_V_mouse_buttons[2]=false;
+        _V_mouse_buttons_auxiliar[0]=_V_mouse_buttons_auxiliar[1]=_V_mouse_buttons_auxiliar[2]=false;
     }
     void MouseController::update()
     {
@@ -361,6 +369,19 @@ namespace LL_AL5
         if(axis_id<get_num_axes(joystick_id,stick_id))
             return _V_joystick_data[joystick_id].sticks[stick_id].axes[axis_id].name;
         return "";
+    }
+    void JoyStickController::clear_joystick_status()
+    {
+        for(unsigned int id=0;id<_V_joystick_data.size();++id)
+        {
+            for(unsigned int i=0;i<_V_joystick_data[id].sticks.size();++i)
+            {
+                for(unsigned int j=0;j<_V_joystick_data[id].sticks[i].axes.size();++j)
+                    _V_joystick_data[id].sticks[i].axes[j].value=0.0;
+            }
+            for(unsigned int i=0;i<_V_joystick_data[id].buttons.size();++i)
+                _V_joystick_data[id].buttons[i].value=false;
+        }
     }
     void JoyStickController::update(unsigned int joystick_id)
     {

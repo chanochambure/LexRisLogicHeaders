@@ -26,27 +26,46 @@
 
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_image.h>
+
 #include <string>
+#include <vector>
+#include <algorithm>
 
 namespace LL_AL5
 {
     bool LL_SHARED text_addon();
+
+    class LL_SHARED Font;
+
+    class LL_SHARED FontConfiguration
+    {
+        friend class Font;
+        private:
+            std::vector<int> _V_ranges;
+        public:
+            void add_range(int begin,int end);
+            unsigned int size() const;
+            void clear();
+    };
 
     class LL_SHARED Font
     {
         private:
             ALLEGRO_FONT* _V_font=nullptr;
             std::string _V_font_path;
-            float _V_size=12.0;
+            ALLEGRO_BITMAP* _F_resize_bitmap(ALLEGRO_BITMAP* bitmap);
         public:
             Font();
             Font(const Font&) = delete;
             void set_path(std::string new_font_path);
             std::string get_path();
-            bool set_size(float new_size);
-            float get_size();
-            bool load_ttf_font();
-            bool load_ttf_font_for_another_target();
+            int get_height();
+            int get_width(std::string text);
+            bool load_bitmap_font(const FontConfiguration& configuration);
+            bool load_bitmap_font_for_another_target(const FontConfiguration& configuration);
+            bool load_ttf_font(float size);
+            bool load_ttf_font_for_another_target(float size);
             bool destroy();
             const Font& operator = (const Font&) = delete;
             operator ALLEGRO_FONT* ();

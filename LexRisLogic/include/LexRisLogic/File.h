@@ -36,7 +36,6 @@ namespace LL
             std::ofstream _V_output_stream;
             bool _V_binary_option=false;
             bool _V_append_option=false;
-            unsigned int _V_current_byte=0;
         public:
             FileStream();
             FileStream(const FileStream&) = delete;
