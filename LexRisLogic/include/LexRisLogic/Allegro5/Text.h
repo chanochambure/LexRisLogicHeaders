@@ -43,10 +43,17 @@ namespace LL_AL5
         friend class Font;
         private:
             std::vector<int> _V_ranges;
+            float _V_text_scale_x=1.0;
+            float _V_text_scale_y=1.0;
         public:
             void add_range(int begin,int end);
             unsigned int size() const;
             void clear();
+            void set_scale(float new_text_scale_x,float new_text_scale_y);
+            void set_scale_x(float new_text_scale_x);
+            void set_scale_y(float new_text_scale_y);
+            float get_scale_x() const;
+            float get_scale_y() const;
     };
 
     class LL_SHARED Font
@@ -54,7 +61,8 @@ namespace LL_AL5
         private:
             ALLEGRO_FONT* _V_font=nullptr;
             std::string _V_font_path;
-            ALLEGRO_BITMAP* _F_resize_bitmap(ALLEGRO_BITMAP* bitmap);
+            bool _F_load_bitmap_font(const FontConfiguration& configuration,float bmp_scale_x,float bmp_scale_y);
+            ALLEGRO_BITMAP* _F_resize_bitmap(ALLEGRO_BITMAP* bitmap,float bmp_scale_x,float bmp_scale_y);
         public:
             Font();
             Font(const Font&) = delete;

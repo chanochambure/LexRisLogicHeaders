@@ -39,11 +39,47 @@ namespace LL_AL5
     {
         _V_ranges.clear();
     }
-
-    ALLEGRO_BITMAP* Font::_F_resize_bitmap(ALLEGRO_BITMAP* bitmap)
+    void FontConfiguration::set_scale(float new_text_scale_x,float new_text_scale_y)
     {
-        int w=al_get_bitmap_width(bitmap)*bitmap_scale_x;
-        int h=al_get_bitmap_height(bitmap)*bitmap_scale_y;
+        _V_text_scale_x=new_text_scale_x;
+        _V_text_scale_y=new_text_scale_y;
+    }
+    void FontConfiguration::set_scale_x(float new_text_scale_x)
+    {
+        _V_text_scale_x=new_text_scale_x;
+    }
+    void FontConfiguration::set_scale_y(float new_text_scale_y)
+    {
+        _V_text_scale_y=new_text_scale_y;
+    }
+    float FontConfiguration::get_scale_x() const
+    {
+        return _V_text_scale_x;
+    }
+    float FontConfiguration::get_scale_y() const
+    {
+        return _V_text_scale_y;
+    }
+
+    bool Font::_F_load_bitmap_font(const FontConfiguration& configuration,float bmp_scale_x,float bmp_scale_y)
+    {
+        ALLEGRO_BITMAP* bitmap=al_load_bitmap(_V_font_path.c_str());
+        if(bitmap)
+        {
+            ALLEGRO_BITMAP* resize_bitmap=_F_resize_bitmap(bitmap,bmp_scale_x,bmp_scale_y);
+            if(resize_bitmap)
+            {
+                _V_font=al_grab_font_from_bitmap(resize_bitmap,configuration.size(),(&(configuration._V_ranges[0])));
+                al_destroy_bitmap(resize_bitmap);
+            }
+            al_destroy_bitmap(bitmap);
+        }
+        return _V_font;
+    }
+    ALLEGRO_BITMAP* Font::_F_resize_bitmap(ALLEGRO_BITMAP* bitmap,float bmp_scale_x,float bmp_scale_y)
+    {
+        int w=al_get_bitmap_width(bitmap)*bmp_scale_x;
+        int h=al_get_bitmap_height(bitmap)*bmp_scale_y;
         ALLEGRO_BITMAP* resized_bmp=al_create_bitmap(w,h);
         if(!resized_bmp)
             return nullptr;
@@ -79,34 +115,15 @@ namespace LL_AL5
     bool Font::load_bitmap_font(const FontConfiguration& configuration)
     {
         if(configuration.size() && !_V_font)
-        {
-            ALLEGRO_BITMAP* bitmap=al_load_bitmap(_V_font_path.c_str());
-            if(bitmap)
-            {
-                ALLEGRO_BITMAP* resize_bitmap=_F_resize_bitmap(bitmap);
-                if(resize_bitmap)
-                {
-                    _V_font=al_grab_font_from_bitmap(resize_bitmap,configuration.size(),(&(configuration._V_ranges[0])));
-                    al_destroy_bitmap(resize_bitmap);
-                }
-                al_destroy_bitmap(bitmap);
-                return _V_font;
-            }
-        }
+            return _F_load_bitmap_font(configuration,
+                                       configuration.get_scale_x()*bitmap_scale_x,
+                                       configuration.get_scale_y()*bitmap_scale_y);
         return false;
     }
     bool Font::load_bitmap_font_for_another_target(const FontConfiguration& configuration)
     {
         if(configuration.size() && !_V_font)
-        {
-            ALLEGRO_BITMAP* bitmap=al_load_bitmap(_V_font_path.c_str());
-            if(bitmap)
-            {
-                _V_font=al_grab_font_from_bitmap(bitmap,configuration.size(),(&(configuration._V_ranges[0])));
-                al_destroy_bitmap(bitmap);
-                return _V_font;
-            }
-        }
+            return _F_load_bitmap_font(configuration,configuration.get_scale_x(),configuration.get_scale_y());
         return false;
     }
     bool Font::load_ttf_font(float size)
