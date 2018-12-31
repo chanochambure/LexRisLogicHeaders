@@ -1,6 +1,6 @@
 /* Interface.cpp -- Interface Allegro 5 Special Source - LexRis Logic Headers
 
-    Copyright (c) 2017-2018 LexRisLogic
+    Copyright (c) 2017-2019 LexRisLogic
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
     documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -153,7 +153,7 @@ namespace LL_AL5
         _V_button_text=new_button_text;
         _V_size_x=_V_button_text.size();
         if(_V_font)
-            _V_size_x=_V_font->get_width(_V_button_text+"--")/text_scale;
+            _V_size_x=_V_font->get_width(_V_button_text+"--");
         _V_mid_x=(_V_size_x*bitmap_scale_x/2);
     }
     std::string Button::get_button_text()
@@ -167,8 +167,8 @@ namespace LL_AL5
         _V_size_y=1;
         if(_V_font)
         {
-            _V_size_x=_V_font->get_width(_V_button_text+"--")/text_scale;
-            _V_size_y=_V_font->get_height()/text_scale;
+            _V_size_x=_V_font->get_width(_V_button_text+"--");
+            _V_size_y=_V_font->get_height();
         }
         _V_mid_x=(_V_size_x*bitmap_scale_x/2);
     }
@@ -193,7 +193,14 @@ namespace LL_AL5
                               _V_pos_x+(_V_size_x*bitmap_scale_x),_V_pos_y+(_V_size_y*bitmap_scale_y),
                               _V_unclick_line_color,_V_thickness*primitives_scale);
         }
-        al_draw_text(*_V_font,_V_text_color,_V_pos_x+_V_mid_x,_V_pos_y,ALLEGRO_ALIGN_CENTER,_V_button_text.c_str());
+        ALLEGRO_TRANSFORM al_transform;
+        al_identity_transform(&al_transform);
+        al_scale_transform(&al_transform, bitmap_scale_x, bitmap_scale_y);
+        al_translate_transform(&al_transform,_V_pos_x+_V_mid_x,_V_pos_y);
+        al_use_transform(&al_transform);
+        al_draw_text(*_V_font,_V_text_color,0,0,ALLEGRO_ALIGN_CENTER,_V_button_text.c_str());
+        al_identity_transform(&al_transform);
+        al_use_transform(&al_transform);
     }
     bool Button::is_clicked()
     {
@@ -250,11 +257,11 @@ namespace LL_AL5
         clear();
         _V_text_length=new_text_length;
         _V_size_x=new_text_length;
-        _V_space=1.0;
+        _V_space=bitmap_scale_x;
         if(_V_font)
         {
-            _V_size_x=_V_font->get_width(std::string(_V_text_length+2,'m'))/text_scale;
-            _V_space=_V_font->get_width(std::string(1,'m'));
+            _V_size_x=_V_font->get_width(std::string(_V_text_length+2,'W'));
+            _V_space=_V_font->get_width(std::string(1,'W'))*bitmap_scale_x;
         }
     }
     unsigned int TextBox::get_text_length()
@@ -266,12 +273,12 @@ namespace LL_AL5
         _V_font=new_font;
         _V_size_x=_V_text_length;
         _V_size_y=1.0;
-        _V_space=1.0;
+        _V_space=bitmap_scale_x;
         if(_V_font)
         {
-            _V_size_x=_V_font->get_width(std::string(_V_text_length+2,'m'))/text_scale;
-            _V_size_y=_V_font->get_height()/text_scale;
-            _V_space=_V_font->get_width(std::string(1,'m'));
+            _V_size_x=_V_font->get_width(std::string(_V_text_length+2,'W'));
+            _V_size_y=_V_font->get_height();
+            _V_space=_V_font->get_width(std::string(1,'W'))*bitmap_scale_x;
         }
     }
     void TextBox::clear()
@@ -316,15 +323,20 @@ namespace LL_AL5
                               _V_pos_x+(_V_size_x*bitmap_scale_x),_V_pos_y+(_V_size_y*bitmap_scale_y),
                               _V_unclick_line_color,_V_thickness*primitives_scale);
         }
+        ALLEGRO_TRANSFORM al_transform;
+        al_identity_transform(&al_transform);
+        al_scale_transform(&al_transform, bitmap_scale_x, bitmap_scale_y);
+        al_translate_transform(&al_transform,_V_pos_x+_V_space,_V_pos_y);
+        al_use_transform(&al_transform);
         if(_V_hide_option)
         {
             std::string hide_value(_V_value.size(),'*');
-            al_draw_text(*_V_font,_V_text_color,_V_pos_x+_V_space,_V_pos_y,
-                         ALLEGRO_ALIGN_LEFT,hide_value.c_str());
+            al_draw_text(*_V_font,_V_text_color,0,0,ALLEGRO_ALIGN_LEFT,hide_value.c_str());
         }
         else
-            al_draw_text(*_V_font,_V_text_color,_V_pos_x+_V_space,_V_pos_y,
-                         ALLEGRO_ALIGN_LEFT,_V_value.c_str());
+            al_draw_text(*_V_font,_V_text_color,0,0,ALLEGRO_ALIGN_LEFT,_V_value.c_str());
+        al_identity_transform(&al_transform);
+        al_use_transform(&al_transform);
     }
     bool TextBox::is_clicked()
     {

@@ -1,6 +1,6 @@
 /* Display.cpp -- Display Allegro 5 Source - LexRis Logic Headers
 
-    Copyright (c) 2017-2018 LexRisLogic
+    Copyright (c) 2017-2019 LexRisLogic
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
     documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -29,11 +29,9 @@ namespace LL_AL5
         _V_last_size_y=_V_size_y;
         bitmap_scale_x=float(_V_size_x)/_V_real_size_x;
         bitmap_scale_y=float(_V_size_y)/_V_real_size_y;
-        text_scale=((bitmap_scale_x-bitmap_scale_y)/2)+bitmap_scale_y;
-        if(text_scale<1.0)
+        primitives_scale=((bitmap_scale_x-bitmap_scale_y)/2)+bitmap_scale_y;
+        if(primitives_scale<1.0)
             primitives_scale=1.0;
-        else
-            primitives_scale=text_scale;
     }
     Display::Display()
     {

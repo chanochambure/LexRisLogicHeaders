@@ -1,6 +1,6 @@
 /* Text.h -- Text Allegro 5 Header - LexRis Logic Headers
 
-    Copyright (c) 2017-2018 LexRisLogic
+    Copyright (c) 2017-2019 LexRisLogic
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
     documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -43,17 +43,10 @@ namespace LL_AL5
         friend class Font;
         private:
             std::vector<int> _V_ranges;
-            float _V_text_scale_x=1.0;
-            float _V_text_scale_y=1.0;
         public:
             void add_range(int begin,int end);
             unsigned int size() const;
             void clear();
-            void set_scale(float new_text_scale_x,float new_text_scale_y);
-            void set_scale_x(float new_text_scale_x);
-            void set_scale_y(float new_text_scale_y);
-            float get_scale_x() const;
-            float get_scale_y() const;
     };
 
     class LL_SHARED Font
@@ -61,8 +54,7 @@ namespace LL_AL5
         private:
             ALLEGRO_FONT* _V_font=nullptr;
             std::string _V_font_path;
-            bool _F_load_bitmap_font(const FontConfiguration& configuration,float bmp_scale_x,float bmp_scale_y);
-            ALLEGRO_BITMAP* _F_resize_bitmap(ALLEGRO_BITMAP* bitmap,float bmp_scale_x,float bmp_scale_y);
+            bool _F_load_bitmap_font(const FontConfiguration& configuration);
         public:
             Font();
             Font(const Font&) = delete;
@@ -71,9 +63,7 @@ namespace LL_AL5
             int get_height();
             int get_width(std::string text);
             bool load_bitmap_font(const FontConfiguration& configuration);
-            bool load_bitmap_font_for_another_target(const FontConfiguration& configuration);
             bool load_ttf_font(float size);
-            bool load_ttf_font_for_another_target(float size);
             bool destroy();
             const Font& operator = (const Font&) = delete;
             operator ALLEGRO_FONT* ();
@@ -89,18 +79,26 @@ namespace LL_AL5
             ALLEGRO_COLOR _V_color;
             Type_pos _V_pos_x=0.0;
             Type_pos _V_pos_y=0.0;
+            float _V_scale_x=1.0;
+            float _V_scale_y=1.0;
         public:
             void set_pos(Type_pos new_pos_x,Type_pos new_pos_y);
             void set_pos_x(Type_pos new_pos_x);
             Type_pos get_pos_x();
             void set_pos_y(Type_pos new_pos_y);
             Type_pos get_pos_y();
+            void set_scale(float new_scale_x,float new_scale_y);
+            void set_scale_x(float new_scale_x);
+            float get_scale_x();
+            void set_scale_y(float new_scale_y);
+            float get_scale_y();
             void set_flag(int new_flag);
             void set_color(ALLEGRO_COLOR new_color);
             ALLEGRO_COLOR get_color();
             void set_font(Font* new_font);
             Font* get_font();
             void draw();
+            void draw_in_another_target();
             const char* operator = (const char* new_text);
             std::string operator = (std::string new_text);
             operator const char* ();

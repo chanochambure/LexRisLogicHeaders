@@ -1,6 +1,6 @@
 /* Allegro5.h -- Allegro 5 Header - LexRis Logic Headers
 
-    Copyright (c) 2017-2018 LexRisLogic
+    Copyright (c) 2017-2019 LexRisLogic
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
     documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -31,7 +31,6 @@ namespace LL_AL5
 
     extern LL_SHARED float bitmap_scale_x;
     extern LL_SHARED float bitmap_scale_y;
-    extern LL_SHARED float text_scale;
     extern LL_SHARED float primitives_scale;
     extern LL_SHARED Type_display_size desktop_size_x;
     extern LL_SHARED Type_display_size desktop_size_y;

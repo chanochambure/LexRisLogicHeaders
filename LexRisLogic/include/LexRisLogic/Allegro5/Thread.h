@@ -1,4 +1,4 @@
-/* Color.h -- Color Allegro 5 Header - LexRis Logic Headers
+/* Thread.h -- Thread Allegro 5 Header - LexRis Logic Headers
 
     Copyright (c) 2017-2019 LexRisLogic
 
@@ -17,8 +17,8 @@
     SOFTWARE.
 */
 
-#ifndef INCLUDED_LL_AL5_COLOR_H
-#define INCLUDED_LL_AL5_COLOR_H
+#ifndef INCLUDED_LL_AL5_THREAD_H
+#define INCLUDED_LL_AL5_THREAD_H
 
 #include "../LL_Shared.h"
 
@@ -26,20 +26,29 @@
 
 namespace LL_AL5
 {
-    struct LL_SHARED Color
+    void* LL_SHARED __thread_main_function__(ALLEGRO_THREAD* thread,void* data);
+
+    class LL_SHARED Thread
     {
-        Color(unsigned char new_red=0,unsigned char new_green=0,unsigned char new_blue=0,unsigned char new_alpha=255);
-        Color(ALLEGRO_COLOR color);
-        unsigned char red=0;
-        unsigned char green=0;
-        unsigned char blue=0;
-        unsigned char alpha=255;
-        Color operator ! ();
-        Color operator = (ALLEGRO_COLOR another_color);
-        bool operator == (Color another_color);
-        bool operator != (Color another_color);
-        operator ALLEGRO_COLOR();
+        friend void* LL_SHARED __thread_main_function__(ALLEGRO_THREAD*,void*);
+        private:
+            ALLEGRO_THREAD* _V_thread=nullptr;
+            void* (*_P_Function_thread)(void*)=nullptr;
+            void* _V_argv=nullptr;
+        public:
+            Thread();
+            Thread(const Thread&) = delete;
+            bool set_function(void* (*new_function)(void*));
+            void* (*get_function())(void*);
+            bool set_argv(void* new_argv);
+            void* get_argv();
+            bool start();
+            void* join();
+            bool destroy();
+            const Thread& operator = (const Thread&) = delete;
+            operator ALLEGRO_THREAD* ();
+            ~Thread();
     };
 }
 
-#endif // INCLUDED_LL_AL5_COLOR_H
+#endif // INCLUDED_LL_AL5_THREAD_H
