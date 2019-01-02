@@ -26,6 +26,7 @@
 #include "Bitmap.h"
 #include "Mixer.h"
 
+#include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_video.h>
 #include <string>
 
@@ -50,7 +51,7 @@ namespace LL_AL5
             bool load();
             bool destroy();
             double get_video_position(ALLEGRO_VIDEO_POSITION_TYPE reference_position=ALLEGRO_VIDEO_POSITION_ACTUAL);
-            bool start();
+            bool start(ALLEGRO_MIXER* mixer);
             bool is_playing();
             void stop();
             void pause();

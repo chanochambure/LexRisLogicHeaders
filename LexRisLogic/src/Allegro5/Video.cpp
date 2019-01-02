@@ -48,8 +48,6 @@ namespace LL_AL5
     bool Video::load()
     {
         destroy();
-        if(!al_reserve_samples(1))
-            return false;
         _V_video=al_open_video(_V_video_path.c_str());
         if(_V_video)
         {
@@ -73,11 +71,11 @@ namespace LL_AL5
     {
         return al_get_video_position(_V_video,reference_position);
     }
-    bool Video::start()
+    bool Video::start(ALLEGRO_MIXER* mixer)
     {
-        if(_V_video)
+        if(_V_video && mixer)
         {
-            al_start_video(_V_video,al_get_default_mixer());
+            al_start_video(_V_video,mixer);
             return true;
         }
         return false;

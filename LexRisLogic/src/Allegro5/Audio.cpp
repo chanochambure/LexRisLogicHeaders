@@ -36,8 +36,7 @@ namespace LL_AL5
     {
         if(_V_sample)
             return false;
-        if(al_reserve_samples(1))
-            _V_sample=al_load_sample(_V_audio_path.c_str());
+        _V_sample=al_load_sample(_V_audio_path.c_str());
         return _V_sample;
     }
     bool Audio::destroy()
@@ -79,10 +78,15 @@ namespace LL_AL5
     {
         return al_attach_sample_instance_to_mixer(_V_instances[index].instance,mixer);
     }
+    bool Audio::detach_instance(unsigned int index)
+    {
+        return al_detach_sample_instance(_V_instances[index].instance);
+    }
     bool Audio::destroy_instance(unsigned int index)
     {
         if(index<_V_instances.size())
         {
+            detach_instance(index);
             auto iter=_V_instances.begin()+index;
             al_destroy_sample_instance(iter->instance);
             _V_instances.erase(iter);
@@ -93,7 +97,10 @@ namespace LL_AL5
     void Audio::clear()
     {
         for(_S_Structure_AudioInstance& iter:_V_instances)
+        {
+            al_detach_sample_instance(iter.instance);
             al_destroy_sample_instance(iter.instance);
+        }
         _V_instances.clear();
     }
     bool Audio::set_speed(unsigned int index,float new_speed)

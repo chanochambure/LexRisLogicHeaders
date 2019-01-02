@@ -29,14 +29,6 @@ namespace LL_AL5
     {
         al_uninstall_audio();
     }
-    ALLEGRO_MIXER* LL_SHARED get_default_mixer()
-    {
-        return al_get_default_mixer();
-    }
-    bool LL_SHARED restore_default_mixer()
-    {
-        return al_restore_default_mixer();
-    }
 
     Mixer::Mixer()
     {
@@ -130,12 +122,6 @@ namespace LL_AL5
         if(_V_mixer)
             return al_get_mixer_gain(_V_mixer);
         return 0;
-    }
-    bool Mixer::set_default_mixer()
-    {
-        if(_V_mixer)
-            return al_set_default_mixer(_V_mixer);
-        return false;
     }
     Mixer::operator ALLEGRO_MIXER* ()
     {

@@ -31,8 +31,6 @@ namespace LL_AL5
 {
     bool LL_SHARED audio_addon();
     void LL_SHARED uninstall_audio();
-    ALLEGRO_MIXER* LL_SHARED LL_SHARED get_default_mixer();
-    bool LL_SHARED restore_default_mixer();
 
     class LL_SHARED Mixer
     {
@@ -57,7 +55,6 @@ namespace LL_AL5
             ALLEGRO_MIXER_QUALITY get_quality();
             bool set_volume(float new_volume);
             float get_volume();
-            bool set_default_mixer();
             const Mixer& operator = (const Mixer&) = delete;
             operator ALLEGRO_MIXER* ();
             operator ALLEGRO_VOICE* ();
