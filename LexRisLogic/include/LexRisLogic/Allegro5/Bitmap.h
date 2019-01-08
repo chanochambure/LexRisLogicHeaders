@@ -55,6 +55,8 @@ namespace LL_AL5
             void set_angle(float new_angle);
             float get_angle();
             void set_flag(int new_flag);
+            int get_flag();
+            void set_scale(float new_scale_x,float new_scale_y);
             void set_scale_x(float new_scale_x);
             float get_scale_x();
             void set_scale_y(float new_scale_y);

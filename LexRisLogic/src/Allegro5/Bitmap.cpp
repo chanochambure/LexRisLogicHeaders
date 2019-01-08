@@ -71,6 +71,15 @@ namespace LL_AL5
     {
         _V_flag=new_flag;
     }
+    int BitmapBase::get_flag()
+    {
+        return _V_flag;
+    }
+    void BitmapBase::set_scale(float new_scale_x,float new_scale_y)
+    {
+        _V_scale_x=new_scale_x;
+        _V_scale_y=new_scale_y;
+    }
     void BitmapBase::set_scale_x(float new_scale_x)
     {
         _V_scale_x=new_scale_x;

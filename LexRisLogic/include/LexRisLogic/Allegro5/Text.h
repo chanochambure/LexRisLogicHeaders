@@ -93,6 +93,7 @@ namespace LL_AL5
             void set_scale_y(float new_scale_y);
             float get_scale_y();
             void set_flag(int new_flag);
+            int get_flag();
             void set_color(ALLEGRO_COLOR new_color);
             ALLEGRO_COLOR get_color();
             void set_font(Font* new_font);

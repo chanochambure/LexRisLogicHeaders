@@ -150,6 +150,10 @@ namespace LL_AL5
     {
         _V_flag=new_flag;
     }
+    int Text::get_flag()
+    {
+        return _V_flag;
+    }
     void Text::set_color(ALLEGRO_COLOR new_color)
     {
         _V_color=new_color;
