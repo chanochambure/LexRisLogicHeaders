@@ -120,6 +120,15 @@ namespace LL_AL5
         _V_display_mode=new_flag;
         return true;
     }
+    bool Display::update_display_flag(int update_flag,bool enable)
+    {
+        if(_V_display && al_set_display_flag(_V_display,update_flag,enable))
+        {
+            _V_display_mode=al_get_display_flags(_V_display);
+            return true;
+        }
+        return false;
+    }
     int Display::get_display_mode()
     {
         return _V_display_mode;

@@ -59,6 +59,7 @@ namespace LL_AL5
             Type_display_size get_real_size_x();
             Type_display_size get_real_size_y();
             bool set_display_mode(int new_flag);
+            bool update_display_flag(int update_flag,bool enable);
             int get_display_mode();
             void set_cam(Type_pos new_pos_x,Type_pos new_pos_y);
             void set_cam_x(Type_pos new_pos_x);
