@@ -343,7 +343,7 @@ namespace LL_AL5
     {
         if(stick_id<get_num_sticks(joystick_id))
             return _V_joystick_data[joystick_id].sticks[stick_id].name;
-        return 0;
+        return "";
     }
     unsigned int JoyStickController::get_num_axes(unsigned int joystick_id,unsigned int stick_id)
     {
