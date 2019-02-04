@@ -143,6 +143,7 @@ namespace LL_AL5
             float& get_axis_value(unsigned int joystick_id,unsigned int stick_id,unsigned int axis_id);
             std::string get_axis_name(unsigned int joystick_id,unsigned int stick_id,unsigned int axis_id);
             void clear_joystick_status();
+            unsigned int get_joystick_id(ALLEGRO_JOYSTICK* joystick_pointer);
             void update(unsigned int joystick_id);
             const JoyStickController& operator = (const JoyStickController&) = delete;
     };

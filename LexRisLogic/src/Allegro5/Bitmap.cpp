@@ -33,6 +33,10 @@ namespace LL_AL5
     {
         al_set_new_bitmap_flags(ALLEGRO_NO_PREMULTIPLIED_ALPHA);
     }
+    void LL_SHARED update_bitmap_to_video()
+    {
+        al_convert_memory_bitmaps();
+    }
 
     BitmapBase::BitmapBase()
     {

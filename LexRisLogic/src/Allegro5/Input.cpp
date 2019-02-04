@@ -383,6 +383,13 @@ namespace LL_AL5
                 _V_joystick_data[id].buttons[i].value=false;
         }
     }
+    unsigned int JoyStickController::get_joystick_id(ALLEGRO_JOYSTICK* joystick_pointer)
+    {
+        auto iter=_V_joysticks.find(joystick_pointer);
+        if(iter!=_V_joysticks.end())
+            return iter->second;
+        return _V_joystick_data.size();
+    }
     void JoyStickController::update(unsigned int joystick_id)
     {
         if(joystick_id<_V_joystick_data.size())

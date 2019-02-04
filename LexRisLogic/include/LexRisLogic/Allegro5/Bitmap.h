@@ -32,6 +32,7 @@ namespace LL_AL5
     bool LL_SHARED image_addon();
     bool LL_SHARED save_bitmap(std::string bitmap_file_name,ALLEGRO_BITMAP* bitmap);
     void LL_SHARED disable_premultiplied_alpha();
+    void LL_SHARED update_bitmap_to_video();
 
     class LL_SHARED BitmapBase
     {
