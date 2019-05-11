@@ -85,7 +85,7 @@ namespace LL
         }
         return false;
     }
-    bool FileStream::write(char* data,unsigned int bytes)
+    bool FileStream::write(const char* data,unsigned int bytes)
     {
         if(_V_output_stream.is_open())
         {

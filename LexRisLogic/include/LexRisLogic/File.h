@@ -46,7 +46,7 @@ namespace LL
             bool set_append_option(bool new_append_option);
             bool get_append_option();
             bool open(bool mode);
-            bool write(char* data,unsigned int bytes);
+            bool write(const char* data,unsigned int bytes);
             unsigned int read(char* data,unsigned int bytes);
             bool close();
             bool is_open();
